@@ -4,7 +4,7 @@ public class QuestionBean {
 	private int question_num;
 	private String question_test_num;
 	private int question_number;
-	private String question_contnet;
+	private String question_content;
 	private int question_correct;
 	private String question_file;
 	private int question_filesize;
@@ -28,11 +28,11 @@ public class QuestionBean {
 	public void setQuestion_number(int question_number) {
 		this.question_number = question_number;
 	}
-	public String getQuestion_contnet() {
-		return question_contnet;
+	public String getQuestion_content() {
+		return question_content;
 	}
-	public void setQuestion_contnet(String question_contnet) {
-		this.question_contnet = question_contnet;
+	public void setQuestion_content(String question_content) {
+		this.question_content = question_content;
 	}
 	public int getQuestion_correct() {
 		return question_correct;

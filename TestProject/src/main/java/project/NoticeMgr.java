@@ -25,13 +25,12 @@ public class NoticeMgr {
 		pool = DBConnectionMgr.getInstance();
 	}
 	
-	
+
 	//Board Insert
 	public void insertNotice(HttpServletRequest req) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
-		
 		try {
 			
 			File dir = new File(SAVEFOLDER);

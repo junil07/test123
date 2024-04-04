@@ -1,0 +1,65 @@
+.navi li ul{
+	display:none;
+}
+
+.navi li:hover ul{
+	display: block;
+}
+
+.navi{
+	list-style-type: noen;
+    width: 150px;
+    margin: 0;
+    padding: 0;
+    background-color: #39F;
+}
+
+.navi li a{
+	text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+    padding: 8px;
+}
+
+.container{
+    position: absolute;
+    top: 50px;
+    left: 300px;
+}
+
+.title{
+	width: 1000px;
+  	height: 50px;
+  	background-color: red;
+  	/* 수평 중앙 정렬하기 */
+  	margin: 0 auto;
+  	text-align:center;
+}
+
+BODY {
+	FONT-SIZE: 9pt; COLOR: black; LINE-HEIGHT: 160%; FONT-FAMILY: ����,verdana,tahoma
+}
+TD {
+	FONT-SIZE: 9pt; COLOR: black; LINE-HEIGHT: 160%; FONT-FAMILY: ����,verdana,tahoma
+}
+SELECT {
+	FONT-SIZE: 9pt; COLOR: black; LINE-HEIGHT: 160%; FONT-FAMILY: ����,verdana,tahoma
+}
+DIV {
+	FONT-SIZE: 9pt; COLOR: black; LINE-HEIGHT: 160%; FONT-FAMILY: ����,verdana,tahoma
+}
+FORM {
+	FONT-SIZE: 9pt; COLOR: black; LINE-HEIGHT: 160%; FONT-FAMILY: ����,verdana,tahoma
+}
+TEXTAREA {
+	BORDER-RIGHT: 1px solid #999999; BORDER-TOP: 1px solid #999999; FONT-SIZE: 9pt; BORDER-LEFT: 1px solid #999999 ; COLOR: BLACK; BORDER-BOTTOM: 1px solid #999999; FONT-FAMILY: ����,verdana; BACKGROUND-COLOR: white
+}
+INPUT {
+	BORDER-RIGHT: 1px solid #999999; BORDER-TOP: 1px solid #999999; FONT-SIZE: 9pt; BORDER-LEFT: 1px solid #999999; COLOR: BLACK; BORDER-BOTTOM: 1px solid #999999; FONT-FAMILY: ����,verdana; HEIGHT: 19px; BACKGROUND-COLOR: white
+}
+
+A:link {text-decoration:none;color:#696969}
+A:hover{text-decoration:yes;color:#66CCFF}
+A:visited {text-decoration:none;color:#330066}
