@@ -5,6 +5,7 @@
 <jsp:useBean id="questMgr" class="project.QuestionMgr"/>
 <jsp:useBean id="choiceMgr" class="project.ChoiceMgr"/>
 <%
+	//wdfdfdf
     String testNum[] = request.getParameterValues("test_num[]");
     Vector<QuestionBean> qlist = new Vector<QuestionBean>();
     Vector<ChoiceBean> clist = new Vector<ChoiceBean>();
