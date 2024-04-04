@@ -38,7 +38,6 @@ public class DBConnectionMgr {
     private Vector connections = new Vector(10);
     private String _driver = "com.mysql.cj.jdbc.Driver",
 
-
     _url = "jdbc:mysql://113.198.238.100:3306/project?characterEncoding=UTF-8&serverTimezone=UTC",
     _user = "develop",
     _password = "1234";

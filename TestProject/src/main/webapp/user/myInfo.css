@@ -1,0 +1,105 @@
+@charset "UTF-8";
+
+a {
+    color: inherit; /* 링크 기본 색상 사용 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+div {
+    display: block;
+    unicode-bidi: isolate;
+}
+
+.subindex_graybox {
+    width: 600px;
+    height: 50px;
+    border-radius: 12px;
+    box-shadow: 2px 2px 14px 0 rgba(105, 105, 105, 0.08);
+    border: solid 1px rgba(139, 139, 139, 0.8);
+    background-color: #fff;
+    box-sizing: border-box;
+    font-size: 13;
+}
+
+.subindex_item {
+    position: absolute;
+}
+
+.into_title {
+    display: flex;
+    align-items: center; /* 수직 방향 중앙 정렬 */
+    justify-content: space-between; /* 요소 사이를 좌우로 늘립니다. */
+    height: 50px;
+}
+
+input.title_text {
+    display: inline; /* 인라인 요소로 변경 */
+    margin-left: 10px;
+    border: none;
+    pointer-events: none;
+}
+
+.update_button {
+    display: inline;
+    margin-right: 10px;
+    width: 100px;
+    height: 40px;
+    padding: 10px 25px;
+    border: 2px solid #000;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+.btn-1:hover {
+    background: #aaaaaa;
+}
+
+.gradepoint {
+	position: absolute;
+	left: 1200px;
+    top: 200px;
+}
+
+.forgrade {
+	width: 400px;
+	height: 300px;
+}
+
+.forpoint {
+	width: 400px;
+	height: 100px;
+}
+
+.gradetitle {
+	flex-direction: column;
+    padding-top: 30px;
+}
+
+.gradeimg {
+	width: 200px;
+	height: 200px;
+}
+
+.right_text, .pointtext {
+	width: 90%;
+    text-align: center;
+}
+
+.pointtext {
+	margin-top: 30px;
+	font-size: 40;
+    font-weight: 600;
+}
+
+.pointtitle {
+	flex-direction: column;
+}
+
+.hide {
+	display: none;
+}
