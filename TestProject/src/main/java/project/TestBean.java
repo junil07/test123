@@ -3,9 +3,9 @@ package project;
 public class TestBean {
 	private String test_num;
 	private String test_title;
-	private int test_year;
+	private String test_year;
 	private int test_session;
-	private int test_subject;
+	private String test_subject;
 	public String getTest_num() {
 		return test_num;
 	}
@@ -18,10 +18,10 @@ public class TestBean {
 	public void setTest_title(String test_title) {
 		this.test_title = test_title;
 	}
-	public int getTest_year() {
+	public String getTest_year() {
 		return test_year;
 	}
-	public void setTest_year(int test_year) {
+	public void setTest_year(String test_year) {
 		this.test_year = test_year;
 	}
 	public int getTest_session() {
@@ -30,10 +30,10 @@ public class TestBean {
 	public void setTest_session(int test_session) {
 		this.test_session = test_session;
 	}
-	public int getTest_subject() {
+	public String getTest_subject() {
 		return test_subject;
 	}
-	public void setTest_subject(int test_subject) {
+	public void setTest_subject(String test_subject) {
 		this.test_subject = test_subject;
 	}
 }
