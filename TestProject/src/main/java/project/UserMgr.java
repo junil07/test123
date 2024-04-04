@@ -215,15 +215,6 @@ public class UserMgr {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/*
 	public static void main(String[] args) {
 		UserMgr mgr = new UserMgr();

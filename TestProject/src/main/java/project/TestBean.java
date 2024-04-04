@@ -4,8 +4,14 @@ public class TestBean {
 	private String test_num;
 	private String test_title;
 	private String test_year;
-	private int test_session;
 	private String test_subject;
+	private int test_subnummber; //여러개의 과목 선택 시 배열로 get set
+	public int getTest_subnummber() {
+		return test_subnummber;
+	}
+	public void setTest_subnummber(int test_subnummber) {
+		this.test_subnummber = test_subnummber;
+	}
 	public String getTest_num() {
 		return test_num;
 	}
@@ -24,16 +30,21 @@ public class TestBean {
 	public void setTest_year(String test_year) {
 		this.test_year = test_year;
 	}
-	public int getTest_session() {
-		return test_session;
-	}
-	public void setTest_session(int test_session) {
-		this.test_session = test_session;
-	}
 	public String getTest_subject() {
 		return test_subject;
 	}
 	public void setTest_subject(String test_subject) {
 		this.test_subject = test_subject;
 	}
+	public int getTest_subnumber() {
+		return test_subnumber;
+	}
+	public void setTest_subnumber(int test_subnumber) {
+		this.test_subnumber = test_subnumber;
+	}
+	private String test_title;
+	private String test_year;
+	private String test_subject;
+	private int test_subnumber;
+	
 }
