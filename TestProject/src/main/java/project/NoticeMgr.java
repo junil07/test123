@@ -12,6 +12,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 public class NoticeMgr {
+<<<<<<< qkrtmdtjq
    private DBConnectionMgr pool;
    
    //업로드 파일 저장 위치
@@ -163,6 +164,158 @@ public class NoticeMgr {
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, start);
                pstmt.setInt(2, cnt);
+=======
+	private DBConnectionMgr pool;
+	
+	//업로드 파일 저장 위치
+	public static final String SAVEFOLDER = "C:\\Jsp\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\TestProject\\";
+	//업로드 파일 인코딩
+	public static final String ENCODING = "UTF-8";
+	//업로드 파일 크기
+	public static final int MAXSIZE = 1024*1024*30; //30mb
+	
+	public NoticeMgr() {
+		pool = DBConnectionMgr.getInstance();
+	}
+	
+
+	//Board Insert
+	public void insertNotice(HttpServletRequest req) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		try {
+			
+			File dir = new File(SAVEFOLDER);
+			if(!dir.exists())//존재하지 않는다면
+				dir.mkdirs();//상위폴더가 없어도 생성
+			//mkdir : 상위폴더가 없으면 생성불가
+			MultipartRequest multi = new MultipartRequest(req, SAVEFOLDER, MAXSIZE, ENCODING, new DefaultFileRenamePolicy());
+			String filefullname = null, filename = null, newfilename = null, fileextension = null;
+			int filesize = 0;
+			if(multi.getFilesystemName("filename")!=null) {
+				filefullname = multi.getFilesystemName("filename");
+				filename = UtilMgr.fileName(filefullname);
+				newfilename = UtilMgr.randomName(filefullname);
+				fileextension = UtilMgr.fileExtension(filefullname);
+				filesize = (int)multi.getFile("filename").length();
+			}
+			
+			String content = multi.getParameter("content"); //게시물 내용
+			con = pool.getConnection();
+			sql = "insert notice(notice_title, notice_content, notice_date, notice_count)"
+					+ "values(?, ?, now(), 0)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, multi.getParameter("title"));
+			pstmt.setString(2, multi.getParameter("content"));
+			pstmt.executeUpdate();
+			pstmt.close();
+			if(filename!=null&&!filename.equals("")) {
+				sql = "insert notice_fileupload(notice_fileupload_server_name, fileupload_notice_num, notice_fileupload_name, "
+						+ "notice_fileupload_extension, notice_fileupload_size)"
+						+ "values(?, ?, ?, ?, ?)";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, newfilename);
+				pstmt.setInt(2, getMaxNum());
+				pstmt.setString(3, filename);
+				pstmt.setString(4, fileextension);
+				pstmt.setInt(5, filesize);
+				pstmt.executeUpdate();
+			}
+			
+			//파일 이름 변경
+			UtilMgr.fileRename(SAVEFOLDER, filefullname, newfilename);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		/*
+		
+		try {
+			MultipartRequest multi = new MultipartRequest(req, SAVEFOLDER, MAXSIZE, ENCODING, new DefaultFileRenamePolicy());
+			con = pool.getConnection();
+			sql = "insert notice(notice_title, notice_content, notice_date, notice_count)"
+					+ "values(?, ?, now(), 0)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, multi.getParameter("title"));
+			pstmt.setString(2, multi.getParameter("content"));
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return;
+		*/
+	}
+	
+	//Board Max Num : num의 현재 최대값
+	public int getMaxNum() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int maxNum = 0;
+		try {
+			con = pool.getConnection();
+			sql = "select max(notice_num) from notice";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) maxNum = rs.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return maxNum;
+	}
+	
+	//총게시물수
+	public int getTotalCount(String keyField, String keyWord) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int totalCount = 0;
+		try {
+			con = pool.getConnection();
+			if(keyWord.trim().equals("")||keyWord==null) {
+			//검색이 아닌 경우
+				sql = "select count(*) from notice";
+				pstmt = con.prepareStatement(sql);
+			}else {
+				sql = "select count(*) from notice where " + keyField + " like ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%" + keyWord + "%");
+			}
+			rs = pstmt.executeQuery();
+			if(rs.next()) totalCount = rs.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return totalCount;
+	}
+	
+	//Board List : 검색기능, 페이징 및 블럭
+	public Vector<NoticeBean> getNoticeList(String keyField, String keyWord, int start, int cnt) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector<NoticeBean> vlist = new Vector<NoticeBean>();
+		try {
+			con = pool.getConnection();
+			if(keyWord.trim().equals("")||keyWord==null) {
+			//검색이 아닌 경우
+				sql = "select * from notice "
+						+ "order by notice_num desc limit ?, ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, start);
+	            pstmt.setInt(2, cnt);
+>>>>>>> main
 
          }else {
             sql = "select * from notice where " + keyField + " like ? "
