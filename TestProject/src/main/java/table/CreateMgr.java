@@ -174,7 +174,7 @@ public class CreateMgr {
 		return flag;
 	}
 	
-	//컬럼 존재 유무 확인
+	//컬럼 존재 유무 확인////
 	public boolean colExists(String tableName, String colName) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
