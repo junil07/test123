@@ -1,0 +1,180 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	width : 100%;
+	height : 100%;
+}
+
+#body{
+	display : flex;
+}
+
+#sidebar{
+	height: 100%;
+	width: 15%;
+	background-color: seashell;
+}
+
+#sidebar a{
+	margin-top: 9px;
+	margin-bottom: 9px;
+	font-size: 15px;
+	
+}
+
+#maincontent{
+	height: 100%;
+	width: 85%;
+}
+
+.sidebar_head {
+	width: 240px;
+	height: 15%;
+	margin: 20px 30px 20px 30px;	
+	background-color: red;
+}
+
+.sidebar_main{
+	width: 240px; 
+	height: 80%;
+	margin: 20px 30px 20px 30px;	
+	background-color : gray;
+}
+
+.ex_button{
+	font-weight: bold;
+	font-size:18px;
+	border-bottom: solid 1px black;
+}
+
+.user_button{
+	font-weight: bold;
+	font-size:18px;
+	border-bottom: solid 1px black;
+}
+
+.post_button{
+	font-weight: bold;
+	font-size:18px;
+	border-bottom: solid 1px black;
+}
+
+.main_head{
+	height: 20%;
+	width: 85%;
+	background-color: yellow; 
+	margin: auto;
+	margin-top: 20px;
+}
+.head_top{
+	width: 90%;
+	margin: auto;
+	padding-top: 50px;
+}
+
+.head_txt{
+	font-size: 40px;
+	font-weight: bold;
+}
+
+.head_under{
+	width: 90%;
+	margin: auto;
+	padding-top: 20px;
+}
+
+.head_under button{
+	background-color: gary;
+	height: 44px; 
+	width: 80px;
+}
+
+.head_place{
+	width: 300px;
+	height: 40px;
+}
+
+/****************************************************/
+
+.main_content{
+	height: 60%;
+	width: 85%;
+	background-color: yellow; 
+	margin: auto;
+	margin-top: 10px;	
+}
+.main_list{
+	margin: auto;
+	padding-top: 10px;
+}
+
+.num, .name, .title, .pay, .date, .checked{
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.num{
+	width: 80px;
+}
+
+.name{
+	width: 100px;
+}
+
+.title{
+	width:450px;
+}
+.pay{
+	width: 120px;
+}
+.date{
+	width: 200px;
+}
+.checked{
+	width: 100px;
+}
+.paypost_list{
+	height: 45px;
+}
+
+.href{
+	text-decoration-line: none;
+	color: black;
+}
+
+.bottom{
+	height: 10%;
+    width: 85%;
+    background-color: yellow;
+    margin: auto;
+    margin-top: 10px; 
+    position: relative;;
+}
+
+.bottom_num{
+	margin: auto;
+	width: 80%;
+}
+
+.style_a{
+	width: 90%;
+	text-align: center;
+}
+
+.style_a a{
+	font-size: 20px;
+	margin-right: 10px;
+	text-decoration: none;
+	color: black;
+}
+
+.first{
+	text-align: center;
+}
+
+.first a{
+	font-size: 15px;
+	margin-right: 10px;
+	text-decoration: none;
+	color: black;
+}
