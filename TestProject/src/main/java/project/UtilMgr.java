@@ -1,7 +1,5 @@
 package project;
 
-import java.io.File;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -10,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class UtilMgr {
 
-   
+
    public static String getDay(){
 	   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
        return format.format(new Date());
@@ -94,5 +92,6 @@ public class UtilMgr {
 	   // 3. rename        
 	   boolean result = file.renameTo(newFile);         
    }
+
 
 }

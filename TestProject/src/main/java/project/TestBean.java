@@ -36,4 +36,15 @@ public class TestBean {
 	public void setTest_subject(String test_subject) {
 		this.test_subject = test_subject;
 	}
+	public int getTest_subnumber() {
+		return test_subnumber;
+	}
+	public void setTest_subnumber(int test_subnumber) {
+		this.test_subnumber = test_subnumber;
+	}
+	private String test_title;
+	private String test_year;
+	private String test_subject;
+	private int test_subnumber;
+	
 }
