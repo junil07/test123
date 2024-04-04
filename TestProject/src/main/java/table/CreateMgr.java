@@ -41,7 +41,7 @@ public class CreateMgr {
 			
 			//컬럼 추가
 			//유저 아이디
-			if(opList.contains("col_user")) {
+			if(opList.contains("col_user") || opList.contains("col_pay")) {
 				sql += ",\n"
 					+ INSERTNAME + "_USER_ID VARCHAR(20) NOT NULL";
 				
@@ -56,7 +56,7 @@ public class CreateMgr {
 			}
 			
 			//추천수
-			if(opList.contains("col_like")) {
+			if(opList.contains("likey")) {
 				sql += ",\n"
 						+ INSERTNAME + "_GOOD INT(10) DEFAULT 0";
 			}
@@ -67,7 +67,7 @@ public class CreateMgr {
 			
 			//FK 부분
 			//유저 아이디
-			if(opList.contains("col_user")) {
+			if(opList.contains("col_user") || opList.contains("col_pay")) {
 				sql += ",\n"
 					+ "FOREIGN KEY (" + INSERTNAME + "_USER_ID) REFERENCES USER (USER_ID)";
 				
@@ -129,7 +129,7 @@ public class CreateMgr {
 				sql = "CREATE TABLE PROJECT." + INSERTNAME + "_LIKEY (\n"
 						+ INSERTNAME + "_LIKEY_NUM INT NOT NULL AUTO_INCREMENT,\n"
 						+ "LIKEY_" + INSERTNAME + "_NUM INT NOT NULL,\n"
-						+ INSERTNAME + "_LIKEY_USER_ID VARCHAR(50) NOT NULL,\n"
+						+ INSERTNAME + "_LIKEY_USER_ID VARCHAR(20) NOT NULL,\n"
 						+ "PRIMARY KEY (" + INSERTNAME + "_LIKEY_NUM),\n"
 						+ "FOREIGN KEY (LIKEY_" + INSERTNAME + "_NUM) REFERENCES " + INSERTNAME + " (" + INSERTNAME + "_NUM),\n"
 						+ "FOREIGN KEY (" + INSERTNAME + "_LIKEY_USER_ID) REFERENCES USER (USER_ID)\n"
@@ -181,6 +181,7 @@ public class CreateMgr {
 		ResultSet rs = null;
 		String sql = null;
 		boolean flag = false;
+		
 		try {
 			con = pool.getConnection();
 			sql = "select * from information_schema.columns\n"
@@ -199,54 +200,65 @@ public class CreateMgr {
 	}
 	
 	
-	//게시판 수정
+	//게시판 수정 - 이름 업데이트
 	public void updateTableName(String oldTable, String updateTable) {
 		//업데이트문 저장 가변 리스트
 		ArrayList<String> updateList = new ArrayList<>();
+		//옵션
+		int[] op = {0, 0, 0};
 		
 		//게시판 테이블 업데이트문
 		String[] tableList = {"RENAME TABLE " + oldTable+" TO " + updateTable+";",
-				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_NUM " + updateTable+"_NUM;",
-				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_TITLE " + updateTable+"_TITLE;",
-				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_CONTENT " + updateTable+"_CONTENT;",
-				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_DATE " + updateTable+"_DATE;",
-				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_COUNT " + updateTable+"_COUNT;"
+				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_NUM " + updateTable+"_NUM INT;",
+				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_TITLE " + updateTable+"_TITLE VARCHAR(50);",
+				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_CONTENT " + updateTable+"_CONTENT VARCHAR(1000);",
+				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_DATE " + updateTable+"_DATE DATE;",
+				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_COUNT " + updateTable+"_COUNT INT;"
 				};
 		//댓글 테이블 업데이트문
-		String[] commentList = {"RENAME TABLE " + oldTable+"_COMMENT TO " + updateTable+"_COMMENT;",
-				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_NUM " + updateTable+"_COMMENT_NUM;",
-				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN COMMENT_"+oldTable+"_NUM COMMENT_"+updateTable+"_NUM;",
-				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_CONTENT " + updateTable+"_COMMENT_CONTENT;",
-				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_REPLY_POS " + updateTable+"_COMMENT_REPLY_POS;",
-				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_REPLY_REF " + updateTable+"_COMMENT_REPLY_REF;",
-				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_REPLY_DEPTH " + updateTable+"_COMMENT_REPLY_DEPTH;",
-				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_USER_ID " + updateTable+"_COMMENT_USER_ID;",
-				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_DATE " + updateTable+"_COMMENT_DATE;"
+		String[] commentList = {"ALTER TABLE " + oldTable +"_COMMENT DROP FOREIGN KEY " + oldTable + "_COMMENT_IBFK_1",
+				"ALTER TABLE " + oldTable +"_COMMENT DROP FOREIGN KEY " + oldTable + "_COMMENT_IBFK_2",
+				"RENAME TABLE " + oldTable+"_COMMENT TO " + updateTable+"_COMMENT;",
+				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_NUM " + updateTable+"_COMMENT_NUM INT;",
+				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN COMMENT_"+oldTable+"_NUM COMMENT_"+updateTable+"_NUM INT;",
+				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_CONTENT " + updateTable+"_COMMENT_CONTENT VARCHAR(1000);",
+				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_REPLY_POS " + updateTable+"_COMMENT_REPLY_POS SMALLINT(5);",
+				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_REPLY_REF " + updateTable+"_COMMENT_REPLY_REF SMALLINT(5);",
+				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_REPLY_DEPTH " + updateTable+"_COMMENT_REPLY_DEPTH SMALLINT(5);",
+				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_USER_ID " + updateTable+"_COMMENT_USER_ID VARCHAR(20);",
+				"ALTER TABLE " + updateTable + "_COMMENT CHANGE COLUMN " + oldTable+"_COMMENT_DATE " + updateTable+"_COMMENT_DATE DATE;"			
 				};
 		//첨부파일 테이블 업데이트문
-		String[] fileuploadList = {"RENAME TABLE " + oldTable+"_FILEUPLOAD TO " + updateTable+"_FILEUPLOAD;",
-				"ALTER TABLE " + updateTable + "_FILEUPLOAD CHANGE COLUMN " + oldTable+"_FILEUPLOAD_SERVER_NAME " + updateTable+"_FILEUPLOAD_SERVER_NAME;",
-				"ALTER TABLE " + updateTable + "_FILEUPLOAD CHANGE COLUMN FILEUPLOAD_"+oldTable+"_NUM FILEUPLOAD_"+updateTable+"_NUM;",
-				"ALTER TABLE " + updateTable + "_FILEUPLOAD CHANGE COLUMN " + oldTable+"_FILEUPLOAD_NAME " + updateTable+"_FILEUPLOAD_NAME;",
-				"ALTER TABLE " + updateTable + "_FILEUPLOAD CHANGE COLUMN " + oldTable+"_FILEUPLOAD_EXTENSION " + updateTable+"_FILEUPLOAD_EXTENSION;",
-				"ALTER TABLE " + updateTable + "_FILEUPLOAD CHANGE COLUMN " + oldTable+"_FILEUPLOAD_SIZE " + updateTable+"_FILEUPLOAD_SIZE;"
+		String[] fileuploadList = {"ALTER TABLE " + oldTable +"_FILEUPLOAD DROP FOREIGN KEY " + oldTable + "_FILEUPLOAD_IBFK_1",
+				"RENAME TABLE " + oldTable+"_FILEUPLOAD TO " + updateTable+"_FILEUPLOAD;",
+				"ALTER TABLE " + updateTable + "_FILEUPLOAD CHANGE COLUMN " + oldTable+"_FILEUPLOAD_SERVER_NAME " + updateTable+"_FILEUPLOAD_SERVER_NAME VARCHAR(100);",
+				"ALTER TABLE " + updateTable + "_FILEUPLOAD CHANGE COLUMN FILEUPLOAD_"+oldTable+"_NUM FILEUPLOAD_"+updateTable+"_NUM INT;",
+				"ALTER TABLE " + updateTable + "_FILEUPLOAD CHANGE COLUMN " + oldTable+"_FILEUPLOAD_NAME " + updateTable+"_FILEUPLOAD_NAME VARCHAR(100);",
+				"ALTER TABLE " + updateTable + "_FILEUPLOAD CHANGE COLUMN " + oldTable+"_FILEUPLOAD_EXTENSION " + updateTable+"_FILEUPLOAD_EXTENSION VARCHAR(10);",
+				"ALTER TABLE " + updateTable + "_FILEUPLOAD CHANGE COLUMN " + oldTable+"_FILEUPLOAD_SIZE " + updateTable+"_FILEUPLOAD_SIZE INT;"
 				};
 		//추천 테이블 업데이트문
-		String[] likeyList = {"RENAME TABLE " + oldTable+"_LIKEY TO " + updateTable+"_LIKEY;",
-				"ALTER TABLE " + updateTable + "_LIKEY CHANGE COLUMN " + oldTable+"_LIKEY_NUM " + updateTable+"_LIKEY_NUM;",
-				"ALTER TABLE " + updateTable + "_LIKEY CHANGE COLUMN LIKEY_"+oldTable+"_NUM LIKEY_"+updateTable+"_NUM;",
-				"ALTER TABLE " + updateTable + "_LIKEY CHANGE COLUMN " + oldTable+"_LIKEY_USER_ID " + updateTable+"_LIKEY_USER_ID;"
+		String[] likeyList = {"ALTER TABLE " + oldTable +"_LIKEY DROP FOREIGN KEY " + oldTable + "_LIKEY_IBFK_1",
+				"ALTER TABLE " + oldTable +"_LIKEY DROP FOREIGN KEY " + oldTable + "_LIKEY_IBFK_2",	
+				"RENAME TABLE " + oldTable+"_LIKEY TO " + updateTable+"_LIKEY;",
+				"ALTER TABLE " + updateTable + "_LIKEY CHANGE COLUMN " + oldTable+"_LIKEY_NUM " + updateTable+"_LIKEY_NUM INT;",
+				"ALTER TABLE " + updateTable + "_LIKEY CHANGE COLUMN LIKEY_"+oldTable+"_NUM LIKEY_"+updateTable+"_NUM INT;",
+				"ALTER TABLE " + updateTable + "_LIKEY CHANGE COLUMN " + oldTable+"_LIKEY_USER_ID " + updateTable+"_LIKEY_USER_ID VARCHAR(20);"
 				};
-		//유로글 컬럼 업데이트문
-		String[] payCol = {"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_TEST_NUM " + updateTable+"_TEST_NUM;",
-				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_PAY " + updateTable+"_PAY;",
-				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_AGREE " + updateTable+"_AGREE;",
-				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_REASON " + updateTable+"_REASON;",
+		//유료글 컬럼 업데이트문
+		String[] payCol = {"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_TEST_NUM " + updateTable+"_TEST_NUM VARCHAR(20);",
+				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_PAY " + updateTable+"_PAY INT;",
+				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_AGREE " + updateTable+"_AGREE SMALLINT(5);",
+				"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_REASON " + updateTable+"_REASON VARCHAR(100);",
 				};
-		//FK 재설정
-		String[] pkfk = {"ALTER TABLE " + oldTable +"_COMMENT DROP FOREIGN KEY "
-				
+		
+		String[] fkAdd = {"ALTER TABLE " + updateTable +"_COMMENT ADD FOREIGN KEY (COMMENT_" + updateTable + "_NUM) REFERENCES " + updateTable + " (" + updateTable + "_NUM);",
+				"ALTER TABLE " + updateTable +"_COMMENT ADD FOREIGN KEY (" + updateTable + "_COMMENT_USER_ID) REFERENCES USER (USER_ID);",
+				"ALTER TABLE " + updateTable +"_FILEUPLOAD ADD FOREIGN KEY (FILEUPLOAD_" + updateTable + "_NUM) REFERENCES " + updateTable + " (" + updateTable + "_NUM);",
+				"ALTER TABLE " + updateTable +"_LIKEY ADD FOREIGN KEY (LIKEY_" + updateTable + "_NUM) REFERENCES " + updateTable + " (" + updateTable + "_NUM);",
+				"ALTER TABLE " + updateTable +"_LIKEY ADD FOREIGN KEY (" + updateTable + "_LIKEY_USER_ID) REFERENCES USER (USER_ID);"
 		};
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -256,34 +268,55 @@ public class CreateMgr {
 			//if 문을 통해서 각 상황에 맞는 업데이트문을 가변 리스트에 추가
 			//게시판 이름이 수정되었을 경우
 			if(oldTable != updateTable) {
-				Collections.addAll(updateList, tableList);
-				
-				//추천수 컬럼이 있을 경우
-				if(colExists(updateTable, oldTable+"_GOOD")) {
-					updateList.add("ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_GOOD " + updateTable+"_GOOD;");
-				}
-				//사용자 컬럼이 있을 경우
-				if(colExists(updateTable, oldTable+"_USER_ID")) {
-					updateList.add("ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_USER_ID " + updateTable+"_USER_ID;");
-				}
-				//유료글 컬럼들이 있을 경우
-				if(colExists(updateTable, oldTable+"_USER_ID")) {
-					Collections.addAll(updateList, payCol);
-				}
 				
 				//댓글 테이블이 있을 경우 이름 수정
 				if(tableExists(oldTable+"_COMMENT") == true) {
 					Collections.addAll(updateList, commentList);
+					op[0] = 1;
 				}
 				
 				//첨부파일 테이블이 있을 경우 이름 수정
 				if(tableExists(oldTable+"_FILEUPLOAD") == true) {
 					Collections.addAll(updateList, fileuploadList);
+					op[1] = 1;
 				}
 				
 				//추천 테이블이 있을 경우 이름 수정
 				if(tableExists(oldTable+"_LIKEY") == true) {
 					Collections.addAll(updateList, likeyList);
+					op[2] = 1;
+				}
+				
+				//이후에 게시판 기본 옵션 이름 수정
+				Collections.addAll(updateList, tableList);
+				
+				//추천수 컬럼이 있을 경우
+				if(colExists(oldTable, oldTable+"_GOOD") == true) {
+					updateList.add("ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_GOOD " + updateTable+"_GOOD INT;");
+				}
+				//사용자 컬럼이 있을 경우
+				if(colExists(oldTable, oldTable+"_USER_ID") == true) {
+					updateList.add("ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_USER_ID " + updateTable+"_USER_ID VARCHAR(20);");
+				}
+				//유료글 컬럼들이 있을 경우
+				if(colExists(oldTable, oldTable+"_PAY") == true) {
+					Collections.addAll(updateList, payCol);
+				}
+				
+				//옵션에 따라 fk 다시 부여
+				//[0] : 댓글 테이블  
+				if(op[0] == 1) {
+					updateList.add(fkAdd[0]);
+					updateList.add(fkAdd[1]);
+				}
+				//[1] : 첨부파일 테이블
+				if(op[1] == 1) {
+					updateList.add(fkAdd[2]);
+				}
+				//[2] : 추천 테이블
+				if(op[2] == 1) {
+					updateList.add(fkAdd[3]);
+					updateList.add(fkAdd[4]);
 				}
 			}
 			
@@ -294,6 +327,40 @@ public class CreateMgr {
 				pstmt.executeUpdate();
 				pstmt.close();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return;
+	}
+	
+	
+	//게시판 업데이트 - 옵션 변경
+	public void updateTableOp(String op[], String updateTable) {
+		List<String> opList = new ArrayList<>();
+		if(op[0]!=null&&!op[0].equals("")) {
+			opList = Arrays.asList(op);
+		}
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		try {
+			con = pool.getConnection();
+			
+			//사용자 권한, 유료글 옵션 + _USER_ID 컬럼이 없을 경우
+			if(opList.contains("col_user") || opList.contains("col_pay")) {
+				if(!colExists(updateTable, updateTable+"_USER_ID")) {
+					
+				}
+			}
+				
+				//유료글
+				if(opList.contains("col_pay")) {
+			sql = "";
+			pstmt = con.prepareStatement(sql);
+
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -331,6 +398,6 @@ public class CreateMgr {
 	
 	public static void main(String[] args) {
 		CreateMgr mgr = new CreateMgr();
-		System.out.println(mgr.colExists("qna", "qna_numsdfsdf"));
+		System.out.println(mgr.colExists("bbb", "aaa_USER_ID"));
 	}
 }

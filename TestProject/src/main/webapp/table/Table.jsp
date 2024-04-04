@@ -13,9 +13,10 @@
 <input type="checkbox" name="op" value="basic">선택 없음<br> 
 <input type="checkbox" name="op" value="col_user">사용자 권한<br> 
 <input type="checkbox" name="op" value="col_pay">유료글<br> 
-<input type="checkbox" name="op" value="likey">추천수<br> 
 <input type="checkbox" name="op" value="comment">댓글<br> 
 <input type="checkbox" name="op" value="fileupload">첨부파일<br>
+<input type="checkbox" name="op" value="likey">추천<br>
+
 
 <textarea name="tablename" rows="10" cols="50"></textarea>
 

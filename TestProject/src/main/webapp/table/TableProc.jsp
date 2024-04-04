@@ -7,12 +7,9 @@
 	String[] op = request.getParameterValues("op");
 	CreateMgr mgr = new CreateMgr();
 	mgr.createTable(op, tablename);
+	mgr.updateTableName(tablename, "bbb");
 %>
-<% 
-	System.out.println(tablename);
-	for(int i=0;i<op.length;i++){%><%=op[i] %><br><%}%>
-	
-	<%mgr.updateTableName(tablename, "bbb"); %>
+
 	
 	
 	
