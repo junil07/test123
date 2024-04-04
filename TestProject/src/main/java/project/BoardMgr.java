@@ -15,16 +15,17 @@ public class BoardMgr {
 		pool = DBConnectionMgr.getInstance();
 	}
 	
+
 	//페이징 처리를 위한 출력
 	public Vector<BoardBean> allboardList(String keyField,String keyWord, int start, int cnt){
-		Connection con = null;
+    Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
 		Vector<BoardBean> vlist = new Vector<BoardBean>();
 		try {
 			con = pool.getConnection();
-			if(keyWord.trim().equals("") || keyWord == null) {
+      if(keyWord.trim().equals("") || keyWord == null) {
 				sql = "select * from board order by board_num DESC LIMIT ?, ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, start);
@@ -58,8 +59,7 @@ public class BoardMgr {
 					bean.setBoard_user_id(rs.getString(6));
 					ubean.setUser_name(rs.getString(6));
 					vlist.addElement(bean);
-				}
-			}
+        }
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -67,6 +67,35 @@ public class BoardMgr {
 		}
 		return vlist;
 	}
+      
+	public Vector<BoardBean> boardList(){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector<BoardBean> vlist = new Vector<BoardBean>();
+		try {
+			con = pool.getConnection();
+			sql = "select * from board";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BoardBean bean = new BoardBean();
+				bean.setBoard_num(rs.getInt(1));
+				bean.setBoard_title(rs.getString(2));
+				bean.setBoard_content(rs.getString(3));
+				bean.setBoard_date(rs.getString(4));
+				vlist.addElement(bean);
+      }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return vlist;
+	}
+			
+
 	
 	//글 갯수 파악
 	public int getTotalCount(String keyField, String keyWord) {
@@ -169,4 +198,5 @@ public class BoardMgr {
 			}
 			return userGrade;
 		}
+
 }
