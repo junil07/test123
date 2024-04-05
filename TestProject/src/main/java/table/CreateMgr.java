@@ -342,25 +342,139 @@ public class CreateMgr {
 		if(op[0]!=null&&!op[0].equals("")) {
 			opList = Arrays.asList(op);
 		}
+		
+		//업데이트문 저장 가변 리스트
+		ArrayList<String> updateList = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		try {
 			con = pool.getConnection();
 			
-			//사용자 권한, 유료글 옵션 + _USER_ID 컬럼이 없을 경우
-			if(opList.contains("col_user") || opList.contains("col_pay")) {
-				if(!colExists(updateTable, updateTable+"_USER_ID")) {
+			//_PAY 컬럼이 있을 경우
+			if(colExists(updateTable, updateTable+"_PAY")) {
+				//유료글 옵션이 없을 경우
+				if(!opList.contains("col_pay")) {
+					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_IBFK_2;");
+					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_TEST_NUM;");
+					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_PAY;");
+					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_AGREE;");
+					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_REASON;");
 					
+					//사용자 옵션이 없을 경우
+					if(!opList.contains("col_user")) {
+						updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_IBFK_1;");
+						updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_USER_ID;");
+					}
+				}
+			//__PAY 컬럼이 없을 경우
+			}else {
+				//사용자 옵션이 있을 경우
+				if(!opList.contains("col_user")) {
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_USER_ID INT NOT NULL;");
+					updateList.add("ALTER TABLE " + updateTable + "ADD FOREIGN KEY (" + updateTable+"_USER_ID) REFERENCES USER (USER_ID);");
+				}
+				//유료글 옵션이 있을 경우
+				if(!opList.contains("col_pay")) {
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_TEST_NUM INT NOT NULL;");
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_PAY INT NOT NULL;");
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "__NUM INT NOT NULL;");
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_TEST_NUM INT NOT NULL;");
+					updateList.add("ALTER TABLE " + updateTable + "ADD FOREIGN KEY (" + updateTable+"_TEST_NUM) REFERENCES TEST (TEST_NUM);");
 				}
 			}
+			
+			//_GOOD 컬럼이 있을 경우
+			if(colExists(updateTable, updateTable+"_GOOD")) {
+				//추천 옵션이 없을 경우
+				if(!opList.contains("likey")) {
+					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_GOOD;");
+				}
+			//_GOOD 컬럼이 없을 경우
+			}else {
+				//추천 옵션이 있을 경우
+				if(opList.contains("likey")) {
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_GOOD INT DEFAULT 0;");
+				}
+			}
+			
+			//댓글 테이블이 없을 경우
+			if(!tableExists(updateTable+"_COMMENT")) {
+				//댓글 옵션이 있을 경우
+				if(opList.contains("comment")) {
+					updateList.add("CREATE TABLE PROJECT." + updateTable + "_COMMENT (\n"
+							+ updateTable + "_COMMENT_NUM INT NOT NULL AUTO_INCREMENT,\n"
+							+ "COMMENT_" + updateTable + "_NUM INT NOT NULL,\n"
+							+ updateTable + "_COMMENT_CONTENT VARCHAR(1000) NOT NULL,\n"
+							+ updateTable + "_COMMENT_REPLY_POS SMALLINT(5) NOT NULL,\n"
+							+ updateTable + "_COMMENT_REPLY_REF SMALLINT(5) NOT NULL,\n"
+							+ updateTable + "_COMMENT_REPLY_DEPTH SMALLINT(5) NOT NULL,\n"
+							+ updateTable + "_COMMENT_USER_ID VARCHAR(20) NOT NULL,\n"
+							+ updateTable + "_COMMENT_DATE DATE NOT NULL,\n"
+							+ "PRIMARY KEY (" + updateTable + "_COMMENT_NUM),\n"
+							+ "FOREIGN KEY (COMMENT_" + updateTable + "_NUM) REFERENCES " + updateTable + " (" + updateTable + "_NUM),\n"
+							+ "FOREIGN KEY (" + updateTable + "_COMMENT_USER_ID) REFERENCES USER (USER_ID)\n"
+							+ ");");
+				}
+			//댓글 테이블이 있을 경우
+			}else {
+				//댓글 옵션이 없을 경우
+				if(!opList.contains("comment")) {
+					updateList.add("DROP TABLE IF EXISTS PROJECT." + updateTable + "_COMMENT;");
+				}
+			}
+			
+			//첨부파일 테이블이 없을 경우
+			if(!tableExists(updateTable+"_FILEUPLOAD")) {
+				//첨부파일 옵션이 있을 경우
+				if(opList.contains("fileupload")) {
+					updateList.add("CREATE TABLE PROJECT." + updateTable + "_FILEUPLOAD (\n"
+						+ updateTable + "_FILEUPLOAD_SERVER_NAME VARCHAR(100) NOT NULL,\n"
+						+ "FILEUPLOAD_" + updateTable + "_NUM INT NOT NULL,\n"
+						+ updateTable + "_FILEUPLOAD_NAME VARCHAR(100) NOT NULL,\n"
+						+ updateTable + "_FILEUPLOAD_EXTENSION VARCHAR(10) NOT NULL,\n"
+						+ updateTable + "_FILEUPLOAD_SIZE INT(20) NOT NULL,\n"
+						+ "PRIMARY KEY (" + updateTable + "_FILEUPLOAD_SERVER_NAME),\n"
+						+ "FOREIGN KEY (FILEUPLOAD_" + updateTable + "_NUM) REFERENCES " + updateTable + " (" + updateTable + "_NUM)\n"
+						+ ");");
+				}
+			//첨부파일 테이블이 있을 경우
+			}else {
+				//첨부파일 옵션이 없을 경우
+				if(!opList.contains("fileupload")) {
+					updateList.add("DROP TABLE IF EXISTS PROJECT." + updateTable + "_FILEUPLOAD;");
+				}
+			}
+			
+			//추천 테이블이 없을 경우
+			if(!tableExists(updateTable+"_LIKEY")) {
+				//추천 옵션이 있을 경우
+				if(opList.contains("likey")) {
+					updateList.add("CREATE TABLE PROJECT." + updateTable + "_LIKEY (\n"
+							+ updateTable + "_LIKEY_NUM INT NOT NULL AUTO_INCREMENT,\n"
+							+ "LIKEY_" + updateTable + "_NUM INT NOT NULL,\n"
+							+ updateTable + "_LIKEY_USER_ID VARCHAR(20) NOT NULL,\n"
+							+ "PRIMARY KEY (" + updateTable + "_LIKEY_NUM),\n"
+							+ "FOREIGN KEY (LIKEY_" + updateTable + "_NUM) REFERENCES " + updateTable + " (" + updateTable + "_NUM),\n"
+							+ "FOREIGN KEY (" + updateTable + "_LIKEY_USER_ID) REFERENCES USER (USER_ID)\n"
+							+ ");");
+				}
+			//추천 테이블이 있을 경우
+			}else {
+				//추천 옵션이 없을 경우
+				if(!opList.contains("likey")) {
+					updateList.add("DROP TABLE IF EXISTS PROJECT." + updateTable + "_LIKEY;");
+				}
 				
-				//유료글
-				if(opList.contains("col_pay")) {
-			sql = "";
-			pstmt = con.prepareStatement(sql);
-
-			pstmt.executeUpdate();
+			}
+			
+			for(int i=0; i < updateList.size(); i++) {
+				sql = updateList.get(i);
+				System.out.println(sql);
+				pstmt = con.prepareStatement(sql);
+				pstmt.executeUpdate();
+				pstmt.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
