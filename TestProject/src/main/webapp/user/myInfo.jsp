@@ -110,6 +110,14 @@
         마이페이지
         </div>
       </div>
+      <%--다인 ///////////////////////////////////////////// 시작--%>
+      <div class="q">
+        <img class="r" src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fpng.pngtree.com%2Fpng-vector%2F20230303%2Fourmid%2Fpngtree-information-line-icon-vector-png-image_6630884.png&type=sc960_832" />
+        <div class="s">
+        	<a href="../table/Table.jsp">게시판 관리</a>
+        </div>
+      </div>
+      <%--다인 /////////////////////////////////////////// 끝 --%>
       <div class="q">
         <img class="r" src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fpng.pngtree.com%2Fpng-vector%2F20230303%2Fourmid%2Fpngtree-information-line-icon-vector-png-image_6630884.png&type=sc960_832" />
         <div class="s">
@@ -129,6 +137,7 @@
         </div>
         <button type="button" onclick="location.href = 'logout.jsp'">로그아웃</button>
       </div>
+      
     </div>
     <a href="https://www.youtube.com/">
     	<img class="z" src="https://ih1.redbubble.net/image.538022342.9685/flat,750x,075,f-pad,750x1000,f8f8f8.u2.jpg" />
