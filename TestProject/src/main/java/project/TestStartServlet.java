@@ -16,7 +16,7 @@ public class TestStartServlet extends HttpServlet {
 		TestBean tBean = new TestBean();
 		tBean.setTest_title(request.getParameter("title"));
 		tBean.setTest_year(request.getParameter("year"));
-		tBean.setTest_subnummber(Integer.parseInt(request.getParameter("sess")));
+		tBean.setTest_subnumber(Integer.parseInt(request.getParameter("sess")));
 	}
 
 }

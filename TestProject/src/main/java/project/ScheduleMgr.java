@@ -14,12 +14,6 @@ public class ScheduleMgr {
 	}
 	
 	// 시험 일정 제목 가져오기 
-	/* 
-	 1 - 기사 및 산업기사
-	 2 - 기능사
-	 3 - 기술사
-	 4 - 기능장
-	 */
 	public Vector<ScheduleBean> getTitleName() {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -44,11 +38,33 @@ public class ScheduleMgr {
 		return vlist;
 	}
 	
+	// 시험 일정 제목 수정하기
+	public boolean editTitleName(String titlename, int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		boolean flag = false;
+		try {
+			con = pool.getConnection();
+			sql = "UPDATE schedule SET SCHEDULE_NAME = ? WHERE SCHEDULE_NUM = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, titlename);
+			pstmt.setInt(2, num);
+			pstmt.executeUpdate();
+			if ( pstmt.executeUpdate() > 1 ) flag = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return flag;
+	}
+	
 	/*
 	public static void main(String[] args) {
 		
 		ScheduleMgr mgr = new ScheduleMgr();
-		Vector<ScheduleBean> vlist = mgr.getTitleName();
+		Vector<ScheduleBean> vlist = mgr.getTitleName(2);
 		
 		for (int i = 0; i < vlist.size(); i++) {
 			ScheduleBean bean = vlist.get(i);

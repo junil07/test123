@@ -355,19 +355,20 @@ public class CreateMgr {
 				}
 			}
 				
-				//유료글
-				if(opList.contains("col_pay")) {
+			//유료글
+			if(opList.contains("col_pay")) {
 			sql = "";
 			pstmt = con.prepareStatement(sql);
 
 			pstmt.executeUpdate();
-		} catch (Exception e) {
+		} }catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt);
 		}
 		return;
 	}
+		
 	
 	
 	//게시판 전체 삭제

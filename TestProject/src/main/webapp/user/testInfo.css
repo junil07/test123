@@ -58,6 +58,11 @@
 	border-bottom: 1px solid #a9a9a9;
 }
 
+.itemarea > div {
+    display: flex;
+    justify-content: center;
+}
+
 .accordion > .accordionone {
     --bs-accordion-active-bg: #FC8E8E;
     --bs-accordion-btn-bg: #FC8E8E;
@@ -125,7 +130,6 @@
 .changingcolor {
 	background-color: #FF94A7;
 }
-
 
 .hide {
 	display: none;

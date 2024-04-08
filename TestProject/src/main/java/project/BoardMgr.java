@@ -60,7 +60,7 @@ public class BoardMgr {
 					ubean.setUser_name(rs.getString(6));
 					vlist.addElement(bean);
         }
-		} catch (Exception e) {
+		}} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);

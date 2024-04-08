@@ -1,13 +1,15 @@
 <%-- 시험 일정 / 응시 자격 페이지 --%>
 
+<%@page import="project.Schedule_columnBean"%>
 <%@page import="project.ScheduleBean"%>
 <%@page import="java.util.Vector"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <jsp:useBean id="scheduleMgr" class="project.ScheduleMgr"/>
+<jsp:useBean id="columnMgr" class="project.Schedule_columnMgr"/>
 <%
 	Vector<ScheduleBean> vlist = scheduleMgr.getTitleName();
 	String titleColor[] = new String[]{"#FC8E8E", "#8793FF", "#FF6363", "#F981FC"};
-	
+	String width[] = new String[]{"102", "170.5", "138.5", "170.5", "170.5", "139", "154.5"};
 %>
 
 <html>
@@ -27,6 +29,7 @@
 			<div class="schedulediv">
 			
 				<%
+					int count = 1;
 					for ( int i = 0; i < vlist.size(); i++ ) {
 						ScheduleBean bean = vlist.get(i);
 				%>
@@ -37,71 +40,58 @@
 							<div class="title_name">필기 원서점수</div>
 							<div class="title_name">필기 시험</div>
 							<div class="title_name">필기 합격발표</div>
-							<div class="title_name">실기 원서점수</div>
-							<div class="title_name">실기 시험</div>
+						<%
+							if ( count == 1 || count == 2 ) {
+						%>
+								<div class="title_name">실기 원서점수</div>
+								<div class="title_name">실기 시험</div>
+						<%
+							} else {
+						%>
+								<div class="title_name">면접 원서점수</div>
+								<div class="title_name">면접 시험</div>
+						<%
+							}
+						%>
 							<div class="title_name">합격자 발표</div>
 						</div>
 						<div>
+							<%
+								Vector<Schedule_columnBean> vlist1 = columnMgr.getExamSchedule(count);
+								for ( int j = 0; j < vlist1.size(); j++ ) {
+									Schedule_columnBean bean1 = vlist1.get(j);
+							%>		
 							<div class="itemarea">
-								
+								<div style="width: <%=width[0]%>"><%=bean1.getSchedule_column_attempt()%></div>
+								<div style="width: <%=width[1]%>"><%=bean1.getSchedule_column_written_registration()%></div>
+								<div style="width: <%=width[2]%>"><%=bean1.getSchedule_column_written_test()%></div>
+								<div style="width: <%=width[3]%>"><%=bean1.getSchedule_column_written_pass()%></div>
+								<%
+									if ( count == 1 || count == 2) {
+								%>
+									<div style="width: <%=width[4]%>"><%=bean1.getSchedule_column_practical_registration()%></div>
+									<div style="width: <%=width[5]%>"><%=bean1.getSchedule_column_practical_test()%></div>
+								<%
+									} else if ( count == 3 || count == 4 ) {
+										String brplus = bean1.getSchedule_column_interview_registration().replace("\n", "<br>");
+										String brplus1 = bean1.getSchedule_column_interview_test().replace("\n", "<br>");
+								%>
+									<div style="width: <%=width[4]%>"><%=brplus%></div>
+									<div style="width: <%=width[5]%>"><%=brplus1%></div>
+								<%
+									}
+								%>
+								<div style="width: <%=width[6]%>"><%=bean1.getSchedule_column_pass()%></div>
 							</div>
-						</div>
+							<%
+								}
+							%>
+						</div> 
 					</div>
 				<%
+					count++;
 					}
 				%>
-				
-				<!-- 
-				<div class="titlewrap">
-					<h5 style="color: #FC8E8E;">2024년 기사 및 산업기사 시험일정</h5>
-					<div class="title" style="background-color: #FC8E8E; ">
-						<div class="title_name">회차</div>
-						<div class="title_name">필기 원서점수</div>
-						<div class="title_name">필기 시험</div>
-						<div class="title_name">필기 합격발표</div>
-						<div class="title_name">실기 원서점수</div>
-						<div class="title_name">실기 시험</div>
-						<div class="title_name">합격자 발표</div>
-					</div>
-				</div>
-				<div class="titlewrap">
-					<h5 style="color: #8793FF;">2024년 기능사 시험일정</h5>
-					<div class="title" style="background-color: #8793FF;">
-						<div class="title_name">회차</div>
-						<div class="title_name">필기 원서점수</div>
-						<div class="title_name">필기 시험</div>
-						<div class="title_name">필기 합격발표</div>
-						<div class="title_name">실기 원서점수</div>
-						<div class="title_name">실기 시험</div>
-						<div class="title_name">합격자 발표</div>
-					</div>
-				</div>
-				<div class="titlewrap">
-					<h5 style="color: #FF6363;">2024년 기술사 시험일정</h5>
-					<div class="title" style="background-color: #FF6363;">
-						<div class="title_name">회차</div>
-						<div class="title_name">필기 원서점수</div>
-						<div class="title_name">필기 시험</div>
-						<div class="title_name">필기 합격발표</div>
-						<div class="title_name">실기 원서점수</div>
-						<div class="title_name">실기 시험</div>
-						<div class="title_name">합격자 발표</div>
-					</div>
-				</div>
-				 
-				<div class="titlewrap">
-					<h5 style="color: #F981FC;">2024년 기능장 시험일정</h5>
-					<div class="title" style="background-color: #F981FC;">
-						<div class="title_name">회차</div>
-						<div class="title_name">필기 원서점수</div>
-						<div class="title_name">필기 시험</div>
-						<div class="title_name">필기 합격발표</div>
-						<div class="title_name">실기 원서점수</div>
-						<div class="title_name">실기 시험</div>
-						<div class="title_name">합격자 발표</div>
-					</div>
-				</div>
-				-->
 				
 				<div class="titlewrap">
 					<h5 style="color: #3D9C1B;">상시시험 종목</h5>

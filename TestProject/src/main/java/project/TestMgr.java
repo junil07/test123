@@ -139,6 +139,11 @@ public class TestMgr {
 			if(rs.next()) {
 				testNum = rs.getString(1);
       }
-		return testNum;
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		pool.freeConnection(con, pstmt, rs);
 	}
+		return testNum;
+  }
 }

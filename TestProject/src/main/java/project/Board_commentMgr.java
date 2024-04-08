@@ -23,7 +23,7 @@ public class Board_commentMgr {
 			con = pool.getConnection();
 			sql = "select count(*) from board_comment where COMMENT_BOARD_NUM = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, list_num);
+			pstmt.setInt(1, board_num);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				countComment = rs.getInt("count(*)");
@@ -66,6 +66,6 @@ public class Board_commentMgr {
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
 		}
-		return Pcomment;
+		return comment;
 	}
 }
