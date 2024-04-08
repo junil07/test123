@@ -6,6 +6,7 @@
 <jsp:useBean id="testMgr" class="project.TestMgr"/>
 
 <%
+//dfdf
    String sess = (String) session.getAttribute("idKey");
    String keyWord="";
    String url="../test/Mainpage.jsp";
