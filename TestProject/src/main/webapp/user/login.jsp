@@ -17,6 +17,8 @@
     <script>
 
 	<%
+		String url=request.getParameter("url");
+		System.out.print(url);
     	String sess = (String) session.getAttribute("idKey");
 		String managerSess = (String) session.getAttribute("adminKey");	
 	
@@ -59,6 +61,7 @@
 		<div class="center" >
 		  <div class="a" >로그인</div>
 		  <form action="" method="post" name="frm">
+		  	  <input type="hidden" name="url" value="<%=url%>">
 			  <div class="b">
 			    <button class="c" type="submit" onclick="login()">로그인</button>  -->
 			    <div class="d" ></div>

@@ -37,7 +37,6 @@ public class TestBean {
 	public void setTest_subnumber(int test_subnumber) {
 		this.test_subnumber = test_subnumber;
 	}
-
 	
 	
 }
