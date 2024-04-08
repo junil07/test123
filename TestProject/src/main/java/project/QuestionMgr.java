@@ -164,4 +164,29 @@ public class QuestionMgr {
 		}
 		return vlist;
 	}
+	
+	public Vector<QuestionBean> QuestionCorrect(String testNum){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector<QuestionBean> vlist = new Vector<QuestionBean>();
+		try {
+			con = pool.getConnection();
+			sql = "select question_correct from question where question_test_num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, testNum);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				QuestionBean questBean = new QuestionBean();
+				questBean.setQuestion_correct(rs.getInt(1));
+				vlist.addElement(questBean);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return vlist;
+	}
 }
