@@ -12,10 +12,10 @@ import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
 import project.DBConnectionMgr;
 
-public class CreateMgr {
+public class TableQueryMgr {
    private DBConnectionMgr pool;
    
-   public CreateMgr() {
+   public TableQueryMgr() {
       pool = DBConnectionMgr.getInstance();
    }
    
@@ -521,7 +521,7 @@ public class CreateMgr {
    
    
    public static void main(String[] args) {
-      CreateMgr mgr = new CreateMgr();
+      TableQueryMgr mgr = new TableQueryMgr();
       System.out.println(mgr.colExists("bbb", "aaa_USER_ID"));
    }
 }

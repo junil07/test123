@@ -317,7 +317,6 @@ public class NoticeMgr {
          String title = multi.getParameter("title");
          String content = multi.getParameter("content");
          filefullname = multi.getFilesystemName("filename");
-         System.out.println(filefullname);
          
          if(filefullname!=null&&!filefullname.equals("")) {
             //파일업로드도 수정 : 기존의 파일 삭제
