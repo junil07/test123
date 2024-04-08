@@ -19,9 +19,11 @@
 	
 	//검색에 필요한 변수
 	String keyField = "";
+	String okay = "";
 	String keyWord = "";
 	if(request.getParameter("keyWord") != null){
 		keyField = request.getParameter("keyField");
+		okay = request.getParameter("okay");
 		keyWord = request.getParameter("keyWord");
 	}
 	
@@ -35,10 +37,10 @@
 	
 	//검색 후에 다시 초기화 요청
 	if(request.getParameter("reload")!=null && request.getParameter("reload").equals("true")){
-		keyWord = " "; keyField = " ";
+		keyWord = " "; keyField = " "; okay = " ";
 	}
 	
-	totalRecord = Mgr.getTotalCount(keyField, keyWord);
+	totalRecord = Mgr.getagreelist(keyField, keyWord, okay);
 	
 
 	
@@ -135,9 +137,10 @@
 					<input name="keyWord" placeholder="">
 					<input type="button" value="검색" onClick = "javascript:check()">
 					<select name = "okay" size = 1>
-						<option value = "u.user_name">승인 거절</option>
-						<option value = "p.PAYPOST_TITLE">승인 대기중</option>
-						<option value = "p.PAYPOST_PAY">승인 완료</option>
+						<option value = "">전체</option>
+						<option value = "p.paypost_agree = 0">승인 대기중</option>
+						<option value = "p.paypost_agree = 1">승인 거절</option>
+						<option value = "p.paypost_agree = 2">승인 완료</option>
 					</select>
 				</form>
 			</div>
@@ -153,7 +156,7 @@
 					<th class="checked">확인</th>
 				</tr>
 				<%
-				Vector<PaypostBean> vlist = Mgr.agreePaypost(keyField, keyWord, start, cnt);
+				Vector<PaypostBean> vlist = Mgr.agreePaypost(keyField, keyWord, okay, start, cnt);
 				for(int i = 0; i < vlist.size(); i++) {
 				    PaypostBean bean = vlist.get(i);
 				    int num = bean.getPaypost_num();
@@ -228,7 +231,8 @@
 		<input type="hidden" name="nowPage" value="<%=nowPage%>"> 
 		<input type="hidden" name="numPerPage" value="<%=numPerPage%>">
 		<input type="hidden" name="keyWord" value="<%=keyWord%>">
-		<input type="hidden" name="keyField" value="<%=keyField%>">		
+		<input type="hidden" name="keyField" value="<%=keyField%>">	
+		<input type="hidden" name="okay" value="<%=okay %>">	
 		<input type="hidden" name="num" value="">
 	</form>
 	<form id="selectedPostsForm" action="process_selected_posts.jsp" method="post">
