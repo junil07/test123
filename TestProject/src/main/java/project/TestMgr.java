@@ -12,7 +12,7 @@ public class TestMgr {
 	public TestMgr() {
 		pool = DBConnectionMgr.getInstance();
 	}
-
+	
 	public TestBean getTestInfo(String test_num) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -46,7 +46,7 @@ public class TestMgr {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
-    Vector<TestBean> vlist = new Vector<TestBean>();
+		Vector<TestBean> vlist = new Vector<TestBean>();
 		try {
 			con = pool.getConnection();
 			if ( keyWord.trim().equals("") || keyWord == null ) {
@@ -138,7 +138,12 @@ public class TestMgr {
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				testNum = rs.getString(1);
-      }
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
 		return testNum;
-	}
+		}
 }

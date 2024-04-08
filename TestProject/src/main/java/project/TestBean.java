@@ -5,13 +5,7 @@ public class TestBean {
 	private String test_title;
 	private String test_year;
 	private String test_subject;
-	private int test_subnummber; //여러개의 과목 선택 시 배열로 get set
-	public int getTest_subnummber() {
-		return test_subnummber;
-	}
-	public void setTest_subnummber(int test_subnummber) {
-		this.test_subnummber = test_subnummber;
-	}
+	private int test_subnumber; //여러개의 과목 선택 시 배열로 get set
 	public String getTest_num() {
 		return test_num;
 	}
@@ -42,9 +36,6 @@ public class TestBean {
 	public void setTest_subnumber(int test_subnumber) {
 		this.test_subnumber = test_subnumber;
 	}
-	private String test_title;
-	private String test_year;
-	private String test_subject;
-	private int test_subnumber;
+	
 	
 }

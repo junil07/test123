@@ -56,7 +56,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="./css/admin_paypost_list.css" rel="stylesheet" type="text/css">
-<title>관리자-유료글 관리 페이지</title>
+<title>관리자-게시글 관리 페이지</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/cd8a19c45f.js"
 	crossorigin="anonymous"></script>
@@ -112,11 +112,11 @@
 			</div>
 			<div class="post_manage">
 				<div class="post_button">게시글 관리</div>
-				<a class="fa-solid fa-house">QnA</a><br> <a
-					class="fa-solid fa-house">FAQ</a><br> <a
-					class="fa-solid fa-house">자유게시판</a><br> <a
-					class="fa-solid fa-house">공지사항</a><br> <a
-					class="fa-solid fa-house">유로 게시글 검토 승인</a>
+				<a class="fa-solid fa-house">QnA</a><br> 
+				<a class="fa-solid fa-house">FAQ</a><br> 
+				<a class="fa-solid fa-house" href="admin_post_list.jsp">자유게시판</a><br> 
+				<a class="fa-solid fa-house" href="admin_paypost_list.jsp">유로글 게시판</a><br> 
+				<a class="fa-solid fa-house" href="paypost_agree_list.jsp">유로 게시글 검토 승인</a>
 			</div>
 		</main>
 	</section>
@@ -125,14 +125,14 @@
 	<section id="maincontent" class="maincontent">
 		<header class="main_head">
 			<div class="head_top">
-				<a class="head_txt">게시글 관리</a>
+				<a class="head_txt">자유게시판 관리</a>
 			</div>
 			<div class="head_under">
 				<form name = "searchFrm">
 					<select name = "keyField" size = 1>
 						<option value = "u.user_name">작성자</option>
-						<option value = "p.PAYPOST_TITLE">제목</option>
-						<option value = "p.PAYPOST_PAY">가격</option>
+						<option value = "b.board_title">제목</option>
+						<option value = "b.board_content">내용</option>
 					</select>
 					<input name="keyWord" placeholder="">
 					<input type="button" value="검색" onClick = "javascript:check()">
