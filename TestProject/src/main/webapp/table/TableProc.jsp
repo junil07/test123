@@ -6,9 +6,8 @@
 	String tablename = request.getParameter("tablename");
 	String[] op = request.getParameterValues("op");
 	CreateMgr mgr = new CreateMgr();
-	//mgr.createTable(op, tablename);
-	//mgr.updateTableName(tablename, "bbb");
-	mgr.updateTableOp(op, "aaa");
+	mgr.createTable(op, tablename);
+	mgr.updateTableName(tablename, "bbb");
 %>
 
 	
