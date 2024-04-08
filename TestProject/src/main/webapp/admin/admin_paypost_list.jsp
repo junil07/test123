@@ -38,7 +38,8 @@
 		keyWord = " "; keyField = " ";
 	}
 	
-	totalRecord = Mgr.getTotalCount(keyField, keyWord);
+	//승인된 유로게시글 전체 갯수
+	totalRecord = Mgr.getselectCount(keyField, keyWord);
 	
 
 	
@@ -122,11 +123,11 @@
 			</div>
 			<div class="post_manage">
 				<div class="post_button">게시글 관리</div>
-				<a class="fa-solid fa-house">QnA</a><br> <a
-					class="fa-solid fa-house">FAQ</a><br> <a
-					class="fa-solid fa-house">자유게시판</a><br> <a
-					class="fa-solid fa-house">공지사항</a><br> <a
-					class="fa-solid fa-house">유로 게시글 검토 승인</a>
+				<a class="fa-solid fa-house">QnA</a><br> 
+				<a class="fa-solid fa-house">FAQ</a><br> 
+				<a class="fa-solid fa-house" href="admin_post_list.jsp">자유게시판</a><br> 
+				<a class="fa-solid fa-house" href="admin_paypost_list.jsp">유료게시판</a><br> 
+				<a class="fa-solid fa-house" href="paypost_agree_list.jsp">유로 게시글 검토 승인</a>
 			</div>
 		</main>
 	</section>
@@ -135,7 +136,7 @@
 	<section id="maincontent" class="maincontent">
 		<header class="main_head">
 			<div class="head_top">
-				<a class="head_txt">게시글 관리</a>
+				<a class="head_txt">유료게시판 관리</a>
 			</div>
 			<div class="head_under">
 				<form name = "searchFrm">

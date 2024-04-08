@@ -1,4 +1,8 @@
+<%@page import="project.ChoiceBean"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="project.TestBean"%>
+<%@page import="project.QuestionBean"%>
+<%@page import="project.ExplanationBean"%>
 <%@page import="java.util.Vector"%>
 <%@page import="project.PaypostCommentBean"%>
 <%@page import="project.PaypostBean"%>
@@ -7,6 +11,9 @@
 <jsp:useBean id="Mgr" class="project.PaypostMgr" />
 <jsp:useBean id="Cmgr" class="project.PaypostCommentMgr"/>
 <jsp:useBean id="Tmgr" class="project.TestMgr"/>
+<jsp:useBean id="Qmgr" class="project.QuestionMgr"/>
+<jsp:useBean id="hmgr" class="project.ChoiceMgr"/>
+<jsp:useBean id="Emgr" class="project.ExplanationMgr"/>
 <%
 //리스트 페이지에서 주소값 불러오기
 	String nowPage = request.getParameter("nowPage");
@@ -41,6 +48,9 @@
 	String tsubject = tbean.getTest_subject();
 	int tsubnumber = tbean.getTest_subnumber();
 	
+	
+	//exExplanationBean 불러오기
+	//ExplanationBean ebean = Emgr.getExInfo(tnum);
 	//유저등급 출력
 	int usergrade = Mgr.getUserGrade(userId);
 	
@@ -126,22 +136,22 @@
 			</div>
 			<div class="post_manage">
 				<div class="post_button">게시글 관리</div>
-				<a class="fa-solid fa-house">QnA</a><br> <a
-					class="fa-solid fa-house">FAQ</a><br> <a
-					class="fa-solid fa-house">자유게시판</a><br> <a
-					class="fa-solid fa-house">공지사항</a><br> <a
-					class="fa-solid fa-house">유료 게시글 검토 승인</a>
+				<a class="fa-solid fa-house">QnA</a><br> 
+				<a class="fa-solid fa-house">FAQ</a><br> 
+				<a class="fa-solid fa-house" href="admin_post_list.jsp">자유게시판</a><br> 
+				<a class="fa-solid fa-house" href="admin_paypost_list.jsp">유로글 게시판</a><br> 
+				<a class="fa-solid fa-house" href="paypost_agree_list.jsp">유로 게시글 검토 승인</a>
 			</div>
 		</main>
 	</section>
 	<section id="maincontent" class="maincontent">
 		<header class = "main_head">
-			<a class = "head_text">유료 게시판</a>
+			<a class = "head_text">유료글 승인 관리</a>
 		</header>
 		<main class = "main_content">
 			<div class = "content">
 				<div class = "content_head">
-					<a href = "paypost_agree_list.jsp" class = "link">유료 게시판</a><br>
+					<a href = "paypost_agree_list.jsp" class = "link">유료글 승인 관리</a><br>
 					<a class = "title"><%=title %></a><br>
 					<div class = "user_profil">
 						<a class="fa-solid fa-user font"><%=name %></a>
@@ -158,16 +168,73 @@
 					</div>
 					<div class="content_wrong">
 						<div>
-							<a>제목: </a><%= title%><br>
-							<a>시험과목: </a><%= ttitle%><br>
-							<a>시험년도: </a><%=tyear.substring(0,4) %><br>
-							<a>회차: </a><%=tyear.substring(5) %><br>
-							<a>과목: </a><%=tsubnumber %>회차: <%=tsubject %><br>
-							<a>가격: </a><%=pay %><br>
-							<a>첨부파일: </a>아직없음<input type="button" name="download" value="파일첨부">
+							<header class = "wrong_header">
+								<span class = "wrong_side">제목</span><span class = "wrong_main"><%=title %></span><br>
+								<span class = "wrong_side">시험과목</span><span class = "wrong_main"><%=ttitle %></span>
+								<span class = "wrong_side">시험년도</span><span class = "wrong_main"><%=tyear.substring(0,4) %></span> <br>
+								<span class = "wrong_side">시험 회차</span><span class = "wrong_main"><%=tyear.substring(5) %></span> 
+								<span class = "wrong_side">가격</span><span class = "wrong_main"><%=pay %></span><br>
+								<span class = "wrong_side">과목</span><span class = "wrong_main"><%=tsubnumber %></span> 
+								<span class = "wrong_side side_right">첨부파일</span><span class = "wrong_main"><input type="file" name="download" value="파일첨부"></span><br>
+							</header>
+							<%
+							Vector<QuestionBean> qlist = Qmgr.allQlist(tnum); 
+							for(int i =0; i<qlist.size(); i++){
+								QuestionBean qbean = qlist.get(i);
+								int question_num = qbean.getQuestion_num();//기본키
+								int question_number = qbean.getQuestion_number();//문제번호
+								String question_content = qbean.getQuestion_content();//문제 질문
+								int question_correct = qbean.getQuestion_correct();//정답번호
+								String question_file = qbean.getQuestion_file();
+								double question_percent = qbean.getQuestion_percent();//정답률
+								DecimalFormat df = new DecimalFormat("#.#");
+								String formattedPercent = df.format(question_percent);
+							%>
+							<section class = "test_view">
+								<div class = "view">
+									<div>문제</div>
+									<!-- EXPLANATION_PAYPOST_NUM를 통해서 값들고오기
+									 EXPLANATION_QUESTION_NUM + "." + EXPLANATION_CONTENT-->
+									<div><%=question_number %>.<%=question_content %></div>
+									<div>정답률: <%=formattedPercent%>%</div>
+									<%if(question_file != null){%>
+										<div><%=question_file %></div>
+									<%}else if(question_file == null || question_file.isEmpty()){%>
+										<div></div>
+									<%} %>
+									<%
+									Vector<ChoiceBean> clist = hmgr.allChoice(question_number);
+									for(int j = 0; j < clist.size(); j++){
+										ChoiceBean cbean = clist.get(j);
+										int choice_number = cbean.getChoice_number();
+										String choice_content = cbean.getCcontent();
+									%>	
+									<div><%=choice_number %>. <%=choice_content %></div>
+									<%}%>
+								</div>
+								<div class = "view">
+									<div>해설</div>
+									<!-- EXPLANATION_PAYPOST_NUM를 통해서 값들고오기
+									 EXPLANATION_QUESTION_NUM + "." + EXPLANATION_CONTENT-->
+									<div><%=question_number %>.<%=question_content %></div>
+									<div>정답: <%=question_correct %> 정답률: <%=formattedPercent%>%</div>
+									<%if(question_file != null){%>
+										<div><%=question_file %></div>
+									<%}else if(question_file == null || question_file.isEmpty()){%>
+										<div></div>
+									<%} %>	
+									<%
+									Vector<ExplanationBean> exlist = Emgr.allexinfo(question_number); 
+									for(int k = 0; k<exlist.size(); k++){
+										ExplanationBean exbean = exlist.get(k);
+										String ex_content = exbean.getExplanation_content();
+									%>
+									<div class="ex_content"><%=ex_content %></div>
+									<%} %>
+								</div>
+							</section>
+							<%} %>
 						</div>
-					</div>
-					<diV class="upload_ex">
 					</div>
 				</div>
 				<div id="agree_reason">

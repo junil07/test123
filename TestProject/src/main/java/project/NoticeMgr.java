@@ -78,8 +78,8 @@ public class NoticeMgr {
       } finally {
          pool.freeConnection(con, pstmt);
       }
-      /*
       
+      /*
       try {
          MultipartRequest multi = new MultipartRequest(req, SAVEFOLDER, MAXSIZE, ENCODING, new DefaultFileRenamePolicy());
          con = pool.getConnection();
@@ -121,31 +121,31 @@ public class NoticeMgr {
    
    //총게시물수
    public int getTotalCount(String keyField, String keyWord) {
-      Connection con = null;
-      PreparedStatement pstmt = null;
-      ResultSet rs = null;
-      String sql = null;
-      int totalCount = 0;
-      try {
-         con = pool.getConnection();
-         if(keyWord.trim().equals("")||keyWord==null) {
-         //검색이 아닌 경우
-            sql = "select count(*) from notice";
-            pstmt = con.prepareStatement(sql);
-         }else {
-            sql = "select count(*) from notice where " + keyField + " like ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, "%" + keyWord + "%");
-         }
-         rs = pstmt.executeQuery();
-         if(rs.next()) totalCount = rs.getInt(1);
-      } catch (Exception e) {
-         e.printStackTrace();
-      } finally {
-         pool.freeConnection(con, pstmt, rs);
-      }
-      return totalCount;
-   }
+	      Connection con = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String sql = null;
+	      int totalCount = 0;
+	      try {
+	         con = pool.getConnection();
+	         if(keyWord.trim().equals("")||keyWord==null) {
+	         //검색이 아닌 경우
+	            sql = "select count(*) from notice";
+	            pstmt = con.prepareStatement(sql);
+	         }else {
+	            sql = "select count(*) from notice where " + keyField + " like ?";
+	            pstmt = con.prepareStatement(sql);
+	            pstmt.setString(1, "%" + keyWord + "%");
+	         }
+	         rs = pstmt.executeQuery();
+	         if(rs.next()) totalCount = rs.getInt(1);
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         pool.freeConnection(con, pstmt, rs);
+	      }
+	      return totalCount;
+	   }
    
    //Board List : 검색기능, 페이징 및 블럭
    public Vector<NoticeBean> getNoticeList(String keyField, String keyWord, int start, int cnt) {
