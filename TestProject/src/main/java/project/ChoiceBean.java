@@ -3,10 +3,18 @@ package project;
 public class ChoiceBean {
 	
 	private int choice_num,
-						choice_question_num,
-						choice_number, 
-						choice_filesize;
-	private String choice_content[], choice_file;
+			choice_question_num, 
+			choice_number, 
+			choice_filesize;
+	private String choice_content[], 
+			choice_file,
+			Ccontent;
+	public String getCcontent() {
+		return Ccontent;
+	}
+	public void setCcontent(String ccontent) {
+		Ccontent = ccontent;
+	}
 	public int getChoice_num() {
 		return choice_num;
 	}
@@ -43,5 +51,5 @@ public class ChoiceBean {
 	public void setChoice_file(String choice_file) {
 		this.choice_file = choice_file;
 	}
-
+	
 }

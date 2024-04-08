@@ -23,8 +23,7 @@ public class PaypostMgr {
        try {
            con = pool.getConnection();
            if(keyWord.trim().equals("") || keyWord == null) {
-               sql = "SELECT paypost_num, paypost_user_id, paypost_title, paypost_pay, paypost_date FROM paypost ORDER BY paypost_num DESC LIMIT ?, ?";
-               //sql = "SELECT paypost_num, paypost_user_id, paypost_title, paypost_pay, paypost_date FROM paypost where PAYPOST_AGREE <= 1 ORDER BY paypost_num DESC LIMIT ?, ?";
+               sql = "SELECT paypost_num, paypost_user_id, paypost_title, paypost_pay, paypost_date FROM paypost where PAYPOST_AGREE = 2 ORDER BY paypost_num DESC LIMIT ?, ?";
                pstmt = con.prepareStatement(sql);
                pstmt.setInt(1, start);
                pstmt.setInt(2, cnt);
@@ -39,7 +38,7 @@ public class PaypostMgr {
                   vlist.addElement(pbean);
               }
            } else {
-               sql = "SELECT p.paypost_num, p.paypost_user_id, u.user_name, p.paypost_title, p.paypost_pay, p.paypost_date FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ? ORDER BY paypost_num DESC LIMIT ?, ?";
+               sql = "SELECT p.paypost_num, p.paypost_user_id, u.user_name, p.paypost_title, p.paypost_pay, p.paypost_date FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ? and p.paypost_agree = 2 ORDER BY paypost_num DESC LIMIT ?, ?";
                //sql = "SELECT p.paypost_num, p.paypost_user_id, u.user_name, p.paypost_title, p.paypost_pay, p.paypost_date FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ? and p.PAYPOST_AGREEORDER <= 1 BY paypost_num DESC LIMIT ?, ?";
                pstmt = con.prepareStatement(sql);
                pstmt.setString(1, "%" + keyWord + "%");
@@ -168,59 +167,61 @@ public class PaypostMgr {
       return userGrade;
    }
    
-   //전체적인 유로글 갯수확인 추후 paypost_agree가 2인것만 count하게 변경
+   public int getselectCount(String keyField, String keyWord) {
+	    Connection con = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql = null;
+	    int totalCount = 0;
+	    try {
+	        con = pool.getConnection();
+	        if(keyWord == null || keyWord.trim().isEmpty()) {
+	            sql = "SELECT COUNT(*) FROM paypost WHERE PAYPOST_AGREE = 2";
+	            pstmt = con.prepareStatement(sql);
+	        } else {
+	            sql = "SELECT COUNT(*) FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ? AND p.PAYPOST_AGREE = 2";
+	            pstmt = con.prepareStatement(sql);
+	            pstmt.setString(1, "%" + keyWord + "%");
+	        }
+	        rs = pstmt.executeQuery();
+	        if(rs.next()) {
+	            totalCount = rs.getInt(1);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        pool.freeConnection(con, pstmt, rs);
+	    }
+	    return totalCount;
+	}
+
    public int getTotalCount(String keyField, String keyWord) {
-       Connection con = null;
-       PreparedStatement pstmt = null;
-       ResultSet rs = null;
-       String sql = null;
-       int totalCount = 0;
-       try {
-           con = pool.getConnection();
-           if(keyWord.trim().equals("") || keyWord == null) {
-               sql = "SELECT COUNT(*) FROM paypost";
-               pstmt = con.prepareStatement(sql);
-           } else {
-               sql = "SELECT COUNT(*) FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ?";
-               pstmt = con.prepareStatement(sql);
-               pstmt.setString(1, "%" + keyWord + "%");
-           }
-           rs = pstmt.executeQuery();
-           if(rs.next()) totalCount = rs.getInt(1);
-       } catch (Exception e) {
-           e.printStackTrace();
-       } finally {
-           pool.freeConnection(con, pstmt, rs);
-       }
-       return totalCount;
-   }
-   
-   //전체적인 유로글 갯수확인 추후 paypost_agree가 2인것만 count하게 변경
-      public int getagree2Count(String keyField, String keyWord) {
-          Connection con = null;
-          PreparedStatement pstmt = null;
-          ResultSet rs = null;
-          String sql = null;
-          int totalCount = 0;
-          try {
-              con = pool.getConnection();
-              if(keyWord.trim().equals("") || keyWord == null) {
-                  sql = "SELECT COUNT(*) FROM paypost where PAYPOST_AGREE <= 1";
-                  pstmt = con.prepareStatement(sql);
-              } else {
-                  sql = "SELECT COUNT(*) FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ?";
-                  pstmt = con.prepareStatement(sql);
-                  pstmt.setString(1, "%" + keyWord + "%");
-              }
-              rs = pstmt.executeQuery();
-              if(rs.next()) totalCount = rs.getInt(1);
-          } catch (Exception e) {
-              e.printStackTrace();
-          } finally {
-              pool.freeConnection(con, pstmt, rs);
-          }
-          return totalCount;
-      }
+	    Connection con = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql = null;
+	    int totalCount = 0;
+	    try {
+	        con = pool.getConnection();
+	        if(keyWord == null || keyWord.trim().isEmpty()) {
+	            sql = "SELECT COUNT(*) FROM paypost ";
+	            pstmt = con.prepareStatement(sql);
+	        } else {
+	            sql = "SELECT COUNT(*) FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ?";
+	            pstmt = con.prepareStatement(sql);
+	            pstmt.setString(1, "%" + keyWord + "%");
+	        }
+	        rs = pstmt.executeQuery();
+	        if(rs.next()) {
+	            totalCount = rs.getInt(1);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        pool.freeConnection(con, pstmt, rs);
+	    }
+	    return totalCount;
+	}
 
    
    //listview에서 필요로한 모든 값 리턴

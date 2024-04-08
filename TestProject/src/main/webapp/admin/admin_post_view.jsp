@@ -8,10 +8,11 @@
 <jsp:useBean id="Mgr" class="project.BoardMgr" />
 <jsp:useBean id="Cmgr" class="project.Board_commentMgr"/>
 <%
-//리스트 페이지에서 주소값 불러오기
+	//리스트 페이지에서 주소값 불러오기
 	String nowPage = request.getParameter("nowPage");
 	String numPerPage = request.getParameter("numPerPage");
 	String keyWord = request.getParameter("keyWord");
+	String keyField = request.getParameter("keyField");
 	int num = 0;
 	if(request.getParameter("num") != null){
 		num = UtilMgr.parseInt(request, "num");
@@ -48,7 +49,7 @@
 			CommentBean.setBoard_comment_content(commentParameter);
 		}
 
-		//Cmgr.insertComment(CommentBean);
+		Cmgr.insertComment(CommentBean);
 	}
 
 	session.setAttribute("bean", bean);
@@ -76,30 +77,31 @@
 	}
 
 	// 대댓글 작성
-    function cInsert_under(reply_pos, reply_ref, reply_depth) {
-        var inputTextId = "inputText_" + reply_pos + "_" + reply_ref + "_" + reply_depth;
+    function cInsert_under(comment_pos, comment_ref, comment_depth) {
+        var inputTextId = "inputText_" + comment_pos + "_" + comment_ref + "_" + comment_depth;
         var inputValue = document.getElementById(inputTextId).value;
         if (inputValue.trim() == "") {
             alert("댓글을 입력하세요.");
             return;
         } else {
-            document.getElementById("under_comment").value = inputValue;
-            document.getElementById("Cpos").value = reply_pos;
-            document.getElementById("Cref").value = reply_ref;
-            document.getElementById("Cdepth").value = reply_depth;
+        	document.getElementById("under_comment").value = inputValue;
+            document.getElementById("Cpos").value = comment_pos;
+            document.getElementById("Cref").value = comment_ref;
+            document.getElementById("Cdepth").value = comment_depth;
             document.getElementById("userId").value = userId; // JavaScript 변수를 사용하여 userId 값 전달
             document.getElementById("num").value = num; // JavaScript 변수를 사용하여 userId 값 전달
             // 폼 제출
             document.getElementById("commentForm").submit();
         }
     }
-
-    function deleteunderComment(reply_pos, reply_ref, reply_depth){
-    	var reply = reply_pos + reply_ref + reply_depth;
+	
+	//댓글 삭제
+    function deleteunderComment(comment_pos, comment_ref, comment_depth){
+    	var reply = comment_pos + comment_ref + comment_depth;
     	if(reply != null || !reply.isEmpty()){
-    		document.getElementById("Dpos").value = reply_pos;
-            document.getElementById("Dref").value = reply_ref;
-            document.getElementById("Ddepth").value = reply_depth;
+    		document.getElementById("Dpos").value = comment_pos;
+            document.getElementById("Dref").value = comment_ref;
+            document.getElementById("Ddepth").value = comment_depth;
             document.getElementById("Dnum").value = num;
     		document.getElementById("deletFrom").submit();
     	}
@@ -107,13 +109,19 @@
 
 	
 	//대댓글 작성칸 숨기고 키기
-	function toggleHidden(reply_pos, reply_ref, reply_depth) {
-		var element = document.getElementById(reply_pos, reply_ref, reply_depth);
+	function toggleHidden(comment_pos, comment_ref, comment_depth) {
+		var element = document.getElementById(comment_pos, comment_ref, comment_depth);
 		if (element.style.display === 'none') {
 			element.style.display = 'block';
 		} else {
 			element.style.display = 'none';
 		}
+	}
+	
+	//삭제
+	function deleteboard(num) {
+		document.delFrm.num.value = <%=num%>;
+		document.getElementById("delFrm").submit();
 	}
 </script>
 </head>
@@ -135,23 +143,24 @@
 			</div>
 			<div class="post_manage">
 				<div class="post_button">게시글 관리</div>
-				<a class="fa-solid fa-house">QnA</a><br> <a
-					class="fa-solid fa-house">FAQ</a><br> <a
-					class="fa-solid fa-house">자유게시판</a><br> <a
-					class="fa-solid fa-house">공지사항</a><br> <a
-					class="fa-solid fa-house">유로 게시글 검토 승인</a>
+				<a class="fa-solid fa-house">QnA</a><br> 
+				<a class="fa-solid fa-house">FAQ</a><br> 
+				<a class="fa-solid fa-house" href="admin_post_list.jsp">자유게시판</a><br> 
+				<a class="fa-solid fa-house" href="admin_paypost_list.jsp">유로글 게시판</a><br> 
+				<a class="fa-solid fa-house" href="paypost_agree_list.jsp">유로 게시글 검토 승인</a>
 			</div>
 		</main>
 	</section>
 	<section id="maincontent" class="maincontent">
 		<header class = "main_head">
-			<a class = "head_text">유료 게시판</a>
+			<a class = "head_text">자유게시판</a>
 		</header>
 		<main class = "main_content">
 			<div class = "content">
 				<div class = "content_head">
-					<a href = "admin_post_list.jsp" class = "link">유로 게시판</a><br>
-					<a class = "title"><%=board_title %></a><br>
+					<a href = "admin_post_list.jsp" class = "link">자유게시판</a><br>
+					<a class = "title"><%=board_title %></a>
+					<input type = "button" name="fixed" value="삭제" onClick="javascript:deleteboard('<%=num %>')" class="herf"><br>
 					<div class = "user_profil">
 						<a class="fa-solid fa-user font"><%=name %></a>
 						<a>등급 :<%=usergrade %></a><br>
@@ -186,52 +195,55 @@
 										<%
 											for(int i=0; i<cvlist.size(); i++){
 												Board_commentBean cbean = cvlist.get(i);
-												String Ccontent = cbean.getPaypost_comment_content();
-												String Cuser_id = cbean.getPaypost_comment_user_id();
-												String Cdate = cbean.getPaypost_comment_date();
-												int reply_pos = cbean.getPaypost_comment_reply_pos();
-												int reply_ref = cbean.getPaypost_comment_reply_ref();
-												int reply_depth = cbean.getPaypost_comment_reply_depth();
-												String Cname = Cmgr.getCuserName(Cuser_id);
-												int Cgrade = Cmgr.getCuserGrade(Cuser_id);
+												int comment_num = cbean.getBoard_comment_num();
+												int comment_board_num = cbean.getComment_board_num();
+												String comment_content = cbean.getBoard_comment_content();
+												int comment_pos = cbean.getBoard_comment_reply_pos();
+												int comment_ref = cbean.getBoard_comment_reply_ref();
+												int comment_depth = cbean.getBoard_comment_reply_depth();
+												String comment_id = cbean.getBoard_comment_user_id();
+												String comment_date = cbean.getBoard_comment_date();
+												String comment_name = Mgr.getUserName(board_userid);
+												int comment_grade = Mgr.getUserGrade(board_userid);
+												
 										%>
 										<tr>
 											<div style="border: 1px solid black; margin-top: 10px;">
 											    <div style="border-bottom: 1px solid black;">
 											        <%
-											        for (int j = 0; j < reply_depth; j++) {
+											        for (int j = 0; j < comment_depth; j++) {
 											            out.println("&nbsp;&nbsp;");// 들여쓰기
 											        }
 											        %>
-											        <%=Cname %><a class="fa-solid fa-user font"></a>
-											        <a>등급 :<%=Cgrade %></a>
-											        <a style="text-align: right;">작성일 :<%= Cdate %></a>
+											        <%=comment_name %><a class="fa-solid fa-user font"></a>
+											        <a>등급 :<%=comment_grade %></a>
+											        <a style="text-align: right;">작성일 :<%= comment_date %></a>
 											        <%
-											        if(reply_ref == 0 && reply_depth == 0){
+											        if(comment_ref == 0 && comment_depth == 0){
 											        %>	
-											        	<input type="button" value="답변" onClick="toggleHidden('comment_<%=reply_pos%>_<%=reply_ref%>_<%=reply_depth%>')">
+											        	<input type="button" value="답변" onClick="toggleHidden('comment_<%=comment_pos%>_<%=comment_ref%>_<%=comment_depth%>')">
 											       	<%
 											        }
 											        %>
-											        <input type="button" value="삭제" onClick="deleteunderComment('<%=reply_pos%>', '<%=reply_ref%>', '<%=reply_depth%>')">
+											        <input type="button" value="삭제" onClick="deleteunderComment('<%=comment_pos%>', '<%=comment_ref%>', '<%=comment_depth%>')">
 											    </div>
 											    <div>
 											        <%
-											        for (int j = 0; j < reply_depth; j++) {
+											        for (int j = 0; j < comment_depth; j++) {
 											            out.println("&nbsp;&nbsp;");
 											        }
 											        // 여기서는 reply_depth에 따라 "&nbsp;&nbsp;"를 여러 번 출력한 후에 "<i class="fa-solid fa-arrow-right"></i>"를 한 번만 출력하도록 하였습니다.
-											        if (reply_depth > 0) {
+											        if (comment_depth > 0) {
 											            out.println("<i class=\"fa-solid fa-arrow-right\"></i>");
 											        }
 											        %>
-											        <a><%=Ccontent %></a><br>  
-											        <%=reply_pos %> <%=reply_ref %> <%=reply_depth %>
+											        <a><%=comment_content %></a><br>  
+											        <%=comment_pos %> <%=comment_ref %> <%=comment_depth %>
 											    </div>
 											</div>
-											<div id="comment_<%=reply_pos%>_<%=reply_ref%>_<%=reply_depth%>" style="display: none;">
-												<input name="under_comment" placeholder="댓글을 입력해주세요" size="100" id = "inputText_<%=reply_pos%>_<%=reply_ref%>_<%=reply_depth%>">
-												<input type="button" value="작성" onclick="cInsert_under('<%=reply_pos%>', '<%=reply_ref%>', '<%=reply_depth%>')">
+											<div id="comment_<%=comment_pos%>_<%=comment_ref%>_<%=comment_depth%>" style="display: none;">
+												<input name="under_comment" placeholder="댓글을 입력해주세요" size="100" id = "inputText_<%=comment_pos%>_<%=comment_ref%>_<%=comment_depth%>">
+												<input type="button" value="작성" onclick="cInsert_under('<%=comment_pos%>', '<%=comment_ref%>', '<%=comment_depth%>')">
 											</div>
 										</tr>
 										<%} %>
@@ -257,7 +269,7 @@
 						<input type="hidden" name="keyWord" value="<%=keyWord %>">
 						<%} %>
 					</form>
-					<form id="commentForm" action="UnderCommentServlet" method="POST">
+					<form id="commentForm" action="insertcomment" method="POST">
 						<input type="hidden" id="Cpos" name="Cpos" value="">
 						<input type="hidden" id="Cref" name="Cref" value="">
 						<input type="hidden" id="Cdepth" name="Cdepth" value="">
@@ -266,7 +278,7 @@
 						<input type="hidden" id="userId" name="userId" value="">
 						<input type="hidden" id="num" name="num" value="">
 					</form> 
-					<form id="deletFrom" action="deleteUComment" method="POST">
+					<form id="deletFrom" action="deletecomment" method="POST">
 						<input type="hidden" id="Dpos" name="Dpos" value="">
 						<input type="hidden" id="Dref" name="Dref" value="">
 						<input type="hidden" id="Ddepth" name="Ddepth" value="">
@@ -275,6 +287,16 @@
 						<input type="hidden" id="userId" name="userId" value="">
 						-->
 					</form>	
+					<form name="readFrm" id="readFrm">
+						<input type="hidden" name="nowPage" value="<%=nowPage%>"> 
+						<input type="hidden" name="numPerPage" value="<%=numPerPage%>">
+						<input type="hidden" name="keyWord" value="<%=keyWord%>">
+						<input type="hidden" name="keyField" value="<%=keyField%>">		
+						<input type="hidden" name="num" value="">
+					</form>
+					<form method="POST" name="delFrm" id="delFrm" action="delboard"> 
+						<input type="hidden" name="num" value="">
+					</form>
 				</div>
 			</div>
 		</main>

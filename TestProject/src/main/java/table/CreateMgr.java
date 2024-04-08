@@ -361,6 +361,7 @@ public class CreateMgr {
 			pstmt = con.prepareStatement(sql);
 
 			pstmt.executeUpdate();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

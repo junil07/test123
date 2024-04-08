@@ -110,11 +110,11 @@
 			</div>
 			<div class="post_manage">
 				<div class="post_button">게시글 관리</div>
-				<a class="fa-solid fa-house">QnA</a><br> <a
-					class="fa-solid fa-house">FAQ</a><br> <a
-					class="fa-solid fa-house">자유게시판</a><br> <a
-					class="fa-solid fa-house">공지사항</a><br> <a
-					class="fa-solid fa-house">유로 게시글 검토 승인</a>
+				<a class="fa-solid fa-house">QnA</a><br> 
+				<a class="fa-solid fa-house">FAQ</a><br> 
+				<a class="fa-solid fa-house" href="admin_post_list.jsp">자유게시판</a><br> 
+				<a class="fa-solid fa-house" href="admin_paypost_list.jsp">유로글 게시판</a><br> 
+				<a class="fa-solid fa-house" href="paypost_agree_list.jsp">유로 게시글 검토 승인</a>
 			</div>
 		</main>
 	</section>
@@ -123,7 +123,7 @@
 	<section id="maincontent" class="maincontent">
 		<header class="main_head">
 			<div class="head_top">
-				<a class="head_txt">게시글 승인 관리</a>
+				<a class="head_txt">유료 게시글 승인 관리</a>
 			</div>
 			<div class="head_under">
 				<form name = "searchFrm">
@@ -134,6 +134,11 @@
 					</select>
 					<input name="keyWord" placeholder="">
 					<input type="button" value="검색" onClick = "javascript:check()">
+					<select name = "okay" size = 1>
+						<option value = "u.user_name">승인 거절</option>
+						<option value = "p.PAYPOST_TITLE">승인 대기중</option>
+						<option value = "p.PAYPOST_PAY">승인 완료</option>
+					</select>
 				</form>
 			</div>
 		</header>

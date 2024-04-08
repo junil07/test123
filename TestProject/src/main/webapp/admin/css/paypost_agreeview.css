@@ -89,11 +89,10 @@ html, body {
 
 .content{
 	margin: auto;
-	width: 80%;
 	height: auto;
 	min-height: 70%;
 	background-color: white;
-	border: 2px solid gray;
+	border: 2px solid black;
 	border-radius: 5px; 
 }
 
@@ -159,3 +158,59 @@ html, body {
 	position: relative;
 }
 
+.content_wrong{
+	background-color: #E2E2E2;
+}
+
+.wrong_side{
+	display: inline-flex;
+	background-color: white;
+	width: 80px;
+	height: 23px;
+	margin: 10px;
+	text-align: center;
+}
+.wrong_main{
+	display: inline-flex;
+	background-color: white;
+	width: 300px;
+	height: 23px;
+	margin: 10px;
+}
+
+.test_view{
+	width: 100%;
+	height: auto;
+	margin-top: 10px;
+	background-color: #E2E2E2;
+	display: flex;
+}
+
+
+.view_content{
+	display: flex;
+}
+
+.view{
+	width: 650px;
+	height: auto;
+	background-color: white; 
+	margin: 10px;
+	border-radius: 10px;
+}
+.view > div {
+    margin: 10px;
+    max-width: 550px;
+    max-height: 300px;
+}
+.test_list{
+	margin: 10px;
+	padding-inline-start: 0;
+}
+li{
+	list-style-type: none;
+	margin: 10px;
+}
+.ex_content{
+	margin-top: 10px;	
+}
