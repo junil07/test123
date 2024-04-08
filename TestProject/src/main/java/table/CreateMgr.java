@@ -350,49 +350,39 @@ public class CreateMgr {
 		String sql = null;
 		try {
 			con = pool.getConnection();
-
-			//유료글 옵션이 있을 경우
-			if(opList.contains("col_pay")) {
-				//유료글 컬럼이 없을 경우
-				if(!colExists(updateTable, updateTable+"_PAY")) {
-					//사용자 컬럼이 없을 경우
-					if(!colExists(updateTable, updateTable+"_USER_ID")) {
-						updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_USER_ID VARCHAR(20) NOT NULL;");
-			            updateList.add("ALTER TABLE " + updateTable + " ADD FOREIGN KEY (" + updateTable+"_USER_ID) REFERENCES USER (USER_ID);");
-					}		
-					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_TEST_NUM VARCHAR(20) NOT NULL;");
-		            updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_PAY INT NOT NULL;");
-		            updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_AGREE INT NOT NULL;");
-		            updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_REASON INT NOT NULL;");
-		            updateList.add("ALTER TABLE " + updateTable + " ADD FOREIGN KEY (" + updateTable+"_TEST_NUM) REFERENCES TEST (TEST_NUM);");
-				}
-			//유료글 옵션이 없을 경우
-			}else {
-				//유료글 컬럼이 있을 경우
-				if(colExists(updateTable, updateTable+"_PAY")) {
-					updateList.add("ALTER TABLE " + updateTable + " DROP FOREIGN KEY " + updateTable + "_IBFK_2;");
+			
+			//_PAY 컬럼이 있을 경우
+			if(colExists(updateTable, updateTable+"_PAY")) {
+				//유료글 옵션이 없을 경우
+				if(!opList.contains("col_pay")) {
+					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_IBFK_2;");
 					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_TEST_NUM;");
-	                updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_PAY;");
-	                updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_AGREE;");
-	                updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_REASON;");
-	                
-	                //사용자 옵션이 없을 경우
-	                if(!opList.contains("col_user")) {
-	                	updateList.add("ALTER TABLE " + updateTable + " DROP FOREIGN KEY " + updateTable + "_IBFK_1;");
-	                    updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_USER_ID;");
-	                }
-	            //유료글 컬럼이 없는 경우
-				}else {
-					//사용자 옵션이 있을 경우
-					if(opList.contains("col_user")) {
-						updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_USER_ID VARCHAR(20) NOT NULL;");
-			            updateList.add("ALTER TABLE " + updateTable + " ADD FOREIGN KEY (" + updateTable+"_USER_ID) REFERENCES USER (USER_ID);");
-					}else {
-						updateList.add("ALTER TABLE " + updateTable + " DROP FOREIGN KEY " + updateTable + "_IBFK_1;");
-	                    updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_USER_ID;");
+					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_PAY;");
+					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_AGREE;");
+					updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_REASON;");
+					
+					//사용자 옵션이 없을 경우
+					if(!opList.contains("col_user")) {
+						updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_IBFK_1;");
+						updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_USER_ID;");
 					}
 				}
-			}	
+			//__PAY 컬럼이 없을 경우
+			}else {
+				//사용자 옵션이 있을 경우
+				if(!opList.contains("col_user")) {
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_USER_ID INT NOT NULL;");
+					updateList.add("ALTER TABLE " + updateTable + "ADD FOREIGN KEY (" + updateTable+"_USER_ID) REFERENCES USER (USER_ID);");
+				}
+				//유료글 옵션이 있을 경우
+				if(!opList.contains("col_pay")) {
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_TEST_NUM INT NOT NULL;");
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_PAY INT NOT NULL;");
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "__NUM INT NOT NULL;");
+					updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_TEST_NUM INT NOT NULL;");
+					updateList.add("ALTER TABLE " + updateTable + "ADD FOREIGN KEY (" + updateTable+"_TEST_NUM) REFERENCES TEST (TEST_NUM);");
+				}
+			}
 			
 			//_GOOD 컬럼이 있을 경우
 			if(colExists(updateTable, updateTable+"_GOOD")) {
