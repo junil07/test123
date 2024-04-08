@@ -396,7 +396,7 @@
                     <span>자유게시판</span>
                 </a>
             </li>
-			<!-- 깃hub-->
+			<!-- 깃-->
             <!-- Divider -->
             <hr class="sidebar-divider">
 
