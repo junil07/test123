@@ -245,5 +245,6 @@ public class Board_commentMgr {
 		} finally {
 			pool.freeConnection(con, pstmt);
 		}
+
 	}
 }
