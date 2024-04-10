@@ -393,7 +393,7 @@ public class PaypostMgr {
 	         pstmt.setInt(1, num);
 	         rs = pstmt.executeQuery();
 	         if(rs.next()) {
-	            bean.setPaypsot_fileupload_server_name(rs.getString("paypost_fileupload_server_name"));
+	            bean.setPaypost_fileupload_server_name(rs.getString("paypost_fileupload_server_name"));
 	            bean.setFileupload_paypost_num(rs.getInt("fileupload_paypost_num"));
 	            bean.setPaypost_fileupload_name(rs.getString("paypost_fileupload_name"));
 	            bean.setPaypost_fileupload_extension(rs.getString("paypost_fileupload_extension"));
@@ -433,6 +433,7 @@ public class PaypostMgr {
 	      }
 	      return;
 	   }
+	   
 	   
 	   //좋아요 중복 체크
 	   public boolean goodCheck(String user, int num) {
@@ -516,8 +517,6 @@ public class PaypostMgr {
 	     
 	   }
 	   
-	   
-	   
 	 //Max Num : num의 현재 최대값
 	   public int getMaxNum() {
 	      Connection con = null;
@@ -538,6 +537,111 @@ public class PaypostMgr {
 	      }
 	      return maxNum;
 	   }
+	   
+	   
+	   //유료게시글 삭제 
+	   //Board Delete : 첨부된 파일 삭제
+	   public void deletePaypost(int num) {
+	      Connection con = null;
+	      PreparedStatement pstmt = null;
+	      String sql = null;
+	      try {
+	         Paypost_fileuploadBean fbean = getFile(num);
+	         String filename = fbean.getPaypost_fileupload_server_name();
+	         if(filename!=null&&!filename.equals("")) {
+	            File f = new File(SAVEFOLDER+filename);
+	            if(f.exists()) {
+	               UtilMgr.delete(SAVEFOLDER+filename);
+	            }
+	         }
+	         
+	         con = pool.getConnection();
+	         
+	         sql = "delete from paypost_fileupload where fileupload_paypost_num=?";
+	         pstmt = con.prepareStatement(sql);
+	         pstmt.setInt(1, num);
+	         pstmt.executeUpdate();
+	         pstmt.close();
+	         
+	         sql = "delete from paypost where paypost_num=?";
+	         pstmt = con.prepareStatement(sql);
+	         pstmt.setInt(1, num);
+	         pstmt.executeUpdate();
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         pool.freeConnection(con, pstmt);
+	      }
+	   }   
+	   
+	   
+	 //paypost Update : 파일업로드 수정
+	   public void updatePaypost(MultipartRequest multi) {
+	      Connection con = null;
+	      PreparedStatement pstmt = null;
+	      String sql = null;
+	      String filefullname = null, filename = null, newfilename = null, fileextension = null;
+	      int filesize = 0;
+	      
+	      try {
+	         con = pool.getConnection();
+	         int num = Integer.parseInt(multi.getParameter("num"));
+	         String title = multi.getParameter("title");
+	         String content = multi.getParameter("content");
+	         filefullname = multi.getFilesystemName("filename");
+	         
+	         if(filefullname!=null&&!filefullname.equals("")) {
+	            //파일업로드도 수정 : 기존의 파일 삭제
+	            Paypost_fileuploadBean fbean = getFile(num);
+	            String tempfile = fbean.getPaypost_fileupload_server_name();
+	            if(tempfile!=null&&!tempfile.equals("")) {
+	               File f = new File(SAVEFOLDER+tempfile);
+	               if(f.exists()) {
+	                  UtilMgr.delete(SAVEFOLDER+tempfile);
+	               }
+	               
+	               sql = "delete from paypost_fileupload where fileupload_paypost_num=?";
+	               pstmt = con.prepareStatement(sql);
+	               pstmt.setInt(1, num);
+	               pstmt.executeUpdate();
+	               pstmt.close();
+	            }
+	            
+	            filename = UtilMgr.fileName(filefullname);
+	            newfilename = UtilMgr.randomName(filefullname);
+	            fileextension = UtilMgr.fileExtension(filefullname);
+	            filesize = (int)multi.getFile("filename").length();
+	            
+	            sql = "insert paypost_fileupload(paypost_fileupload_server_name, fileupload_paypost_num, paypost_fileupload_name, "
+	                  + "paypost_fileupload_extension, paypost_fileupload_size)"
+	                  + "values(?, ?, ?, ?, ?)";
+	            pstmt = con.prepareStatement(sql);
+	            pstmt.setString(1, newfilename);
+	            pstmt.setInt(2, getMaxNum());
+	            pstmt.setString(3, filename);
+	            pstmt.setString(4, fileextension);
+	            pstmt.setInt(5, filesize);
+	            pstmt.executeUpdate();
+	            pstmt.close();
+	            
+	            UtilMgr.fileRename(SAVEFOLDER, filefullname, newfilename);
+	         }
+	         
+	         sql = "update paypost set paypost_title=?, paypost_content=?, paypost_agree=? where paypost_num=?";
+	           pstmt = con.prepareStatement(sql);
+	           pstmt.setString(1, title);
+	           pstmt.setString(2, content);
+	           pstmt.setInt(3, 0);
+	           pstmt.setInt(4, num);
+	         pstmt.executeUpdate();
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         pool.freeConnection(con, pstmt);
+	      }
+	      return;
+	   }
+	   
 	   
   
 }

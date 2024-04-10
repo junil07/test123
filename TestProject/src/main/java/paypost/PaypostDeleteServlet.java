@@ -10,24 +10,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import project.NoticeBean;
-import project.NoticeMgr;
+import project.PaypostBean;
+import project.PaypostMgr;
 
 
-@WebServlet("/notice/noticeDelete")
+@WebServlet("/paypost/paypostDelete")
 public class PaypostDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-	    NoticeBean bean = (NoticeBean)session.getAttribute("bean");
-		NoticeMgr mgr = new NoticeMgr();
-        mgr.deleteNotice(bean.getNotice_num());
+	    PaypostBean bean = (PaypostBean)session.getAttribute("bean");
+		PaypostMgr mgr = new PaypostMgr();
+        mgr.deletePaypost(bean.getPaypost_num());
         String nowPage = request.getParameter("nowPage");
         String numPerPage = request.getParameter("numPerPage");
         String keyField = request.getParameter("keyField");
         String keyWord = request.getParameter("keyWord");
-        String url = "Notice.jsp?nowPage=" + nowPage;
+        String url = "Paypost.jsp?nowPage=" + nowPage;
         url +="&numPerPage=" +numPerPage;
         if(!(keyWord==null||keyWord.equals(""))) {
            url+="&keyField="+keyField;

@@ -46,7 +46,7 @@ if ( sess == null && sessManager == null ) {
 	</tr>
 </table>
 <br/>
-<form name="postFrm" method="post" action="noticePost" 
+<form name="postFrm" method="post" action="paypostPost" 
 enctype="multipart/form-data">
 <table width="600" cellpadding="3" align="center">
 	<tr>

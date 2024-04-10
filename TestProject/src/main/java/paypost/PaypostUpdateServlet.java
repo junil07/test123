@@ -13,28 +13,28 @@ import javax.servlet.http.HttpSession;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
-import project.NoticeBean;
-import project.NoticeMgr;
+import project.PaypostBean;
+import project.PaypostMgr;
 
-@WebServlet("/notice/noticeUpdate")
+@WebServlet("/paypost/paypostUpdate")
 public class PaypostUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-	      NoticeBean bean = (NoticeBean) session.getAttribute("bean");
+	      PaypostBean bean = (PaypostBean) session.getAttribute("bean");
 	      MultipartRequest multi = new MultipartRequest(request,
-	            NoticeMgr.SAVEFOLDER,
-	            NoticeMgr.MAXSIZE,
-	            NoticeMgr.ENCODING,
+	            PaypostMgr.SAVEFOLDER,
+	            PaypostMgr.MAXSIZE,
+	            PaypostMgr.ENCODING,
 	            new DefaultFileRenamePolicy());
-	      NoticeMgr mgr = new NoticeMgr();
-	         mgr.updateNotice(multi);
+	      PaypostMgr mgr = new PaypostMgr();
+	         mgr.updatePaypost(multi);
 	         String nowPage = multi.getParameter("nowPage");
 	         String numPerPage = multi.getParameter("numPerPage");
-	         response.sendRedirect("Notice.jsp?nowPage="+nowPage
+	         response.sendRedirect("Paypost.jsp?nowPage="+nowPage
 	               +"&numPerPage="+numPerPage
-	               +"&num="+bean.getNotice_num());
+	               +"&num="+bean.getPaypost_num());
 	}
 
 }
