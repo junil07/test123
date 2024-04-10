@@ -582,7 +582,7 @@ public class PaypostMgr {
 	      String sql = null;
 	      String filefullname = null, filename = null, newfilename = null, fileextension = null;
 	      int filesize = 0;
-	      
+	      //
 	      try {
 	         con = pool.getConnection();
 	         int num = Integer.parseInt(multi.getParameter("num"));
