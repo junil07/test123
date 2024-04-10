@@ -78,24 +78,7 @@ public class NoticeMgr {
       } finally {
          pool.freeConnection(con, pstmt);
       }
-      /*
-      
-      try {
-         MultipartRequest multi = new MultipartRequest(req, SAVEFOLDER, MAXSIZE, ENCODING, new DefaultFileRenamePolicy());
-         con = pool.getConnection();
-         sql = "insert notice(notice_title, notice_content, notice_date, notice_count)"
-               + "values(?, ?, now(), 0)";
-         pstmt = con.prepareStatement(sql);
-         pstmt.setString(1, multi.getParameter("title"));
-         pstmt.setString(2, multi.getParameter("content"));
-         pstmt.executeUpdate();
-      } catch (Exception e) {
-         e.printStackTrace();
-      } finally {
-         pool.freeConnection(con, pstmt);
-      }
-      return;
-      */
+     
    }
    
    //Board Max Num : num의 현재 최대값
@@ -368,59 +351,5 @@ public class NoticeMgr {
       }
       return;
    }
-   
-   
-   /*
-   //Board Reply : 답변글 저장
-   public void replyBoard(BoardBean bean) {
-      Connection con = null;
-      PreparedStatement pstmt = null;
-      String sql = null;
-      try {
-         con = pool.getConnection();
-         sql = "insert tblBoard(name,content,subject,ref,pos,depth,regdate,"
-               + "pass,count,ip)values(?, ?, ?, ?, ?, ?, now(), ?, 0, ?)";
-         pstmt = con.prepareStatement(sql);
-         pstmt.setString(1, bean.getName());
-         pstmt.setString(2, bean.getContent());
-         pstmt.setString(3, bean.getSubject());
-         ///////////////////////////////////////////////////
-         pstmt.setInt(4, bean.getRef()); //원글과 동일한 ref (그룹)
-         pstmt.setInt(5, bean.getPos()+1); //원글 pos+1 (정렬)
-         pstmt.setInt(6, bean.getDepth()+1); //원글 depth+1
-         ///////////////////////////////////////////////////
-         pstmt.setString(7, bean.getPass());
-         pstmt.setString(8, bean.getIp());
-         pstmt.executeUpdate();
-      } catch (Exception e) {
-         e.printStackTrace();
-      } finally {
-         pool.freeConnection(con, pstmt);
-      }
-      return;
-   }
-   */
-   
-   /*
-   //Board Reply Up : 답변글 위치값 수정
-   public void replyUpBoard(int ref, int pos) {
-      Connection con = null;
-      PreparedStatement pstmt = null;
-      String sql = null;
-      try {
-         con = pool.getConnection();
-         sql = "update tbl Board set pos=pos+1 where ref=? and pos>?";
-         pstmt = con.prepareStatement(sql);
-         pstmt.setInt(1, ref);
-         pstmt.setInt(2, pos);
-         pstmt.executeUpdate();
-      } catch (Exception e) {
-         e.printStackTrace();
-      } finally {
-         pool.freeConnection(con, pstmt);
-      }
-      return;
-   }
-   */
 
 }

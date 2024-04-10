@@ -136,7 +136,7 @@
     <div class="a1">
       <img class="a2" src="https://previews.123rf.com/images/vectorchef/vectorchef1506/vectorchef150617704/41619187-%EC%83%81%EC%A0%90-%EC%83%81%EC%A0%90-%EC%95%84%EC%9D%B4%EC%BD%98.jpg" />
       <div class="a3">
-      	<a href="https://www.naver.com/">스토어</a>
+      	<a href="../paypost/Paypost.jsp">스토어</a>
       </div>
     </div>
     <div class="a4">
