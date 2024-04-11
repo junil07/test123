@@ -5,27 +5,27 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%
-String sess = (String) session.getAttribute("idKey");
+
 %>
 
 
 <html>
-	
+
 	<head>
-		
-		<%@ include file="../inc/head.jsp" %>
-		<%@ include file="../inc/head.jsp" %>
+
+		<%@ include file="navi/head.jsp" %>
+		<%@ include file="navi/head.jsp" %>
 		<style>
-			
+
 			textarea {
 				resize: none;
 				overflow: hidden;
 			}
-			
+
 			textarea:focus {
 			    outline: none;
 			}
-			
+
 			.parantdiv {
 				width: 1100px;
 				height: 1000px;
@@ -37,11 +37,11 @@ String sess = (String) session.getAttribute("idKey");
 			    flex-direction: column;
 			    align-items: center;
 			}
-			
+
 			.marginbaby {
 				margin-top: 20px;
 			}
-			
+
 			.titleinputlan {
 				width: 100%;
 				height: 200px;
@@ -51,7 +51,7 @@ String sess = (String) session.getAttribute("idKey");
 				display: flex;
 				flex-direction: column;
 			}
-			
+
 			.boardname {
 				width: 30%;
 			    height: 30px;
@@ -65,7 +65,7 @@ String sess = (String) session.getAttribute("idKey");
     			margin-left: 40px;
     			font-weight: 600;
 			}
-			
+
 			.titlename {
 				width: 80%;
 			    font-size: 20px;
@@ -77,7 +77,7 @@ String sess = (String) session.getAttribute("idKey");
 			    background: #D8D8D8;
 			    border: none;
 			}
-			
+
 			.textinputlan {
 				width: 100%;
 				height: 600px;
@@ -87,14 +87,14 @@ String sess = (String) session.getAttribute("idKey");
 			    align-items: center;
 			    justify-content: center;
 			}
-			
+
 			.contentinputtext {
 				width: 90%;
     			height: 85%;
     			border: none;
     			font-size: 15px;
 			}
-			
+
 			.uploadbtn {
 			    width: 200px;
 			    height: 50px;
@@ -104,44 +104,44 @@ String sess = (String) session.getAttribute("idKey");
 			    font-size: 20px;
 			    font-weight: 300;
 			}
-			
+
 			.uploadbtn:hover {
 				cursor: pointer;
 				background: gray;
 			}
-			
+
 		</style>
-		
+
 	</head>
-	
+
 	<body>
-		
+
 		<div id="grandpadiv" style="position:fixed; width: 100%;">
-		
+
 			<div id="wrapper">
-				
-				<%@ include file="../inc/menu.jsp" %>
-					
+
+				<%@ include file="navi/menu.jsp" %>
+
 				<div id="content-wrapper" class="d-flex flex-column">
 		            <!-- Main Content -->
 		            <div id="content" class="bg-white">
 		                <!-- // 최상단 Top 영역 -->
-						<%@ include file="../inc/top.jsp" %>
+						<%@ include file="navi/top.jsp" %>
 						<!-- Begin Page Content -->
 		                <div class="container-fluid">
 		                	<!-- // 컨텐츠 입력 start  -->
-		                	
+
 		   	  			</div>
-		   	  
+
 		            </div>
-		            
+
 		        </div>
-				
+
 			</div>
-		
+
 		</div>
-		
-		<%@ include file="../inc/footer.jsp" %>
+
+		<%@ include file="navi/footer.jsp" %>
 		
 		<h1 style="position:absolute; left: 250px; top:100px;">QnA 게시물 등록</h1>
 		

@@ -11,6 +11,7 @@ public class Qna_commentBean {
 	private String qna_comment_date;
 	private String qna_comment_manager_id;
 	
+
 	public String getQna_comment_manager_id() {
 		return qna_comment_manager_id;
 	}

@@ -25,39 +25,38 @@
 		phone = phonereturn;
 	}
 	
-	String text = "sda;lfa;slkdfma;lksdmf;lasmdflkasmdflkasmdlfkams;dlkfmasdfasdf" +
-	"akjsndflkasndlfkjansldkjfnaslkdfnasdnf;alskdnf;laksdnf;lkasndflkasndflkasdf" +
-			"aksjdnfaksnd;flkas;dlfkmas;ldkfmas;lkdfm;alskdmf;alksdmf;laksmdf;lkasmdf" +
-	"민우리ㅏㅁ눙리ㅏ문;ㅣ라ㅜㅁㄴ;ㅣㅏㄹ;미능ㄹ미나을;ㅣㅁ나ㅡㅇㄹ;ㅣㅏ느;ㅣ라ㅡㅁㄴ;라ㅡㅁ니ㅡㅇㄹ;마능ㄹ;마늘;ㅣㅏㄴ";
+	String text = "동의?";
 	
 %>
 <html>
 	<head>
+	
+		<%@ include file="navi/head.jsp" %>
+	
 		<style>
 			
-			.test {
-				border-style: solid;
+			body{
+			
+				color: black;
+				
 			}
 			
 			.d1 {
-				border-color: red;
 				width: 1200px;
 				height: 650px;
 				position: absolute;
-				left: 500px;
-				top: 150px;
+			    left: 450px;
+   				top: 180px;
 				display: flex;
 			}
 			
 			.d2 {
-				border-color: orange;
 				width: 70%;
 				height: 100%;
 				align-content: center;
 			}
 			
 			.d3 {
-				border-color: purple;
 				width: 30%;
 				height: 100%;
 			}
@@ -74,20 +73,6 @@
     			font-size: 20px;
 			}
 			
-			.mismatch, .space{
-				position: absolute;
-				left: 90px;
-				color: red;
-			}
-			
-			.space {
-				top: 343px;
-			}
-			
-			.mismatch {
-				top: 421px;
-			}
-			
 			.hide {
 				display: none;
 			}
@@ -99,8 +84,8 @@
 			
 			.duplicatechk {
 				position: absolute;
-				left: 680px;
-				top: 145px;
+				left: 670px;
+    			top: 130px;
 			}
 			
 			.registerbtn {
@@ -119,6 +104,10 @@
 				background: #9d9d9d;
 				left: 360px;
 				bottom: -70px;
+			}
+			
+			.test.d3 > * {
+			    margin-top: 20px;
 			}
 			
 			.registerbtn:hover {
@@ -147,9 +136,57 @@
 				justify-content: space-between;
 			}
 			
+			.validate, .mismatch, .space {
+				color: red;
+				position: absolute;
+				left: 90px;
+			}
+			
+			.validate {
+				bottom: 135px;
+			}
+			
+			.mismatch {
+				bottom: 215px;
+			}
+			
+			.space {
+				bottom: 295px;
+			}
+			
 		</style>
 	</head>
 	<body>
+		
+		<div id="grandpadiv" style="position:fixed; width: 100%;">
+		
+			<div id="wrapper">
+				
+				<%@ include file="navi/menu.jsp" %>
+					
+				<div id="content-wrapper" class="d-flex flex-column">
+		            <!-- Main Content -->
+		            <div id="content" class="bg-white">
+		                <!-- // 최상단 Top 영역 -->
+						<%@ include file="navi/top.jsp" %>
+						<!-- Begin Page Content -->
+		                <div class="container-fluid">
+		                	<!-- // 컨텐츠 입력 start  -->
+		                	
+		   	  			</div>
+		   	  
+		            </div>
+		            
+		        </div>
+				
+			</div>
+		
+		</div>
+		
+		<%@ include file="navi/footer.jsp" %>
+		
+		<h1 style="position:absolute; left: 250px; top:100px;">QnA 게시물 등록</h1>
+		
 		<div class="test d1">
 			<div class="test d2" align="center">
 				<h2>회원가입</h2>
@@ -162,6 +199,7 @@
 					<input type="password" class="registerinput regipwdretype" placeholder="비밀번호 확인" name="registerpwdretype" value="<%=pwdretype%>">
 					<div class="mismatch hide">비밀번호가 일치하지 않습니다.</div>
 					<input class="registerinput regiemail" placeholder="이메일" name="registeremail" value="<%=email%>">
+					<div class="validate hide">유효하지 않은 이메일 형식입니다.</div>
 					<input class="registerinput regiphone" placeholder="전화번호" name="registerphone" value="<%=phone%>">
 					<input class="duplicateResult" type="hidden" value="<%=idchkresult%>">
 					<input class="idreturn" type="hidden" value="<%=idreturn%>">
@@ -196,6 +234,6 @@
 				</div>
 			</div>
 		</div>
-		<script src="register.js"></script>
+		<script src="js/register.js"></script>
 	</body>
 </html>

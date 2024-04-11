@@ -18,6 +18,7 @@
 	for(int i=0;i<sss;i++){
 		sessNum[i] = Integer.parseInt(sess[i]);
 		test_num[i] = testMgr.testNum(title, year,sessNum[i]);
+		System.out.print(test_num[i]);
 		test_subject[i] = testMgr.testSubject(title, year, sessNum[i]);
 	}
 	

@@ -26,7 +26,14 @@ public class ExplanationMgr {
 			pstmt.setInt(1, question_num);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				
+				ExplanationBean bean = new ExplanationBean();
+				bean.setExplanation_num(rs.getInt(1));
+				bean.setExplanation_test_num(rs.getString(2));
+				bean.setExplanation_question_num(rs.getInt(3));
+				bean.setExplanation_content(rs.getString(4));
+				bean.setExplanation_file(rs.getString(5));
+				bean.setExplanation_filesize(rs.getInt(6));
+				vlist.addElement(bean);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,7 +83,6 @@ public class ExplanationMgr {
 			while(rs.next()) {
 				ExplanationBean exbean = new ExplanationBean();
 				exbean.setExplanation_num(rs.getInt("Explanation_num"));
-				exbean.setExplanation_paypost_num(rs.getInt("Explanation_paypost_num"));
 				exbean.setExplanation_question_num(rs.getInt("EXPLANATION_QUESTION_NUM"));
 				exbean.setExplanation_content(rs.getString("EXPLANATION_CONTENT"));
 				exbean.setExplanation_file(rs.getString("EXPLANATION_FILE"));

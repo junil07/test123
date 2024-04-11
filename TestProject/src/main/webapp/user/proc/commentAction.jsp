@@ -13,6 +13,7 @@
 	int rereplyCount = commentMgr.getRereply(num, pos);
 	boolean result = false;
 	String url = request.getParameter("url");
+
 	
 	if ( check == 0 ) { // 그냥 댓글
 		

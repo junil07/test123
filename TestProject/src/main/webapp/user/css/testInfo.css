@@ -1,0 +1,147 @@
+.parentdiv {
+    width: 55%;
+    height: 1000px;
+    position: absolute;
+    left: 500px;
+    top: 120px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.buttondiv {
+    margin: 50px;
+}
+
+.schedulediv {
+	width: 100%;
+}
+
+.qualificationdiv {
+    width: 100%;
+}
+
+.titlewrap {
+	width:100%;
+	margin-top: 40px;
+}
+
+.title {
+	width: 100%; 
+	height:50px;
+	border-radius: 20px;
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title_name {
+	margin: 34px;
+    color: #f9f9f9;
+    font-weight: 100;
+}
+
+.title_name1 {
+	margin: 150px;
+    color: #f9f9f9;
+    font-weight: 100;
+}
+
+.itemarea {
+	width: 100%;
+	height: 70px;
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 1px solid #a9a9a9;
+	border-right: 1px solid #a9a9a9;
+	border-bottom: 1px solid #a9a9a9;
+}
+
+.itemarea > div {
+    display: flex;
+    justify-content: center;
+}
+
+.accordion > .accordionone {
+    --bs-accordion-active-bg: #FC8E8E;
+    --bs-accordion-btn-bg: #FC8E8E;
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgb(125 125 125 / 25%);
+    --bs-accordion-active-color: #ffffff;
+    --bs-accordion-border-color: none;
+    --bs-accordion-btn-color: #ffffff;
+}
+
+.accordion > .accordiontwo {
+	--bs-accordion-active-bg: #FF9379;
+    --bs-accordion-btn-bg: #FF9379;
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgb(125 125 125 / 25%);
+    --bs-accordion-active-color: #ffffff;
+    --bs-accordion-border-color: none;
+    --bs-accordion-btn-color: #ffffff;
+}
+
+.accordion > .accordionthree {
+	--bs-accordion-active-bg: #F981FC;
+    --bs-accordion-btn-bg: #F981FC;
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgb(125 125 125 / 25%);
+    --bs-accordion-active-color: #ffffff;
+    --bs-accordion-border-color: none;
+    --bs-accordion-btn-color: #ffffff;
+}
+
+.accordion > .accordionfour {
+	--bs-accordion-active-bg: #3D9C1B;
+    --bs-accordion-btn-bg: #3D9C1B;
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgb(125 125 125 / 25%);
+    --bs-accordion-active-color: #ffffff;
+    --bs-accordion-border-color: none;
+    --bs-accordion-btn-color: #ffffff;
+}
+
+.accordion > .accordionfive {
+	--bs-accordion-active-bg: #8793FF;
+    --bs-accordion-btn-bg: #8793FF;
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgb(125 125 125 / 25%);
+    --bs-accordion-active-color: #ffffff;
+    --bs-accordion-border-color: none;
+    --bs-accordion-btn-color: #ffffff;
+}
+
+.accordion-item {
+    margin-top: 40px;
+}
+
+.accordion-collapse {
+	background: whitesmoke;
+}
+
+.buttondiv > button {
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border: none;
+    width: 150;
+    height: 80;
+} 
+
+.toEdit {
+	position: absolute; 
+	margin-left: 180px;
+}
+
+.toEdit:hover {
+	background: gray;
+}
+
+.schedulebtn {
+	margin-right: 40;
+}
+
+.changingcolor {
+	background-color: #FF94A7;
+}
+
+.hide {
+	display: none;
+}
+
+

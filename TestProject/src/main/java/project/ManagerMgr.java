@@ -22,7 +22,7 @@ public class ManagerMgr {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "SELECT COUNT(*) FROM manager WHERE MANAGER_ID = ? AND MANAGER_PW = ?";
+			sql = "SELECT COUNT(*) FROM manager WHERE MANAGER_ID = ? AND MANAGER_PW = TO_BASE64(AES_ENCRYPT(?, 'testkey123'))";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, pwd);

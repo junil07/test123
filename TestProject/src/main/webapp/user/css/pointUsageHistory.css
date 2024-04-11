@@ -1,0 +1,146 @@
+
+
+.topbartext {
+	display: flex;
+	font-size: 30px;
+	text-align: center;
+	border: none;
+	background-color: #434343;
+	color: white;
+	font-weight: 600;
+    margin-left: 35%
+}
+
+.topbartext1 {
+	display: flex;
+	width: 100%;
+	font-size: 25px;
+	text-align: center;
+	border: none;
+	background-color: #e2e2e2;
+	color: black;
+	font-weight: 600;
+}
+
+.pointbutton {
+	position: absolute;
+    width: 1100px;
+    height: 300px;
+    left: 500px;
+    top: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.totalpoints {
+	color: #3039e9;
+	font-size: 35px;
+}
+
+.usagehistory {
+	position: absolute;
+    width: 1100px;
+    height: 900px;
+    border: solid;
+    border-color: #bebebe;
+    border-width: 2px;
+    left: 500px;
+    top: 450px;
+}
+
+.topbarbutton {
+	width: 200px;
+	height: 60%;
+  	margin-left: auto;
+  	margin-right: 20px;
+  	display: flex;
+    justify-content: center;
+    background-color: #a7a4a4;
+    border-radius: 10px;
+	align-items: center;
+}
+
+.topbarbutton > button {
+   	width: 40%;
+    height: 70%;
+	background-color: #a7a4a4;
+    border: none;
+}
+
+.topbarbutton > button:active {
+	box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
+              -4px -4px 6px 0 rgba(116, 125, 136, .5), 
+    inset -4px -4px 6px 0 rgba(255,255,255,.2),
+    inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+}
+
+.point, .exchange {
+	width: 450px;
+	height: 200px;
+	background-color: #e2e2e2;
+	border-radius: 10px;
+   	display: flex;
+   	flex-direction: row;
+   	align-items: center;
+}
+
+.exchange {
+	margin-left: 70px;
+}
+
+.chargebtn, .exchangebtn {
+    width: 180px;
+    height: 70px;
+    background-color: #101010;
+    border: none;
+    color: #ffffff;
+    border-radius: 10px;
+    font-size: 20;
+    font-weight: 700;
+}
+
+.chargebtn:active, .exchangebtn:active {
+	background: #808080;
+	box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
+              -4px -4px 6px 0 rgba(116, 125, 136, .5), 
+    inset -4px -4px 6px 0 rgba(255,255,255,.2),
+    inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+}
+
+.wrap {
+	align-items: center;
+    display: flex;
+    flex-direction: column;
+   	width: 250;
+}
+
+.subjecttitle {
+    border-bottom: solid;
+    border-color: #ababab;
+    border-bottom-width: 1px;
+    height: 40px;
+}
+
+.selectpage {
+	margin-top: 15px;
+}
+
+.celdetail {
+	padding: 10px;
+	font-family: "Noto Sans KR", sans-serif;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
