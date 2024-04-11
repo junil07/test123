@@ -14,7 +14,6 @@
 <jsp:useBean id="scheduleMgr" class="project.ScheduleMgr"/>
 <jsp:useBean id="columnMgr" class="project.Schedule_columnMgr"/>
 <%
-	String sessManager = (String) session.getAttribute("adminKey");
 	Vector<ScheduleBean> vlist = scheduleMgr.getTitleName();
 	String titleColor[] = new String[]{"#FC8E8E", "#8793FF", "#FF6363", "#F981FC"};
 	String width[] = new String[]{"102", "170.5", "138.5", "170.5", "170.5", "139", "154.5"};
@@ -22,55 +21,15 @@
 <html>
 	<head>
 	
-		<%@ include file="navi/head.jsp" %>
-		<link href="css/scheduleEdit.css" rel="stylesheet">
+		<link href="scheduleEdit.css" rel="stylesheet">
 		
-		<script>
-			
-			<%
-				if ( sessManager == null ) {
-			%>
-					alert("관리자 로그인이 필요합니다");
-					location.href = "login.jsp";
-			<%
-				}
-			%>
-			
-		</script>
 		
 	</head>
 	<body>
 		
-		<div id="grandpadiv" style="position:fixed; width: 100%;">
-		
-			<div id="wrapper">
-				
-				<%@ include file="navi/menu.jsp" %>
-					
-				<div id="content-wrapper" class="d-flex flex-column">
-		            <!-- Main Content -->
-		            <div id="content" class="bg-white">
-		                <!-- // 최상단 Top 영역 -->
-						<%@ include file="navi/top.jsp" %>
-						<!-- Begin Page Content -->
-		                <div class="container-fluid">
-		                	<!-- // 컨텐츠 입력 start  -->
-		                	
-		   	  			</div>
-		   	  
-		            </div>
-		            
-		        </div>
-				
-			</div>
-		
-		</div>
-		
-		<%@ include file="navi/footer.jsp" %>
-		
 		<div class="parantdiv">
 				
-			<h1>시험 일정 수정</h1>
+			<h1 style="border: solid;">시험 일정 수정</h1>
 			
 			<div class="scheduleeditdiv">
 				
@@ -151,9 +110,6 @@
 			</form>
 			
 		</div>
-		
-		<div style="position: fixed; width: 1500px; height: 70px; background: white; left: 230px;"></div>
-		
-		<script src="js/scheduleEdit.js"></script>
+		<script src="scheduleEdit.js"></script>
 	</body>
 </html>

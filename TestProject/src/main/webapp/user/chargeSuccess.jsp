@@ -12,6 +12,9 @@
 	UserBean bean = vlist.get(0);
 	int userpoint = bean.getUser_point();
 	int chargepoint = Integer.parseInt(paid_amount);
+	// System.out.println("\n--userpoint--\n" + userpoint + "\n--userpoint--\n");
+	
+	
 	
 	boolean flag = userMgr.pointCharge(sess, userpoint, chargepoint * 1000, 1);
 %>

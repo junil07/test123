@@ -8,7 +8,6 @@
 <jsp:useBean id="commentMgr" class="project.Qna_commentMgr"/>
 
 <%
-	String sessManager = (String) session.getAttribute("adminKey");
 	String sess = (String) session.getAttribute("idKey");
 	int totalRecord = 0;
 	int numPerPage = 10;
@@ -50,8 +49,7 @@
 
 	<head>
 	
-
-		<%@ include file="navi/head.jsp" %>
+		<%@ include file="../inc/head.jsp" %>
 		<title>QnA</title>
 		<link href="css/qna.css" rel="stylesheet">
 		
@@ -114,14 +112,6 @@
 			function upload() {
 				
 				<%
-
-					if ( sessManager != null ) {
-				%>
-					alert("관리자가 궁금한게 있으면 안되지;;");
-					return;
-				<%
-					}
-
 					if ( sess == null ) {
 				%>
 						alert("로그인이 필요합니다.");
@@ -136,7 +126,6 @@
 				
 			}
 			
-
 		</script>
 		<script>
 			
@@ -147,7 +136,6 @@
 			    }
 			}
 			
-
 		</script>
 		
 	</head>
@@ -158,32 +146,17 @@
 		
 			<div id="wrapper">
 				
-
-				<%@ include file="navi/menu.jsp" %>
-
+				<%@ include file="../inc/menu.jsp" %>
 					
 				<div id="content-wrapper" class="d-flex flex-column">
 		            <!-- Main Content -->
 		            <div id="content" class="bg-white">
 		                <!-- // 최상단 Top 영역 -->
-
-						<%@ include file="navi/top.jsp" %>
+						<%@ include file="../inc/top.jsp" %>
 						<!-- Begin Page Content -->
 		                <div class="container-fluid">
 		                	<!-- // 컨텐츠 입력 start  -->
-		   	  			</div>
-		   	  
-		            </div>
-		            
-		        </div>
-				
-			</div>
-		
-		</div>
-		
-		<%@ include file="navi/footer.jsp" %>
-		
-		<h1 style="position:absolute; left: 250px; top:100px;">QnA 게시판</h1>
+		                	<h1 style="position:absolute; left: 250px; top:100px;">QnA 게시판</h1>
 		
 		<!-- 시작 -->
 		<div class="parantdiv">
@@ -372,19 +345,6 @@
 		
 		
 		
-
-		
-		<script>
-			
-			window.onscroll = function() {
-			    var navbar = document.getElementById("grandpadiv");
-			    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-			        navbar.style.top = "0";
-			    }
-			}
-			
-		</script>
-
 		
 	</body>
 	

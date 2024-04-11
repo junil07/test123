@@ -8,7 +8,7 @@ a:hover {
 }
 
 .searchbtn, .reloadbtn, .newpostbtn {
-	width: 70px;
+	width: 75px;
 	height: 25px;
 	background-color: #101010;
     border: none;
@@ -16,25 +16,25 @@ a:hover {
     border-radius: 10px;
     font-size: 15;
     font-weight: 700;
+    margin-right: 10px;
 }
 
 .searchbtn:active, .reloadbtn:active, .newpostbtn:active {
 	background: #808080;
 	box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
-              -4px -4px 6px 0 rgba(116, 125, 136, .5),
+              -4px -4px 6px 0 rgba(116, 125, 136, .5), 
     inset -4px -4px 6px 0 rgba(255,255,255,.2),
     inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
 }
 
 .parantdiv {
-	width: 1000px;
-	height: 800px;
+	width: 70%;
+	height: auto;
 	border: solid;
 	border-color: #ababab;
 	border-width: 2px;
-	position: absolute;
-	left: 500px;
-	top: 200px;
+	/*자동으로 가운데 설정*/
+	margin: auto;
 }
 
 .subjecttitle {
@@ -44,18 +44,9 @@ a:hover {
     height: 60px;
 }
 
-.bottomcpn {
+.bottomcpn{
 	display: flex;
-    justify-content: center;
+	justify-content: center;
 }
 
-.reloadbtn {
-	width: 90px;
-	position: absolute;
-	right: 12%;
-}
 
-.newpostbtn {
-   	position: absolute;
-    right: 4%;
-}

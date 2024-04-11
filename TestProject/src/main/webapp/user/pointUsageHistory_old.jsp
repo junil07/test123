@@ -14,7 +14,6 @@
 <jsp:useBean id="paypostMgr" class="project.PaypostMgr"/>
 <%
 	String sess = (String) session.getAttribute("idKey");
-	String sessManager = (String) session.getAttribute("adminKey");
 	int totalpoints = 0;
 	int refundpoints = 0;
 	String totalpoints_str = "";
@@ -93,9 +92,6 @@
 	System.out.println("\n -- totalPage -- \n" + totalPage + "\n -- totalPage -- \n");
 	
 	int lastblock = totalPage % 10;
-	if ( lastblock == 0 ) {
-		lastblock = 10;
-	}
 	System.out.println("\n -- lastblock -- \n" + lastblock + "\n -- lastblock -- \n");
 	
 	totalBlock = (int)Math.ceil((double)totalPage / numPerPage);  // 전체 블럭 갯수
@@ -104,21 +100,8 @@
 %>
 <html>
 	<head>
-	
-		<%@ include file="navi/head.jsp" %>
 		<script>
-		
 			history.scrollRestoration = "auto";
-			
-			<%
-				if ( sessManager != null ) {
-			%>
-					alert("튕김");
-					location.href = "myInfo.jsp";
-			<%
-				}
-			%>
-			
 			<%
 				if ( sess == null ) {
 			%>
@@ -146,6 +129,7 @@
 				document.pagefrm.submit();
 			}
 			
+			
 		</script>
 		
 		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -158,7 +142,7 @@
 		</style>
 		
 		<meta charset="utf-8">
-		<link href="css/pointUsageHistory.css" rel="stylesheet">
+		<link href="pointUsageHistory.css" rel="stylesheet">
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -169,37 +153,13 @@
 		<title> 포인트 히스토리 </title>
 	</head>
 	<body>
-		
-		
-		<div id="grandpadiv" style="position:fixed; width: 100%;">
-		
-			<div id="wrapper">
-				
-				<%@ include file="navi/menu.jsp" %>
-					
-				<div id="content-wrapper" class="d-flex flex-column">
-		            <!-- Main Content -->
-		            <div id="content" class="bg-white">
-		                <!-- // 최상단 Top 영역 -->
-						<%@ include file="navi/top.jsp" %>
-						<!-- Begin Page Content -->
-		                <div class="container-fluid">
-		                	<!-- // 컨텐츠 입력 start  -->
-		                	
-		   	  			</div>
-		   	  
-		            </div>
-		            
-		        </div>
-				
+	
+		<div class="topbar">
+			<input class="topbartext" type="text" value="포인트" disabled/>
+			<div class="topbarbutton">
+				<button class="logout">로그아웃</button>
 			</div>
-		
 		</div>
-		
-		<%@ include file="navi/footer.jsp" %>
-		
-		<h1 style="position:absolute; left: 250px; top:100px;">포인트 히스토리</h1>
-		
 		<div class="pointbutton">
 			<div class="point">
 				<div class="wrap">
@@ -216,7 +176,6 @@
 				<button class="exchangebtn" data-bs-toggle="modal" data-bs-target="#pointrefund">환불하기</button>
 			</div>
 		</div>
-		
 		<div class="usagehistory" align="center">
 			<table>
 				<tr style="height: 50px;">
@@ -291,18 +250,14 @@
 								<td colspan="5" style="height: 70px;">
 									<%
 									
-									System.out.println("\n nowBlock \n" + nowBlock + "\n nowBlock \n");
-									System.out.println("\n pagePerBlock \n" + pagePerBlock + "\n pagePerBlock \n");
-									System.out.println("\n blockPage \n" + blockPage + "\n blockPage \n");
-									System.out.println("\n blockPage1 \n" + blockPage1 + "\n blockPage1 \n");
+									System.out.println("\n 확인용1 \n" + nowBlock + "\n 확인용1 \n");
+									System.out.println("\n 확인용1 \n" + pagePerBlock + "\n 확인용1 \n");
 									blockPage = ( nowBlock - 1 ) * pagePerBlock + 1;
 									firstgguck = blockPage;
 									blockPage1 = blockPage + 10;
 									if ( nowBlock == totalBlock ) blockPage1 = blockPage + lastblock;
-									System.out.println("\n nowBlock \n" + nowBlock + "\n nowBlock \n");
-									System.out.println("\n pagePerBlock \n" + pagePerBlock + "\n pagePerBlock \n");
-									System.out.println("\n blockPage \n" + blockPage + "\n blockPage \n");
-									System.out.println("\n blockPage1 \n" + blockPage1 + "\n blockPage1 \n");
+									System.out.println("\n 확인용2 \n" + nowBlock + "\n 확인용2 \n");
+									System.out.println("\n 확인용2 \n" + pagePerBlock + "\n 확인용2 \n");
 									for ( int i = blockPage; i < blockPage1; i++) {
 										if ( i == firstgguck ) {
 									%>
@@ -443,7 +398,6 @@
 			</div>
 		</form>
 		
-		<div style="position: fixed; width: 1500px; height: 70px; background: white; left: 230px;"></div>
 		
 		<script>
 			
@@ -466,7 +420,7 @@
 		    }
 		    
 		    function pointcharge() {
-		    	document.chargefrm.action = "proc/payProc.jsp";
+		    	document.chargefrm.action = "payProc.jsp";
 		    	document.chargefrm.submit();
 		    }
 		    
@@ -478,7 +432,7 @@
 		    	var result = confirm("환불 하시겠습니까?");
 		    	
 		    	if ( result === true ) {
-		    		document.refundfrm.action = "proc/refundProc.jsp";
+		    		document.refundfrm.action = "refundProc.jsp";
 		    		document.refundfrm.submit();
 		    	} else {
 		    		alert("환불 취소");
@@ -527,18 +481,6 @@
 			<input type="hidden" name="dateStart" value="<%=oneMonthAgodate%>">
 			<input type="hidden" name="dateEnd" value="<%=todaydate%>">
 		</form>
-		
-		<script>
-			
-			window.onscroll = function() {
-			    var navbar = document.getElementById("test");
-			    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-			        navbar.style.top = "0"; 										// 스크롤이 아래로 이동했을 때 네비게이션 바를 화면 상단에 고정
-			    }
-			}
-			
-		</script>
-		
 	</body>
 </html>
 

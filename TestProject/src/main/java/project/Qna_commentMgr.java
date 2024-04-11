@@ -161,46 +161,6 @@ public class Qna_commentMgr {
 		return flag;
 	}
 	
-	// 관리자 댓글 쓰기
-	public boolean managercommentInsert(int check, int num, String content, int pos, int ref, String manager) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		String sql = null;
-		boolean flag = false;
-		try {
-			if ( check == 0 ) { // 그냥 댓글
-				con = pool.getConnection();
-				sql = "INSERT INTO qna_comment (COMMENT_QNA_NUM, QNA_COMMENT_CONTENT, QNA_COMMENT_REPLY_POS,"
-						+ "QNA_COMMENT_REPLY_REF, QNA_COMMENT_REPLY_DEPTH, QNA_COMMENT_DATE, QNA_COMMENT_MANAGER_ID) "
-						+ "VALUES (?, ?, ?, 0, 1, now(), ?)";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, num);
-				pstmt.setString(2, content);
-				pstmt.setInt(3, pos);
-				pstmt.setString(4, manager);
-				if ( pstmt.executeUpdate() > 0 ) flag = true;
-			} else if ( check == 1 ) { // 대댓글
-				con = pool.getConnection();
-				sql = "INSERT INTO qna_comment (COMMENT_QNA_NUM, QNA_COMMENT_CONTENT, QNA_COMMENT_REPLY_POS,"
-						+ "QNA_COMMENT_REPLY_REF, QNA_COMMENT_REPLY_DEPTH, QNA_COMMENT_DATE, QNA_COMMENT_MANAGER_ID) "
-						+ "VALUES (?, ?, ?, ?, 1, now(), ?)";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, num);
-				pstmt.setString(2, content);
-				pstmt.setInt(3, pos);
-				pstmt.setInt(4, ref);
-				pstmt.setString(5, manager);
-				if ( pstmt.executeUpdate() > 0 ) flag = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt);
-		}
-		return flag;
-	}
-	
-
 	// pos에 맞는 댓글 개수 세기 (대댓글 입력용)
 	public int getRereply(int num, int pos) {
 		Connection con = null;

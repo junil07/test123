@@ -2,19 +2,19 @@ package project;
 
 public class ExplanationBean {
 	
-	private int explanation_num, explanation_question_num, explanation_filesize;
-	private String explanation_content, explanation_file,explanation_test_num;
+	private int explanation_num, explanation_paypost_num, explanation_question_num, explanation_filesize;
+	private String explanation_content, explanation_file;
 	public int getExplanation_num() {
 		return explanation_num;
 	}
 	public void setExplanation_num(int explanation_num) {
 		this.explanation_num = explanation_num;
 	}
-	public String getExplanation_test_num() {
-		return explanation_test_num;
+	public int getExplanation_paypost_num() {
+		return explanation_paypost_num;
 	}
-	public void setExplanation_test_num(String explanation_test_num) {
-		this.explanation_test_num = explanation_test_num;
+	public void setExplanation_paypost_num(int explanation_paypost_num) {
+		this.explanation_paypost_num = explanation_paypost_num;
 	}
 	public int getExplanation_question_num() {
 		return explanation_question_num;

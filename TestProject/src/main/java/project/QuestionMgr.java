@@ -255,37 +255,4 @@ public class QuestionMgr {
 		}
 		return elist;
 	 }
-	 
-	 public Vector<QuestionBean> wrongQuestion(String testnum,int QuestionNumber){
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		Vector<QuestionBean> vlist = new Vector<QuestionBean>();
-		try {
-			con = pool.getConnection();
-			sql = "select * from question where question_test_num = ? and question_number=?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, testnum);
-			pstmt.setInt(2, QuestionNumber);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				QuestionBean qbean = new QuestionBean();
-				qbean.setQuestion_num(rs.getInt("question_num"));
-				qbean.setQuestion_test_num(rs.getString("question_test_num"));
-				qbean.setQuestion_number(rs.getInt("question_number"));
-				qbean.setQuestion_content(rs.getString("question_content"));
-				qbean.setQuestion_correct(rs.getInt("question_correct"));
-				qbean.setQuestion_file(rs.getString("question_file"));
-				qbean.setQuestion_filesize(rs.getInt("question_filesize"));
-				qbean.setQuestion_percent(rs.getDouble("question_percent"));
-				vlist.addElement(qbean);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		return vlist;
-	 }
 }
