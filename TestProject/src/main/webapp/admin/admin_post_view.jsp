@@ -179,7 +179,6 @@
 							<tr>
 								<td>
 									<%
-									/////////
 									Vector<Board_commentBean> cvlist = Cmgr.getCommentList(board_num);
 									if(!cvlist.isEmpty()){
 									%>
