@@ -22,7 +22,7 @@ public class UserMgr {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "SELECT COUNT(USER_ID) FROM user WHERE USER_ID = ? AND USER_PW = ?";
+			sql = "SELECT COUNT(USER_ID) FROM user WHERE USER_ID = ? AND USER_PW = TO_BASE64(AES_ENCRYPT(?, 'testkey123')) ";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, pwd);
@@ -44,7 +44,7 @@ public class UserMgr {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)";
+			sql = "INSERT INTO user VALUES (?, TO_BASE64(AES_ENCRYPT(?, 'testkey123')), ?, ?, ?, ?, ?)";
 			// INSERT INTO user VALUES('asdf123', '123123', '성진차', '01001010101', 'lkalala@naver.com', 1, 1)
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, bean.getUser_id());
@@ -106,7 +106,7 @@ public class UserMgr {
 			if ( check == 1 ) { 				// id  바꿈 근데 안함
 			} else if ( check == 2 ) {			// pwd 바꿈
 				con = pool.getConnection();
-				sql = "UPDATE user SET USER_PW = ? WHERE USER_ID = ?";
+				sql = "UPDATE user SET USER_PW = TO_BASE64(AES_ENCRYPT(?, 'testkey123')) WHERE USER_ID = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, a);
 				pstmt.setString(2, idKey);
@@ -213,7 +213,54 @@ public class UserMgr {
 		return result.toString();
 	}
 	
+	// 유저 이름 가져오기 
+	public String getName(String id) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		String name = "";
+		try {
+			con = pool.getConnection();
+			sql = "SELECT USER_NAME FROM user WHERE USER_ID = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			while ( rs.next() ) {
+				name = rs.getString(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return name;
+	}
 	
+	
+	// 유저 등급 가져오기
+	public int getGrade(String id) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int grade = 0;
+		try {
+			con = pool.getConnection();
+			sql = "SELECT USER_GRADE FROM user WHERE USER_ID = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			while ( rs.next() ) {
+				grade = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return grade;
+	}
 	
 	/*
 	public static void main(String[] args) {

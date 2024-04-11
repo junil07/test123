@@ -421,4 +421,54 @@ public class PaypostMgr {
 		return paypostTitle;
 	}
   
+	public Vector<PaypostBean> paypostTitleList(String test_num,String userId){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector<PaypostBean> vlist = new Vector<PaypostBean>();
+		PaypostBean bean = new PaypostBean();
+		try {
+			con = pool.getConnection();
+			sql = "SELECT paypost.PAYPOST_NUM,PAYPOST.PAYPOST_TITLE FROM BUYLIST JOIN PAYPOST ON BUYLIST.BUYLIST_PAYPOST_NUM = PAYPOST.PAYPOST_NUM WHERE buylist_buyer =? AND paypost_test_num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			pstmt.setString(2, test_num);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				bean.setPaypost_num(rs.getInt(1));
+				bean.setPaypost_title(rs.getString(2));
+				vlist.addElement(bean);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return vlist;
+	}
+	
+	public int userBuyCount(String test_num,String userId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int count = 0;
+		try {
+			con = pool.getConnection();
+			sql = "SELECT COUNT(*) FROM BUYLIST JOIN PAYPOST ON BUYLIST.BUYLIST_PAYPOST_NUM = PAYPOST.PAYPOST_NUM WHERE BUYLIST_BUYER = ? AND PAYPOST_TEST_NUM = ?;";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			pstmt.setString(2, test_num);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return count;
+	}
 }

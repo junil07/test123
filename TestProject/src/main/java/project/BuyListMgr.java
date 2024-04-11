@@ -70,4 +70,29 @@ public class BuyListMgr {
 		return totalCount;
 	}
 	
+	
+	public Vector<BuyListBean> userBuy(String userId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector<BuyListBean> vlist = new Vector<BuyListBean>();
+		try {
+			con = pool.getConnection();
+			sql = "select * from buylist where buylist_buyer=? ";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BuyListBean bean = new BuyListBean();
+				bean.getBuylist_paypost_num();
+				vlist.addElement(bean);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return vlist;
+	}
 }
