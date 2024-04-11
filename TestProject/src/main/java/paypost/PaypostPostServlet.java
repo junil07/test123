@@ -18,8 +18,8 @@ public class PaypostPostServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PaypostMgr mgr = new PaypostMgr();
-		mgr.insertNotice(request);
-		response.sendRedirect("Notice.jsp");
+		mgr.insertPaypost(request);
+		response.sendRedirect("Paypost.jsp");
 	}
 
 }

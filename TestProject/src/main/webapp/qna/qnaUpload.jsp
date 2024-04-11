@@ -5,7 +5,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%
-	String sess = (String) session.getAttribute("idKey");
+	
 %>
 
 
@@ -143,37 +143,18 @@
 		
 		<%@ include file="../inc/footer.jsp" %>
 		
-		<h1 style="position:absolute; left: 250px; top:100px;">유료 게시물 등록</h1>
+		<h1 style="position:absolute; left: 250px; top:100px;">QnA 게시물 등록</h1>
 		
-		<form name="frm" method="post" action="paypostPost" enctype="multipart/form-data">
+		<form name="frm">
 			
 			<div class="parantdiv">
-			    <div class="titleinputlan marginbaby">
-			        <div class="container" style="margin-top:25px;">
-			                <div class="form-group row">
-			                    <label for="title" class="col-sm-2 col-form-label">제목</label>
-			                    <div class="col-sm-10">
-			                        <input type="text" class="form-control" id="title" name="title" maxlength="30" value="">
-			                    </div>
-			                </div>
-			                <div class="form-group row">
-							    <label for="pay" class="col-sm-2 col-form-label">금액</label>
-							    <div class="col-sm-10">
-							        <input type="number" class="form-control" id="pay" name="pay" maxlength="15" value="">
-							    </div>
-							</div>
-			                <div class="form-group row">
-			                    <label for="filename" class="col-sm-2 col-form-label">파일찾기</label>
-			                    <div class="col-sm-10">
-			                        <div class="custom-file">
-			                            <input type="file" class="custom-file-input" id="filename" name="filename" onchange="displayFileName()">
-			                            <label class="custom-file-label" for="filename" id="filenameLabel">파일 선택</label>
-			                        </div>
-			                    </div>
-			                </div>
-
-			        </div>
-			    </div>
+				
+					<div class="titleinputlan marginbaby">
+						
+						<textarea class="boardname" spellcheck="false" readonly>QnA 게시판</textarea>
+						<textarea id="noEnter" name="titlename" class="titlename" placeholder="제목을 입력하세요" maxlength="30"></textarea>
+						
+					</div>
 					
 					<div class="textinputlan marginbaby">
 						
@@ -181,12 +162,9 @@
 						
 					</div>
 				
-				<button type="button" class="uploadbtn marginbaby" onclick="paypostUpload()">등록</button>
+				<button type="button" class="uploadbtn marginbaby" onclick="qnaUpload()">등록</button>
 				
 			</div>
-			<input type="hidden" name="ip" value="<%=request.getRemoteAddr()%>">
-			<input type="hidden" name="user" value="<%=sess%>">
-			
 		
 		</form>
 		
@@ -213,54 +191,37 @@
 				}
 			}
 			
-			function paypostUpload() {
-			    var titlename = document.querySelector('#title');
-			    var content = document.querySelector('#contentid');
-			    var pay = document.querySelector('#pay');
-			    var filename = document.querySelector('#filename');
-			    
-			    if (titlename.value.trim() === "") {
-			        alert("제목을 입력하세요");
-			        return;
-			    }
-			    
-			    if (pay.value.trim() === "") {
-			        alert("가격을 입력하세요");
-			        return;
-			    }
-			    
-			    if (filename.value.trim() === "") {
-			        alert("파일을 첨부하세요");
-			        return;
-			    }
-			    
-			    if (content.value.trim() === "") {
-			        alert("내용을 입력하세요");
-			        return;
-			    }
-
-			    var result = confirm("등록 하시겠습니까?");
-			    
-			    if (result) {
-			        document.frm.submit();
-			    }
+			function qnaUpload() {
+				
+				var titlename = document.querySelector('.titlename');
+				var content = document.querySelector('.contentinputtext');
+				
+				if ( titlename.value === "" ) {
+					
+					alert("제목을 입력하세요");
+					return;
+					
+				} else if ( content.value === "" ) {
+					
+					alert("내용을 입력하세요");
+					return;
+					
+				}
+				
+				var result = confirm("등록 하시겠습니까?");
+				
+				if ( result === true ) {
+					
+					document.frm.action = "proc/qnaUploadProc.jsp";
+					document.frm.submit();
+					
+				} else {
+					
+					return;
+					
+				}
+				
 			}
-			
-			function isNumberKey(evt) {
-			    var charCode = (evt.which) ? evt.which : event.keyCode;
-			    if (charCode < 48 || charCode > 57) {
-			        evt.preventDefault();
-			        return false;
-			    }
-			    return true;
-			}
-			
-		    function displayFileName() {
-		        const input = document.getElementById('filename');
-		        const label = document.getElementById('filenameLabel');
-		        const fileName = input.files[0].name;
-		        label.innerHTML = fileName;
-		    }
 			
 		</script>
 		

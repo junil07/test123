@@ -5,6 +5,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <jsp:useBean id="mgr" class="project.PaypostMgr"/>
 <jsp:useBean id="userMgr" class="project.UserMgr"/>
+<jsp:useBean id="commentMgr" class="project.PaypostCommentMgr"/>
 <%
 	String sess = (String) session.getAttribute("idKey");
 	String sessManager = (String) session.getAttribute("adminKey");
@@ -55,187 +56,263 @@
 	//현재블럭
 	nowBlock = (int)Math.ceil((double)nowPage/pagePerBlock);
 	
-	UserBean ubean = new UserBean();
 %>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>JSP Board</title>
-<link href="style.css" rel="stylesheet" type="text/css">
-<script type="text/javascript">
-
-<%
-// System.out.println("!!" + sess);						// 내 정보는 로그인을 해야 볼 수 있음. 세션에 idKey값 없을 시 login.jsp로 이동
-if ( sess == null && sessManager == null ) {
-%>
-	alert("로그인이 필요합니다.");
-	location.href = "../user/login.jsp";
-<%
-} else if ( sess != null && sessManager != null ) {
-	session.invalidate();
-%>
-	alert("세션이 중복되었습니다 다시 로그인을 해주세요");
-	location.href = "../user/login.jsp";
-<%
-} else if ( sess != null && sessManager == null ) {
-	for ( int i = 0; i < uvlist.size(); i++ ) {
-		UserBean bean = uvlist.get(i);
-		infoId = bean.getUser_id();
-		infoPoint = Integer.toString(bean.getUser_point());
-		infoGrade = Integer.toString(bean.getUser_grade());
+	<%@ include file="../inc/head.jsp" %>
+		<title>Paypost</title>
+		<link href="css/paypost.css" rel="stylesheet">
+<script>
+	<%
+	// System.out.println("!!" + sess);						// 내 정보는 로그인을 해야 볼 수 있음. 세션에 idKey값 없을 시 login.jsp로 이동
+	if ( sess == null && sessManager == null ) {
+	%>
+		alert("로그인이 필요합니다.");
+		location.href = "../user/login.jsp";
+	<%
+	} else if ( sess != null && sessManager != null ) {
+		session.invalidate();
+	%>
+		alert("세션이 중복되었습니다 다시 로그인을 해주세요");
+		location.href = "../user/login.jsp";
+	<%
+	} else if ( sess != null && sessManager == null ) {
+		for ( int i = 0; i < uvlist.size(); i++ ) {
+			UserBean bean = uvlist.get(i);
+			infoId = bean.getUser_id();
+			infoPoint = Integer.toString(bean.getUser_point());
+			infoGrade = Integer.toString(bean.getUser_grade());
+			}
+	} else if ( sess == null && sessManager != null ) {
+		
+	} 
+	%>
+	
+	
+	function check() {
+		if(document.searchFrm.keyWord.value==""){
+			alert("검색어를 입력하세요.");
+			document.searchFrm.keyWord.focus();
+			return;
 		}
-} else if ( sess == null && sessManager != null ) {
-	
-} 
-%>
-
-
-function check() {
-	if(document.searchFrm.keyWord.value==""){
-		alert("검색어를 입력하세요.");
-		document.searchFrm.keyWord.focus();
-		return;
+		document.searchFrm.submit();
+		}
+		
+	function list() {
+		document.listFrm.action = "PayPost.jsp";
+		document.listFrm.submit();
 	}
-	document.searchFrm.submit();
+	function pageing(page) {
+		document.readFrm.nowPage.value=page;
+		document.readFrm.submit();
+	}
+	function block(block) {
+		document.readFrm.nowPage.value=<%=pagePerBlock%>*(block-1)+1;
+		document.readFrm.submit();
+	}
+	function read(num) {
+		document.readFrm.num.value=num;
+		document.readFrm.action="PaypostRead.jsp";
+		document.readFrm.submit();
+	}
+	function numPerFn(numPerPage) {
+		document.readFrm.action="Paypost.jsp";
+		document.readFrm.numPerPage.value=numPerPage;
+		document.readFrm.submit();
+	}
+	function blockprev(block) {
+		if ( <%=nowBlock%> === 1 ) {
+			alert("처음입니다.");
+			return;
+		}
+		document.readfrm.nowPage.value = <%=pagePerBlock%> * ( block - 1 ) + 1;
+		document.readfrm.action = "Paypost.jsp";
+		document.readfrm.submit();
 	}
 	
-function list() {
-	document.listFrm.action = "PayPost.jsp";
-	document.listFrm.submit();
-}
-function pageing(page) {
-	document.readFrm.nowPage.value=page;
-	document.readFrm.submit();
-}
-function block(block) {
-	document.readFrm.nowPage.value=<%=pagePerBlock%>*(block-1)+1;
-	document.readFrm.submit();
-}
-function read(num) {
-	document.readFrm.num.value=num;
-	document.readFrm.action="PaypostRead.jsp";
-	document.readFrm.submit();
-}
-function numPerFn(numPerPage) {
-	document.readFrm.action="Paypost.jsp";
-	document.readFrm.numPerPage.value=numPerPage;
-	document.readFrm.submit();
-}
+	function blocknext(block) {
+		if ( <%=nowBlock%> === <%=totalBlock%> ) {
+			alert("끝입니다.");
+			return;
+		}
+		document.readfrm.nowPage.value = <%=pagePerBlock%> * ( block - 1 ) + 1;
+		document.readfrm.action = "Paypost.jsp";
+		document.readfrm.submit();
+	}
+	function reload() {
+		document.listfrm.action = "Paypost.jsp";
+		document.listfrm.submit();
+	}
+	
+	function upload() {
+		
+		<%
+			if ( sess == null ) {
+		%>
+				alert("로그인이 필요합니다.");
+				location.href = "login.jsp";
+		<%
+			} else {
+		%>
+				location.href = "PaypostPost.jsp";
+		<%
+			}
+		%>
+		
+	}
 </script>
 </head>
-<body bgcolor="#FFFFCC" >
-<div align="center"><br/>
-<h2>JSP Board</h2><br/>
-<table>
-	<tr>
-		<td width="600">
-		Total : <%=totalRecord%>Articles(<font color="red"><%=nowPage+"/"+totalPage%></font>)
-		</td>
-		<td align="right">
-			<form name="npFrm" method="post">
-				<select name="numPerPage" size="1" onchange="numPerFn(this.form.numPerPage.value)">
-    				<option value="5">5개 보기</option>
-    				<option value="10" selected>10개 보기</option>
-    				<option value="15">15개 보기</option>
-    				<option value="30">30개 보기</option>
-   				</select>
-   				<script>document.npFrm.numPerPage.value=<%=numPerPage%></script>
-   			</form>
-		</td>
-	</tr>
-</table>
-<table>
-	<tr>
-		<td align="center" colspan="2">
-		<%
-			Vector<PaypostBean> pvlist = mgr.allPaypost(keyField, keyWord, start, cnt);
-			int listSize = pvlist.size();
-			//out.print(listSize);
-			if(pvlist.isEmpty()) {
-				out.print("등록된 게시물이 없습니다.");
-			}else{
-		%>
-		<table cellspacing="0">
-				<tr align="center" bgcolor="#D0D0D0">
+<body>
+		
+		<div id="grandpadiv" style="position:fixed; width: 100%;">
+		
+			<div id="wrapper">
+				
+				<%@ include file="../inc/menu.jsp" %>
+					
+				<div id="content-wrapper" class="d-flex flex-column">
+		            <!-- Main Content -->
+		            <div id="content" class="bg-white">
+		                <!-- // 최상단 Top 영역 -->
+						<%@ include file="../inc//top.jsp" %>
+						<!-- Begin Page Content -->
+		                <div class="container-fluid">
+		                	<!-- // 컨텐츠 입력 start  -->
+		                	<%@ include file="../inc/footer.jsp" %>
+		
+		<h1 style="position:absolute; left: 250px; top:100px;">유료글 게시판</h1>
+		
+		<!-- 시작 -->
+		<div class="parantdiv">
+			<div align="center">
+			<table>
+				
+				<tr>
+					
+					<td align="center">
+						
+						<table style="border-collapse: collapse">
+							
+							<tr class="subjecttitle" align="center">
 					<td width="100">번 호</td>
-					<td width="250">제 목</td>
-					<td width="150">날 짜</td>
-					<td width="100">포인트</td>
+					<td width="700">제 목</td>
+					<td width="200">날 짜</td>
+					<td width="110">추천수</td>
+					<td width="110">포인트</td>
 				</tr>	
 				<%
+					Vector<PaypostBean> vlist = mgr.getPaypostList(keyField, keyWord, start, cnt);
+					int listSize = vlist.size();
+					
 					for(int i=0; i<numPerPage; i++){
 						if(i==listSize) break;
-						PaypostBean bean = pvlist.get(i);
+						PaypostBean bean = vlist.get(i);
 						int num = bean.getPaypost_num();
 						String title = bean.getPaypost_title();
 						String regdate = bean.getPaypost_date();
 						int count = bean.getPaypost_pay();
+						int good = bean.getPaypost_good();
+						
+						int commentCount = commentMgr.getCountComment(num);
+						
 				%>
-				<tr align="center">
-					<td><%=totalRecord-start-i%></td>
+				<tr class="subjecttitle" align="center">
+					<td><%=totalRecord - start - i%></td>
+					<%
+						if ( commentCount == 0 ) {
+					%>
 					<td><a href="javascript:read('<%=num%>')"><%=title%></a></td>
+					<%
+						} else {
+					%>									
+					<td><a href="javascript:read('<%=num%>')"><%=title%> <font color="red">(<%=commentCount%>)</font></a></td>
+					<%
+						}
+					%>
 					<td><%=regdate%></td>
+					<td><%=good%></td>
 					<td><%=count%></td>
 				</tr>
 				<%}//--for%>
-		</table>
-		<%}%>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2"><br><br></td>
-	</tr>
-	<tr>
-		<td>
-		<!-- 이전블럭 -->
-		<%if(nowBlock>1) {%>
-			<a href="javascript:block('<%=nowBlock-1%>')">prev...</a>
-		<%}%>
-		<!-- 페이징 -->
-		<%
-			int pageStart = (nowBlock-1)*pagePerBlock+1;
-			int pageEnd = (pageStart+pagePerBlock)<totalPage?
-					pageStart+pagePerBlock:totalPage+1;
-			for(;pageStart<pageEnd;pageStart++){
-		%>
-		<a href="javascript:pageing('<%=pageStart%>')">
-		<!-- 현재 페이지와 동일한 페이지는 font color=value 세팅 -->
-		<%if(nowPage==pageStart){%><font color="blue"><%}%>
-		[<%=pageStart%>]
-		<%if(nowPage==pageStart){%></font><%}%>
-		</a>
-		<%}//--for%>
-		<!-- 다음블럭 -->
-		<%if(totalBlock>nowBlock) {%>
-			<a href="javascript:block('<%=nowBlock+1%>')">...next</a>
-		<%}%>
-		</td>
-		<td align="right">
-			<%--관리자일 경우에 글쓰기 버튼 생성 4일때 관리자 상태--%>
-			<%if(ubean.getUser_grade() == 0){ %>
-				<a href="PaypostPost.jsp">[글쓰기]</a>
-			<%} %>
-			<a href="javascript:list()">[처음으로]</a>
+				
+				<tr align="center">
+				
+				<%
+					if ( listSize == 0 ) {
+				%>
+					
+						<td colspan="4">정보가 없습니다.</td>
+					
+				<%
+					} else {
+				%>
+				<td colspan="4" style="height: 70px;">
+				
+				<a href="javascript:blockprev('<%=nowBlock - 1%>')">&#60;</a>
+				
+				<!-- 이전블럭 -->
+				<!-- 페이징 -->
+				<%
+					int pageStart = (nowBlock-1)*pagePerBlock+1;
+					int pageEnd = (pageStart+pagePerBlock)<totalPage?
+							pageStart+pagePerBlock:totalPage+1;
+					for(;pageStart<pageEnd;pageStart++){
+				%>
+					<a href="javascript:pageing('<%=pageStart%>')">
+				<!-- 현재 페이지와 동일한 페이지는 font color=value 세팅 -->
+				<%if(nowPage==pageStart){%><font color="blue"><%}%>
+				[<%=pageStart%>]
+				<%if(nowPage==pageStart){%></font><%}%>
+				</a>
+				<%}//--for%>
+				<!-- 다음블럭 -->
+					<a href="javascript:blocknext('<%=nowBlock + 1%>')">&#62;</a>
+				</td>
+			<%
+				}
+			%>
+				</tr>
+			</table>
 		</td>
 	</tr>
 </table>
-<hr width="750">
-<form  name="searchFrm">
-	<table  width="600" cellpadding="4" cellspacing="0">
- 		<tr>
-  			<td align="center" valign="bottom">
-   				<select name="keyField" size="1" >
-    				<option value="notice_title"> 제 목</option>
-    				<option value="notice_date"> 날 짜</option>
-   				</select>
-   				<input size="16" name="keyWord">
-   				<input type="button"  value="찾기" onClick="javascript:check()">
-   				<input type="hidden" name="nowPage" value="1">
-  			</td>
- 		</tr>
-	</table>
-</form>
 
+<form name="searchFrm">
+			
+				<div class="bottomcpn">
+				
+					<select name="keyField">
+						<option value="PAYPOST_TITLE">제목</option>
+						<option value="PAYPOST_USER_ID">작성자</option>
+					</select>
+					
+					<input name="keyWord" style="width: 30%;">
+					<button class="searchbtn" type="button" onclick="check(event)">검색</button>
+					<button class="reloadbtn" type="button" onclick="reload()">새로고침</button>
+					<button class="newpostbtn" type="button" onclick="upload()">글 쓰기</button>
+					
+				</div>
+				
+			</form>
+			
+			<div style="width: 100%; height: 100px;"></div>
+			
+		</div>
+		
+		<hr width="750">
+		                	
+		   	  			</div>
+		   	  
+		            </div>
+		            
+		        </div>
+				
+			</div>
+		
+		</div>
+		
+		
 <form name="listFrm" method="post">
 	<input type="hidden" name="reload" value="true">
 	<input type="hidden" name="nowPage" value="1">

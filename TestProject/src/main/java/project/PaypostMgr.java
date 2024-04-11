@@ -379,6 +379,39 @@ public class PaypostMgr {
 		return paypostTitle;
 	}
 	
+	
+	//게시물 하나 불러오기
+	   public PaypostBean getPaypost(int num) {
+	      Connection con = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String sql = null;
+	      PaypostBean bean = new PaypostBean();
+	      try {
+	         con = pool.getConnection();
+	         sql = "select * from paypost where paypost_num=?";
+	         pstmt = con.prepareStatement(sql);
+	         pstmt.setInt(1, num);
+	         rs = pstmt.executeQuery();
+	         if(rs.next()) {
+	            bean.setPaypost_num(rs.getInt("Paypost_num"));
+	            bean.setPaypost_user_id(rs.getString("paypost_user_id"));
+	            bean.setPaypost_title(rs.getString("Paypost_title"));
+	            bean.setPaypost_content(rs.getString("Paypost_content"));
+	            bean.setPaypost_pay(rs.getInt("Paypost_pay"));
+	            bean.setPaypost_agree(rs.getInt("Paypost_agree"));
+	            bean.setPaypost_date(rs.getString("Paypost_date"));
+	            bean.setPaypost_good(rs.getInt("Paypost_good"));
+	            bean.setPaypost_reason(rs.getString("Paypost_reason"));  
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         pool.freeConnection(con, pstmt, rs);
+	      }
+	      return bean;
+	   }
+	
 	//게시물의 파일 가져오기
 	   public Paypost_fileuploadBean getFile(int num) {
 	      Connection con = null;
@@ -467,7 +500,7 @@ public class PaypostMgr {
 	      Connection con = null;
 	      PreparedStatement pstmt = null;
 	      String sql = null;
-	      
+	     
 	      try {
 	         
 	         File dir = new File(SAVEFOLDER);
@@ -484,19 +517,21 @@ public class PaypostMgr {
 	            fileextension = UtilMgr.fileExtension(filefullname);
 	            filesize = (int)multi.getFile("filename").length();
 	         }
-	         
+		     String pay = multi.getParameter("pay");
 	         String content = multi.getParameter("content"); //게시물 내용
 	         con = pool.getConnection();
 	         sql = "insert paypost(paypost_user_id, paypost_title, paypost_content, paypost_pay, paypost_agree, paypost_date, paypost_good, paypost_reason) "
-	               + "values(?, ?, ?, now(), 0)";
+	               + "values(?, ?, ?, ?, 0, now(), 0, '')";
 	         pstmt = con.prepareStatement(sql);
-	         pstmt.setString(1, multi.getParameter("title"));
-	         pstmt.setString(2, multi.getParameter("content"));
+	         pstmt.setString(1, multi.getParameter("user"));
+	         pstmt.setString(2, multi.getParameter("title"));
+	         pstmt.setString(3, multi.getParameter("content"));
+	         pstmt.setInt(4, Integer.parseInt(pay));
 	         pstmt.executeUpdate();
 	         pstmt.close();
 	         if(filename!=null&&!filename.equals("")) {
-	            sql = "insert notice_fileupload(notice_fileupload_server_name, fileupload_notice_num, notice_fileupload_name, "
-	                  + "notice_fileupload_extension, notice_fileupload_size)"
+	            sql = "insert paypost_fileupload(paypost_fileupload_server_name, fileupload_paypost_num, paypost_fileupload_name, "
+	                  + "paypost_fileupload_extension, paypost_fileupload_size)"
 	                  + "values(?, ?, ?, ?, ?)";
 	            pstmt = con.prepareStatement(sql);
 	            pstmt.setString(1, newfilename);
@@ -642,6 +677,108 @@ public class PaypostMgr {
 	      return;
 	   }
 	   
-	   
+	// 댓글 개수 세기
+		public int getCount(int num) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			int count = 0;
+			
+			try {
+				con = pool.getConnection();
+				sql = "SELECT COUNT(*) FROM PAYPOST_COMMENT WHERE COMMENT_PAYPOST_NUM = ? AND PAYPOST_COMMENT_REPLY_DEPTH = 1";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, num);
+				rs = pstmt.executeQuery();
+				while( rs.next() ) {
+					count = rs.getInt(1);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt, rs);
+			}
+			return count;
+		}
+		
+		
+		//유료글 리스트 출력 ((사용자버전)) -- 승인된 글만!
+		public Vector<PaypostBean> getPaypostList(String keyField, String keyWord, int start, int cnt) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			Vector<PaypostBean> vlist = new Vector<PaypostBean>();
+			try {
+				con = pool.getConnection();
+				
+				if ( keyWord.trim().equals("") || keyWord == null ) {
+					sql = "SELECT * FROM paypost where paypost_agree=2 ORDER BY paypost_NUM DESC LIMIT ?, ?";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setInt(1, start);
+					pstmt.setInt(2, cnt);
+				} else {
+					sql = "SELECT * FROM paypost WHERE paypost_agree=2 and " + keyField + " LIKE ? ORDER BY PAYPOST_NUM DESC LIMIT ?, ?";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, "%" + keyWord + "%");
+					pstmt.setInt(2, start);
+					pstmt.setInt(3, cnt);
+				}
+				
+				rs = pstmt.executeQuery();
+				while ( rs.next() ) {
+					PaypostBean bean = new PaypostBean();
+					bean.setPaypost_num(rs.getInt("Paypost_num"));
+		            bean.setPaypost_user_id(rs.getString("paypost_user_id"));
+		            bean.setPaypost_title(rs.getString("Paypost_title"));
+		            bean.setPaypost_content(rs.getString("Paypost_content"));
+		            bean.setPaypost_pay(rs.getInt("Paypost_pay"));
+		            bean.setPaypost_agree(rs.getInt("Paypost_agree"));
+		            bean.setPaypost_date(rs.getString("Paypost_date"));
+		            bean.setPaypost_good(rs.getInt("Paypost_good"));
+		            bean.setPaypost_reason(rs.getString("Paypost_reason"));  
+		            vlist.addElement(bean);
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt, rs);
+			}
+			return vlist;
+		}
+		
+		
+		// QnA 게시판 각종 정보들 가져오기
+		public Vector<PaypostBean> getPayposts(int num) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			Vector<PaypostBean> vlist = new Vector<PaypostBean>();
+			try {
+				con = pool.getConnection();
+				sql = "SELECT * FROM PAYPOST WHERE PAYPOST_NUM = ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, num);
+				rs = pstmt.executeQuery();
+				while( rs.next() ) {
+					PaypostBean bean = new PaypostBean();
+					bean.setPaypost_title(rs.getString("PAYPOST_TITLE"));
+					bean.setPaypost_content(rs.getString("PAYPOST_CONTENT"));
+					bean.setPaypost_date(rs.getString("PAYPOST_DATE"));
+					bean.setPaypost_user_id(rs.getString("PAYPOST_USER_ID"));
+					bean.setPaypost_pay(rs.getInt("PAYPOST_PAY"));
+					bean.setPaypost_good(rs.getInt("PAYPOST_GOOD"));
+					vlist.addElement(bean);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt, rs);
+			}
+			return vlist;
+		}
   
 }

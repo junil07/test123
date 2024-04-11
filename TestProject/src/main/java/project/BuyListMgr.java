@@ -88,8 +88,8 @@ public class BuyListMgr {
 	         pstmt = con.prepareStatement(sql);
 	         pstmt.setInt(1, pay);
 	         pstmt.setInt(2, num);
-	         pstmt.setString(1, buyer);
-	         pstmt.setString(2, seller);
+	         pstmt.setString(3, buyer);
+	         pstmt.setString(4, seller);
 	         if(pstmt.executeUpdate()==1) {
 	        	 pstmt.close();
 	        	 // 구매자 구매 포인트 만큼 빼기 
@@ -123,7 +123,7 @@ public class BuyListMgr {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "select buylist_buyser from buylist where buylist_buyser=? and buylist_payapost_num=?";
+			sql = "select buylist_buyer from buylist where buylist_buyer=? and buylist_paypost_num=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, user);
 			pstmt.setInt(2, num);
@@ -137,4 +137,35 @@ public class BuyListMgr {
 		return flag;
 	}
 	
+	
+	//유저가 파일을 구매할 돈이 있는지 확인
+	public boolean pointCheck(String user, int pay) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		boolean flag = true;
+		int point = 0;
+		try {
+			con = pool.getConnection();
+			sql = "select user_point from user where user_id=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, user);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {point = rs.getInt("user_point");System.out.println(point);};
+			//구매 실패시 false 반환
+			if(point < pay) flag = false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return flag;
+	}
+
+
+	public static void main(String[] args) {
+		BuyListMgr mgr = new BuyListMgr();
+		System.out.println(mgr.buyCheck("xx", 887));
+	}
 }

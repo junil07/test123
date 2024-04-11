@@ -1,12 +1,31 @@
-<%-- qna 글 작성하는 페이지 --%>
+<%@page import="project.UserMgr"%>
+<%@page import="project.UserBean"%>
+<%@page import="java.util.Vector"%>
+<%@page import="project.PaypostMgr"%>
+<%@page import="project.Paypost_fileuploadBean"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page import="project.PaypostBean"%>
+<% 
+     String sess = (String) session.getAttribute("idKey");
+     String sessManager = (String) session.getAttribute("adminKey");
+     
+     int num = Integer.parseInt(request.getParameter("num"));
+     String nowPage = request.getParameter("nowPage");
+     String numPerPage = request.getParameter("numPerPage");
+     PaypostMgr mgr = new PaypostMgr();
+     PaypostBean bean = mgr.getPaypost(num);
+     String title = bean.getPaypost_title();
+     String content = bean.getPaypost_content(); 
+     int pay = bean.getPaypost_pay();
 
-<%-- 글자 수 제한 spellcheck 비 활성화 --%>
-
-<%@ page contentType="text/html; charset=UTF-8"%>
-
-<%
-	String sess = (String) session.getAttribute("idKey");
+     Paypost_fileuploadBean fbean = mgr.getFile(num);
+     String filename = fbean.getPaypost_fileupload_name();
+     if(filename!=null&&!filename.equals(""))
+        filename += "." + fbean.getPaypost_fileupload_extension();
+     
+     session.setAttribute("bean", bean);
 %>
+
 
 
 <html>
@@ -143,9 +162,9 @@
 		
 		<%@ include file="../inc/footer.jsp" %>
 		
-		<h1 style="position:absolute; left: 250px; top:100px;">유료 게시물 등록</h1>
+		<h1 style="position:absolute; left: 250px; top:100px;">유료 게시물 수정</h1>
 		
-		<form name="frm" method="post" action="paypostPost" enctype="multipart/form-data">
+		<form name="updateFrm" method="post" action="paypostUpdate" enctype="multipart/form-data">
 			
 			<div class="parantdiv">
 			    <div class="titleinputlan marginbaby">
@@ -153,13 +172,13 @@
 			                <div class="form-group row">
 			                    <label for="title" class="col-sm-2 col-form-label">제목</label>
 			                    <div class="col-sm-10">
-			                        <input type="text" class="form-control" id="title" name="title" maxlength="30" value="">
+			                        <input type="text" class="form-control" id="title" name="title" maxlength="30" value="<%=title%>">
 			                    </div>
 			                </div>
 			                <div class="form-group row">
 							    <label for="pay" class="col-sm-2 col-form-label">금액</label>
 							    <div class="col-sm-10">
-							        <input type="number" class="form-control" id="pay" name="pay" maxlength="15" value="">
+							        <input type="number" class="form-control" id="pay" name="pay" maxlength="15" value="<%=pay%>" required="required">
 							    </div>
 							</div>
 			                <div class="form-group row">
@@ -167,7 +186,7 @@
 			                    <div class="col-sm-10">
 			                        <div class="custom-file">
 			                            <input type="file" class="custom-file-input" id="filename" name="filename" onchange="displayFileName()">
-			                            <label class="custom-file-label" for="filename" id="filenameLabel">파일 선택</label>
+			                            <label class="custom-file-label" for="filename" id="filenameLabel"><%=filename%></label>
 			                        </div>
 			                    </div>
 			                </div>
@@ -177,17 +196,18 @@
 					
 					<div class="textinputlan marginbaby">
 						
-						<textarea id="contentid" name="content" class="contentinputtext" maxlength="1000" oninput="checkLimit()"></textarea>
+						<textarea id="contentid" name="content" class="contentinputtext" maxlength="1000" oninput="checkLimit()"><%=content%></textarea>
 						
 					</div>
 				
-				<button type="button" class="uploadbtn marginbaby" onclick="paypostUpload()">등록</button>
+				<button type="button" class="uploadbtn marginbaby" onclick="paypostUpload()">수정</button>
 				
 			</div>
 			<input type="hidden" name="ip" value="<%=request.getRemoteAddr()%>">
 			<input type="hidden" name="user" value="<%=sess%>">
-			
-		
+			<input type="hidden" name="nowPage" value="<%=nowPage%>">
+			<input type="hidden" name="numPerPage" value="<%=numPerPage%>">
+			<input type="hidden" name="num" value="<%=num%>">
 		</form>
 		
 		<div style="position: fixed; width: 1500px; height: 70px; background: white; left: 230px;"></div>
@@ -217,7 +237,6 @@
 			    var titlename = document.querySelector('#title');
 			    var content = document.querySelector('#contentid');
 			    var pay = document.querySelector('#pay');
-			    var filename = document.querySelector('#filename');
 			    
 			    if (titlename.value.trim() === "") {
 			        alert("제목을 입력하세요");
@@ -229,20 +248,15 @@
 			        return;
 			    }
 			    
-			    if (filename.value.trim() === "") {
-			        alert("파일을 첨부하세요");
-			        return;
-			    }
-			    
 			    if (content.value.trim() === "") {
 			        alert("내용을 입력하세요");
 			        return;
 			    }
 
-			    var result = confirm("등록 하시겠습니까?");
+			    var result = confirm("수정 하시겠습니까?");
 			    
 			    if (result) {
-			        document.frm.submit();
+			        document.updateFrm.submit();
 			    }
 			}
 			

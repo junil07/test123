@@ -1,6 +1,6 @@
 <%@page import="project.UtilMgr"%>
-<%@page import="project.NoticeFileuploadBean"%>
-<%@page import="project.NoticeMgr"%>
+<%@page import="project.Paypost_fileuploadBean"%>
+<%@page import="project.PaypostMgr"%>
 <%@page contentType="application; charset=UTF-8"%>
 <%@page import="java.io.BufferedOutputStream"%>
 <%@page import="java.io.FileInputStream"%>
@@ -10,13 +10,13 @@
 		try{
 			int num = UtilMgr.parseInt(request, "num");
 		
-			NoticeMgr mgr = new NoticeMgr();
-			NoticeFileuploadBean fbean = mgr.getFile(num);
-			String filename = fbean.getNotice_fileupload_server_name();
-			String downfilename = fbean.getNotice_fileupload_name();
-			downfilename += "." + fbean.getNotice_fileupload_extension();
+			PaypostMgr mgr = new PaypostMgr();
+			Paypost_fileuploadBean fbean = mgr.getFile(num);
+			String filename = fbean.getPaypost_fileupload_server_name();
+			String downfilename = fbean.getPaypost_fileupload_name();
+			downfilename += "." + fbean.getPaypost_fileupload_extension();
 			
-			File file = new File(NoticeMgr.SAVEFOLDER+
+			File file = new File(PaypostMgr.SAVEFOLDER+
 					File.separator+filename);
 			byte b[] = new byte[(int)file.length()];
 			
