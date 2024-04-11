@@ -7,7 +7,6 @@ public class TestBean {
 	private String test_subject;
 	private int test_subnumber; //여러개의 과목 선택 시 배열로 get set
 
-	
 	public String getTest_num() {
 		return test_num;
 	}
@@ -39,6 +38,6 @@ public class TestBean {
 		this.test_subnumber = test_subnumber;
 	}
 
-
+	
 	
 }

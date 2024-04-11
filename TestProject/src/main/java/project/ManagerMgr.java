@@ -64,17 +64,5 @@ public class ManagerMgr {
 		}
 		return vlist;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
