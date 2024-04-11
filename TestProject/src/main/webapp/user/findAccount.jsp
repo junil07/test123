@@ -4,7 +4,7 @@
 <jsp:useBean id="userMgr" class="project.UserMgr"/>
 
 <%
-	
+	String commit = "";
 %>
 
 <html>
