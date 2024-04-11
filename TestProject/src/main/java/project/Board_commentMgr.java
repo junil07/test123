@@ -3,6 +3,7 @@ package project;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
 
 public class Board_commentMgr {
@@ -88,7 +89,7 @@ public class Board_commentMgr {
 			int Cnum = cnum;
 			String Ccomment = under_comment;
 			String CuserId = userId;
-
+			System.out.println(CuserId);
 			if (ref == 0 && depth == 0) {
 				sql = "INSERT INTO board_comment (COMMENT_BOARD_NUM, BOARD_COMMENT_CONTENT, BOARD_COMMENT_REPLY_POS, BOARD_COMMENT_REPLY_REF, BOARD_COMMENT_REPLY_DEPTH, BOARD_COMMENT_USER_ID, BOARD_COMMENT_DATE) VALUES (?, ?, ?, ?, ?, ?, NOW());";
 				pstmt = con.prepareStatement(sql);
@@ -247,4 +248,49 @@ public class Board_commentMgr {
 		}
 
 	}
+	
+	//현재 로그인 유저의 이름 출력
+	public String getthisName(String sess, String adminKey) {
+	    Connection con = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    String sql = null;
+	    String this_name = null;
+	    try {
+	        con = pool.getConnection();
+	        if(sess == null || sess.isEmpty()) {
+	            sql = "select MANAGER_NAME From manager where manager_id = ?";
+	            pstmt = con.prepareStatement(sql);
+	            pstmt.setString(1, adminKey);
+	            rs = pstmt.executeQuery(); // 쿼리 실행
+	            if(rs.next()) {
+	                this_name = rs.getString("manager_name");
+	            }
+	        } else if(adminKey == null || adminKey.isEmpty()) {
+	            sql = "select USER_NAME from user where user_id = ?";
+	            pstmt = con.prepareStatement(sql);
+	            pstmt.setString(1, sess);
+	            rs = pstmt.executeQuery(); // 쿼리 실행
+	            if(rs.next()) {
+	                this_name = rs.getString("user_name");
+	            }
+	        } else {
+	            // "비회원"이라는 텍스트를 반환
+	            return "비회원";
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        // rs, pstmt, con을 close 해야합니다.
+	        try {
+	            if (rs != null) rs.close();
+	            if (pstmt != null) pstmt.close();
+	            if (con != null) con.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return this_name;
+	}
+
 }

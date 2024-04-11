@@ -7,7 +7,7 @@
 	String pwd = request.getParameter("pwd");		// login.jsp에서 가져온 pwd
 	boolean result = userMgr.loginChk(id, pwd);		// 로그인 시도
 	String msg = "로그인 실패하였습니다";					// 로그인 실패 시1
-	String url = "login.jsp";						// 로그인 실패 시2
+	String url = "../test/Mainpage.jsp";						// 로그인 실패 시2
     String idsave = request.getParameter("idSave"); // 아이디 저장 체크박스 체크 되어있으면 checked 넘어온다.
 	
 	if ( result ) {									// 성공 시 세션에 저장

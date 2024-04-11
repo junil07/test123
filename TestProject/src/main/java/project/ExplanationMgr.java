@@ -60,7 +60,7 @@ public class ExplanationMgr {
 		return exlist;
 	}
 	
-	public Vector<ExplanationBean> allexinfo(int question_number){
+	public Vector<ExplanationBean> allexinfo(int question_number, int num){
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -68,9 +68,10 @@ public class ExplanationMgr {
 		Vector<ExplanationBean> exlist = new Vector<ExplanationBean>();
 		try {
 			con = pool.getConnection();
-			sql = "select * from explanation where EXPLANATION_QUESTION_NUM = ?";
+			sql = "select * from explanation where EXPLANATION_QUESTION_NUM = ? and EXPLANATION_PAYPOST_NUM = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, question_number);
+			pstmt.setInt(2, num);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				ExplanationBean exbean = new ExplanationBean();

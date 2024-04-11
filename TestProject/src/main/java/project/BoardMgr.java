@@ -16,7 +16,7 @@ public class BoardMgr {
 	}
 
 	// 페이징 처리를 위한 출력
-	public Vector<BoardBean> allboardList(String keyField, String keyWord, int start, int cnt) {
+	public Vector<BoardBean> allboardList(String keyField, String keytext, int start, int cnt) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -24,7 +24,7 @@ public class BoardMgr {
 		Vector<BoardBean> vlist = new Vector<BoardBean>();
 		try {
 			con = pool.getConnection();
-			if (keyWord.trim().equals("") || keyWord == null) {
+			if (keytext.trim().equals("") || keytext == null) {
 				sql = "select * from board order by board_num DESC LIMIT ?, ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, start);
@@ -41,23 +41,29 @@ public class BoardMgr {
 					vlist.addElement(bean);
 				}
 			} else {
-				sql = "select b.board_num, b.board_title, b.board_content, b.board_date, b.board_count, b.board_user_id, u.user_id from board b join user u on b.board_user_id = u.user_id where "
-						+ keyField + " like ? order by board_num desc  limit /?, ?";
+				if("title".equals(keyField)) {
+					sql="SELECT * FROM board b "
+						+ "LEFT OUTER JOIN user u ON b.BOARD_USER_ID = u.USER_ID "
+						+ "WHERE b.board_title like ? limit ?, ?";				
+				}else if("name".equals(keyField)) {
+					sql="SELECT * FROM board b "
+						+ "LEFT OUTER JOIN user u ON b.BOARD_USER_ID = u.USER_ID "
+						+ "WHERE u.USER_NAME LIKE ? limit ?, ?";
+				}
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, "%" + keyWord + "%");
+				pstmt.setString(1, "%" + keytext + "%");
 				pstmt.setInt(2, start);
 				pstmt.setInt(3, cnt);
 				rs = pstmt.executeQuery();
 				while (rs.next()) {
 					BoardBean bean = new BoardBean();
-					UserBean ubean = new UserBean();
-					bean.setBoard_num(rs.getInt(1));
-					bean.setBoard_title(rs.getString(2));
-					bean.setBoard_content(rs.getString(3));
-					bean.setBoard_date(rs.getString(4));
-					bean.setBoard_count(rs.getInt(5));
-					bean.setBoard_user_id(rs.getString(6));
-					ubean.setUser_name(rs.getString(6));
+					bean.setBoard_num(rs.getInt("board_num"));
+					bean.setBoard_title(rs.getString("board_title"));
+					bean.setBoard_content(rs.getString("board_content"));
+					bean.setBoard_date(rs.getString("board_date"));
+					bean.setBoard_count(rs.getInt("board_count"));
+					bean.setBoard_user_id(rs.getString("board_user_id"));
+					bean.setUser_name(rs.getString("user_name"));
 					vlist.addElement(bean);
 				}
 			}
@@ -99,7 +105,7 @@ public class BoardMgr {
 	}
 
 	// 글 갯수 파악
-	public int getTotalCount(String keyField, String keyWord) {
+	public int getTotalCount(String keyField, String keytext) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -107,14 +113,19 @@ public class BoardMgr {
 		int totalCount = 0;
 		try {
 			con = pool.getConnection();
-			if (keyWord.trim().equals("") || keyWord == null) {
+			if (keytext.trim().equals("") || keytext == null) {
 				sql = "SELECT COUNT(*) FROM board";
 				pstmt = con.prepareStatement(sql);
 			} else {
-				sql = "select count(*) from board b join user u on b.board_user_id = u.user_id where " + keyField
-						+ " LIKE ?";
+				if("title".equals(keyField)) {
+					sql="SELECT count(*) FROM board WHERE board_title LIKE ?";
+				}else if("name".equals(keyField)) {
+					sql="SELECT count(*) FROM board b "
+						+ "LEFT OUTER JOIN user u ON b.BOARD_USER_ID = u.USER_ID "
+						+ "WHERE u.USER_NAME LIKE ?";
+				}
 				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, "%" + keyWord + "%");
+				pstmt.setString(1, "%" + keytext + "%");
 			}
 			rs = pstmt.executeQuery();
 			if (rs.next())
@@ -128,7 +139,7 @@ public class BoardMgr {
 	}
 
 	// userId로 이름찾기
-	public String getUserName(String board_userid) {
+	public String getUserName(String comment_id) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -137,7 +148,7 @@ public class BoardMgr {
 			con = pool.getConnection();
 			String sql = "SELECT user_name FROM user WHERE user_id = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, board_userid);
+			pstmt.setString(1, comment_id);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				userName = rs.getString("user_name");
@@ -180,26 +191,27 @@ public class BoardMgr {
 	}
 
 	// user테이블에서 등급 출력
-	public int getUserGrade(String board_userid) {
+	public int getGrade(String comment_id) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		int userGrade = 0;
+		String sql = null;
+		int grade = 0;
 		try {
 			con = pool.getConnection();
-			String sql = "select user_grade from user where user_id = ?";
+			sql = "select user_grade from user where user_id = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, board_userid);
+			pstmt.setString(1, comment_id);
 			rs = pstmt.executeQuery();
-			if (rs.next()) {
-				userGrade = rs.getInt("user_grade");
+			if(rs.next()) {
+				grade = rs.getInt("user_grade");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
 		}
-		return userGrade;
+		return grade;
 	}
 
 	// userid를 통한 비밀번호 불러오기

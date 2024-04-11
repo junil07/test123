@@ -65,4 +65,27 @@ public class ManagerMgr {
 		return vlist;
 	}
 
+	//관리자 이름 출력
+	public String getAdminName(String comment_id) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		String adminName = null;
+		try {
+			con = pool.getConnection();
+			sql = "select manager_name from manager where manager_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, comment_id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				adminName = rs.getString("manager_name");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return adminName;
+	}
 }

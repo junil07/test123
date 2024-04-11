@@ -25,7 +25,7 @@ public class insertpostCommentServlet extends HttpServlet {
 		String under_comment = request.getParameter("under_comment");
 		String userId = request.getParameter("userId");
 		int cnum = UtilMgr.parseInt(request, "num");
-		
+		System.out.println(userId);
 		cmgr.underComment(Cpos, Cref, Cdepth, under_comment, userId, cnum, cbean);
 		cmgr.getMaxRef(cnum, Cpos);
 		String redirectURL = "admin_post_view.jsp";

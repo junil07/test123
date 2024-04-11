@@ -46,7 +46,7 @@
 		var value1 = managerChk.checked ? '1' : '0';
 		
 		if ( value1 === '1' ) {
-			document.frm.action = "managerLoginProc.jsp";
+			document.frm.action = "../admin/managerLoginProc.jsp";
 			document.frm.submit();
 		} else {
 			document.frm.action = "loginProc.jsp";

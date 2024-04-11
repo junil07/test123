@@ -14,7 +14,7 @@ public class PaypostMgr {
    }
    
    //paypost 유료글 리스트 출력(번호, 아이디, 제목, 가격, 날짜) - 유료글 게시판에서 전체적인 출력(paypost_agree가 2인것만출력으로 변경)
-   public Vector<PaypostBean> allPaypost(String keyField,String keyWord, int start, int cnt){
+   public Vector<PaypostBean> allPaypost(String keyField,String keytext, int start, int cnt){
        Connection con = null;
        PreparedStatement pstmt = null;
        ResultSet rs = null;
@@ -22,7 +22,7 @@ public class PaypostMgr {
        Vector<PaypostBean> vlist = new Vector<PaypostBean>();
        try {
            con = pool.getConnection();
-           if(keyWord.trim().equals("") || keyWord == null) {
+           if(keytext.trim().equals("") || keytext == null) {
                sql = "SELECT paypost_num, paypost_user_id, paypost_title, paypost_pay, paypost_date FROM paypost where PAYPOST_AGREE = 2 ORDER BY paypost_num DESC LIMIT ?, ?";
                pstmt = con.prepareStatement(sql);
                pstmt.setInt(1, start);
@@ -33,7 +33,7 @@ public class PaypostMgr {
                   pbean.setPaypost_num(rs.getInt(1));
                   pbean.setPaypost_user_id(rs.getString(2));
                   pbean.setPaypost_title(rs.getString(3));
-                   pbean.setPaypost_pay(rs.getInt(4));
+                  pbean.setPaypost_pay(rs.getInt(4));
                   pbean.setPaypost_date(rs.getString(5));
                   vlist.addElement(pbean);
               }
@@ -41,7 +41,7 @@ public class PaypostMgr {
                sql = "SELECT p.paypost_num, p.paypost_user_id, u.user_name, p.paypost_title, p.paypost_pay, p.paypost_date FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ? and p.paypost_agree = 2 ORDER BY paypost_num DESC LIMIT ?, ?";
                //sql = "SELECT p.paypost_num, p.paypost_user_id, u.user_name, p.paypost_title, p.paypost_pay, p.paypost_date FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ? and p.PAYPOST_AGREEORDER <= 1 BY paypost_num DESC LIMIT ?, ?";
                pstmt = con.prepareStatement(sql);
-               pstmt.setString(1, "%" + keyWord + "%");
+               pstmt.setString(1, "%" + keytext + "%");
                pstmt.setInt(2, start);
                pstmt.setInt(3, cnt);
                rs = pstmt.executeQuery();
@@ -52,7 +52,7 @@ public class PaypostMgr {
                   pbean.setPaypost_user_id(rs.getString(2));
                   ubean.setUser_name(rs.getString(3));
                   pbean.setPaypost_title(rs.getString(4));
-                   pbean.setPaypost_pay(rs.getInt(5));
+                  pbean.setPaypost_pay(rs.getInt(5));
                   pbean.setPaypost_date(rs.getString(6));
                   vlist.addElement(pbean);
               }
@@ -66,7 +66,7 @@ public class PaypostMgr {
    }
 
    //paypost_agree 유료글 승인 게시판 리스트 출력(전체적으로 출력, 승인완료라도 추후 거절로 변경할수 있도록)
-   public Vector<PaypostBean> agreePaypost(String keyField, String keyWord, String okay, int start, int cnt){
+   public Vector<PaypostBean> agreePaypost(String keyField, String keytext, String okay, int start, int cnt){
       Connection con = null;
       PreparedStatement pstmt = null;
       ResultSet rs = null;
@@ -74,7 +74,7 @@ public class PaypostMgr {
       Vector<PaypostBean> vlist = new Vector<PaypostBean>();
       try {
          con = pool.getConnection();
-         if(keyWord.trim().equals("") || keyWord == null) {
+         if(keytext.trim().equals("") || keytext == null) {
                sql = "SELECT paypost_num, paypost_user_id, paypost_title, paypost_pay, paypost_date, PAYPOST_AGREE FROM paypost ORDER BY paypost_num DESC LIMIT ?, ?";
                pstmt = con.prepareStatement(sql);
                pstmt.setInt(1, start);
@@ -93,7 +93,7 @@ public class PaypostMgr {
            }else if(okay == null || okay.isEmpty()){
         	   sql = "SELECT p.paypost_num, p.paypost_user_id, u.user_name, p.paypost_title, p.paypost_pay, p.paypost_date, p.paypost_agree FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ? ORDER BY paypost_num DESC LIMIT ?, ?";
                pstmt = con.prepareStatement(sql);
-               pstmt.setString(1, "%" + keyWord + "%");
+               pstmt.setString(1, "%" + keytext + "%");
                pstmt.setInt(2, start);
                pstmt.setInt(3, cnt);
                rs = pstmt.executeQuery();
@@ -109,10 +109,10 @@ public class PaypostMgr {
                   pbean.setPaypost_agree(rs.getInt(7));
                   vlist.addElement(pbean);
               }
-           }else if(keyWord != null && okay != null){
+           }else if(keytext != null && okay != null){
                sql = "SELECT p.paypost_num, p.paypost_user_id, u.user_name, p.paypost_title, p.paypost_pay, p.paypost_date, p.paypost_agree FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ? and " + okay + " ORDER BY paypost_num DESC LIMIT ?, ?";
                pstmt = con.prepareStatement(sql);
-               pstmt.setString(1, "%" + keyWord + "%");
+               pstmt.setString(1, "%" + keytext + "%");
                pstmt.setInt(2, start);
                pstmt.setInt(3, cnt);
                rs = pstmt.executeQuery();
@@ -187,7 +187,7 @@ public class PaypostMgr {
    }
    
    //유료글 리스트에서 승인된 게시글만 출력(agree = 2)
-   public int getselectCount(String keyField, String keyWord) {
+   public int getselectCount(String keyField, String keytext) {
 	    Connection con = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -195,13 +195,13 @@ public class PaypostMgr {
 	    int totalCount = 0;
 	    try {
 	        con = pool.getConnection();
-	        if(keyWord == null || keyWord.trim().isEmpty()) {
+	        if(keytext == null || keytext.trim().isEmpty()) {
 	            sql = "SELECT COUNT(*) FROM paypost WHERE PAYPOST_AGREE = 2";
 	            pstmt = con.prepareStatement(sql);
 	        } else {
 	            sql = "SELECT COUNT(*) FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ? AND p.PAYPOST_AGREE = 2";
 	            pstmt = con.prepareStatement(sql);
-	            pstmt.setString(1, "%" + keyWord + "%");
+	            pstmt.setString(1, "%" + keytext + "%");
 	        }
 	        rs = pstmt.executeQuery();
 	        if(rs.next()) {
@@ -216,7 +216,7 @@ public class PaypostMgr {
 	}
 
    //유료글 승인 리스트 출력
-   public int getTotalCount(String keyField, String keyWord) {
+   public int getTotalCount(String keyField, String keytext) {
 	    Connection con = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -224,13 +224,13 @@ public class PaypostMgr {
 	    int totalCount = 0;
 	    try {
 	        con = pool.getConnection();
-	        if(keyWord == null || keyWord.trim().isEmpty()) {
+	        if(keytext == null || keytext.trim().isEmpty()) {
 	            sql = "SELECT COUNT(*) FROM paypost ";
 	            pstmt = con.prepareStatement(sql);
 	        } else {
 	            sql = "SELECT COUNT(*) FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ?";
 	            pstmt = con.prepareStatement(sql);
-	            pstmt.setString(1, "%" + keyWord + "%");
+	            pstmt.setString(1, "%" + keytext + "%");
 	        }
 	        rs = pstmt.executeQuery();
 	        if(rs.next()) {
@@ -245,7 +245,7 @@ public class PaypostMgr {
 	}
 
    //유료글 리스트 세부화(작성자, 가격, 제목),(승인 대기, 승인 거절, 승인 완료)
-   public int getagreelist(String keyField, String keyWord, String okay) {
+   public int getagreelist(String keyField, String keytext, String okay) {
 	    Connection con = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -253,17 +253,17 @@ public class PaypostMgr {
 	    int agreeCount = 0;
 	    try {
 	        con = pool.getConnection();
-	        if(keyWord == null || keyWord.trim().isEmpty()) {
+	        if(keytext == null || keytext.trim().isEmpty()) {
 	            sql = "SELECT COUNT(*) FROM paypost";
 	            pstmt = con.prepareStatement(sql);
 	        } else if(okay == null || okay.isEmpty()){
 	        	 sql = "SELECT COUNT(*) FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ?";
 	        	 pstmt = con.prepareStatement(sql);
-		         pstmt.setString(1, "%" + keyWord + "%");
+		         pstmt.setString(1, "%" + keytext + "%");
 	        }else {
 	            sql = "SELECT COUNT(*) FROM paypost p JOIN user u ON p.paypost_user_id = u.user_id WHERE " + keyField + " LIKE ? and " + okay + "";
 	            pstmt = con.prepareStatement(sql);
-	            pstmt.setString(1, "%" + keyWord + "%");
+	            pstmt.setString(1, "%" + keytext + "%");
 	        }
 	        rs = pstmt.executeQuery();
 	        if(rs.next()) {
@@ -292,7 +292,6 @@ public class PaypostMgr {
          rs = pstmt.executeQuery();
          if(rs.next()) {
             pbean.setPaypost_num(rs.getInt("paypost_num"));
-            pbean.setPaypost_test_num(rs.getString("paypost_test_num"));
             pbean.setPaypost_user_id(rs.getString("paypost_user_id"));
             pbean.setPaypost_title(rs.getString("paypost_title"));
             pbean.setPaypost_content(rs.getString("paypost_content"));

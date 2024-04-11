@@ -1,5 +1,6 @@
 <%-- QnA 게시판 --%>
 
+<%@page import="project.Qna_commentMgr"%>
 <%@page import="project.QnaBean"%>
 <%@page import="java.util.Vector"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
@@ -22,16 +23,10 @@
 		keyWord = request.getParameter("keyWord");
 	}
 	
-	System.out.println("\n -- keyField1 -- \n" + keyField + "\n -- keyField1 -- \n");
-	System.out.println("\n -- keyWord1 -- \n" + keyWord + "\n -- keyWord1 -- \n");
-	
 	if ( request.getParameter("reload") != null && request.getParameter("reload").equals("true") ) {
 		keyField = "";
 		keyWord = "";
 	}
-	
-	System.out.println("\n -- keyField2 -- \n" + keyField + "\n -- keyField2 -- \n");
-	System.out.println("\n -- keyWord2 -- \n" + keyWord + "\n -- keyWord2 -- \n");
 	
 	totalRecord = qnaMgr.getTotalCount(keyField, keyWord);
 	
@@ -54,11 +49,19 @@
 
 	<head>
 	
+		<%@ include file="../inc/head.jsp" %>
 		<title>QnA</title>
-		<link href="qna.css" rel="stylesheet">
+		<link href="css/qna.css" rel="stylesheet">
 		
 		<script>
 			
+			// 이전에 캐싱되어있던적이 있다면 새로고침
+			window.onpageshow = function(event) {
+			    if (event.persisted) {
+			        window.location.reload(); 
+			    }
+			};
+		
 			function check() {
 				if ( document.searchfrm.keyWord.value == "" ) {
 					alert("검색어를 입력하세요");
@@ -106,12 +109,56 @@
 				document.readfrm.submit();
 			}
 			
+			function upload() {
+				
+				<%
+					if ( sess == null ) {
+				%>
+						alert("로그인이 필요합니다.");
+						location.href = "login.jsp";
+				<%
+					} else {
+				%>
+						location.href = "qnaUpload.jsp";
+				<%
+					}
+				%>
+				
+			}
+			
+		</script>
+		<script>
+			
+			window.onscroll = function() {
+			    var navbar = document.getElementById("grandpadiv");
+			    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+			        navbar.style.top = "0";
+			    }
+			}
+			
 		</script>
 		
 	</head>
 	
 	<body>
-	
+		
+		<div id="grandpadiv" style="position:fixed; width: 100%;">
+		
+			<div id="wrapper">
+				
+				<%@ include file="../inc/menu.jsp" %>
+					
+				<div id="content-wrapper" class="d-flex flex-column">
+		            <!-- Main Content -->
+		            <div id="content" class="bg-white">
+		                <!-- // 최상단 Top 영역 -->
+						<%@ include file="../inc/top.jsp" %>
+						<!-- Begin Page Content -->
+		                <div class="container-fluid">
+		                	<!-- // 컨텐츠 입력 start  -->
+		                	<h1 style="position:absolute; left: 250px; top:100px;">QnA 게시판</h1>
+		
+		<!-- 시작 -->
 		<div class="parantdiv">
 			
 			<table>
@@ -147,13 +194,23 @@
 									String title = bean.getQna_title();
 									String date = bean.getQna_date();
 									String userId = bean.getQna_user_id();
-									
+									int commentCount = commentMgr.getCount(num);
 							%>
 								
 								<tr class="subjecttitle" align="center">
 									
 									<td><%=totalRecord - start - i%></td>
+									<%
+										if ( commentCount == 0 ) {
+									%>
 									<td><a href="javascript:read('<%=num%>')"><%=title%></a></td>
+									<%
+										} else {
+									%>									
+									<td><a href="javascript:read('<%=num%>')"><%=title%> <font color="red">(<%=commentCount%>)</font></a></td>
+									<%
+										}
+									%>
 									<td><%=userId%></td>
 									<td><%=date%></td>
 									
@@ -185,12 +242,6 @@
 											int pageStart = ( nowBlock - 1 ) * pagePerBlock + 1;
 											int pageEnd = ( pageStart + pagePerBlock ) <= totalPage ?
 													pageStart + pagePerBlock : totalPage + 1;
-											System.out.println("\n -- pageStart -- \n" + pageStart + "\n -- pageStart -- \n");
-											System.out.println("\n -- pagePerBlock -- \n" + pagePerBlock + "\n -- pagePerBlock -- \n");
-											System.out.println("\n -- totalPage -- \n" + totalPage + "\n -- totalPage -- \n");
-											System.out.println("\n -- nowBlock -- \n" + nowBlock + "\n -- nowBlock -- \n");
-											System.out.println("\n -- pageEnd -- \n" + pageEnd + "\n -- pageEnd -- \n");
-											System.out.println("\n -- pageEnd -- \n" + pageEnd + "\n -- pageEnd -- \n");
 											for ( ; pageStart < pageEnd; pageStart++ ) {
 										%>
 											
@@ -250,13 +301,17 @@
 					<input name="keyWord" style="width: 30%;">
 					<button class="searchbtn" type="button" onclick="check()">검색</button>
 					<button class="reloadbtn" type="button" onclick="reload()">새로고침</button>
-					<button class="newpostbtn" type="button" onclick="">글 쓰기</button>
+					<button class="newpostbtn" type="button" onclick="upload()">글 쓰기</button>
 					
 				</div>
 				
 			</form>
 			
+			<div style="width: 100%; height: 100px;"></div>
+			
 		</div>
+		
+		
 		
 		<form name="readfrm">
 			
@@ -273,6 +328,22 @@
 			<input type="hidden" name="nowPage" value="1">
 			
 		</form>
+		
+		<div style="position: fixed; width: 1500px; height: 70px; background: white; left: 230px;"></div>
+		   	  			</div>
+		   	  
+		            </div>
+		            
+		        </div>
+				
+			</div>
+		
+		</div>
+		
+		<%@ include file="../inc/footer.jsp" %>
+		
+		
+		
 		
 		
 	</body>

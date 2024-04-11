@@ -8,6 +8,7 @@
 <%
 //dfdf
    String sess = (String) session.getAttribute("idKey");
+   String adminKey = (String) session.getAttribute("adminKey");
    String keyWord="";
    String url="../test/Mainpage.jsp";
 	if ( request.getParameter("keyWord") != null ) {
@@ -108,7 +109,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="Mainpage.jsp">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -120,7 +121,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="Mainpage.jsp">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -148,7 +149,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0);">
+                <a class="nav-link" href="../user/qna.jsp">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>QnA</span>
                 </a>
@@ -160,7 +161,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0);">
+                <a class="nav-link" href="post_list.jsp">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>자유게시판</span>
                 </a>

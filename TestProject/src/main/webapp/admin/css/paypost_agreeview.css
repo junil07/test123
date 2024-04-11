@@ -178,6 +178,19 @@ html, body {
 	margin: 10px;
 }
 
+.wrong_file{
+	display: inline-flex;
+	background-color: white;
+	width: 400px;
+	height: 23px;
+	margin: 10px;
+}
+
+.wrong_file > a{
+	color: gray;
+	text-decoration-line: none;
+}
+
 .test_view{
 	width: 100%;
 	height: auto;
