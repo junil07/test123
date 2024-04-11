@@ -1,0 +1,253 @@
+.a, .b, .c, .d, .e, .f,
+.g, .h, .i, .j, .m, .n,
+.o, .p, .q, .r, .s, .t,
+.u, .v, .w {
+	position: absolute;
+} 
+
+.a, .d, .e, .f, .i, .o,
+.p {
+	word-wrap: break-word;
+}
+
+.center {
+	display: table;
+    margin-left: auto;
+    margin-right: auto;
+	width: 414px; 
+	height: 896px; 
+	position: relative; 
+	background: white; 
+	box-shadow: 0px 4px 23px rgba(0, 0, 0, 0.25); 
+	border-radius: 40px; 
+	overflow: hidden;
+}
+
+.a {
+	width: 284px; 
+	height: 50px; 
+	left: 63px; 
+	top: 49px; 
+	text-align: center; 
+	color: black; 
+	font-size: 40px; 
+	font-family: Abel; 
+	font-weight: 400; 
+}
+
+.b {
+	width: 318px;
+	height: 45px; 
+	left: 50px; 
+	top: 559px; 
+	background: white;
+}
+
+.c {
+	cursor: pointer; 
+	width: 318px; 
+	height: 45px; 
+	left: 0px; 
+	top: 0px; 
+	background: #0386D0; 
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+	border:none; 
+	border-radius: 5px;
+	font-size: 25px; 
+	color: white;
+}
+
+.d {
+	width: 94px; 
+	left: 112px; 
+	top: 6px;  
+	text-align: center; 
+	color: white; 
+	font-size: 25px; 
+	font-family: Abel; 
+	font-weight: 400; 
+}
+
+.e {
+	width: 323px; 
+	height: 29px; 
+	left: 51px; 
+	top: 143px; 
+	text-align: center; 
+	color: #6B5E5E; 
+	font-size: 20px; 
+	font-family: Abel; 
+	font-weight: 400; 
+}
+
+.f {
+	left: 107px; 
+	top: 216px;  
+	color: #036BB9; 
+	font-size: 25px; 
+	font-family: Abel; 
+	font-weight: 400; 
+	border-bottom: solid 3px #036bb9;
+}
+
+.g{
+	left: 80px; 
+	top: 312px; 
+	font-size: 23px; 
+	border:none;
+}
+
+.h{
+	left: 80px; 
+	top: 395px; 
+	font-size: 23px; 
+	border:none;
+}
+
+.i {
+	border:none; 
+	background-color: white; 
+	left: 215px; 
+	top: 216px;  
+	font-size: 25px; 
+	font-family: Abel; 
+	font-weight: 400; 
+	color: inherit; /* 링크 기본 색상 사용 */
+    text-decoration: none; /* 밑줄 제거 */
+    cursor: pointer; /* 마우스가 다가가면 손가락으로 바뀌어욧 */
+}
+
+.j {
+	height: 24px; 
+	padding-left: 3px; 
+	padding-right: 3px; 
+	padding-top: 2px; 
+	padding-bottom: 2px; 
+	left: 45px; 
+	top: 396px;  
+	flex-direction: column; 
+	justify-content: center; 
+	align-items: center; 
+	display: inline-flex;
+}
+
+.k {
+	width: 10px; 
+	height: 9px; 
+	border: 2px #A6A6A6 solid;
+}
+
+.l {
+	width: 18px; 
+	height: 11px; 
+	border: 2px #A6A6A6 solid;
+}
+
+.m {
+	width: 317px; 
+	height: 0px; 
+	left: 45px; 
+	top: 342px; 
+	border: 1px #A6A6A6 solid;
+}
+
+.n {
+	width: 317px; 
+	height: 0px; 
+	left: 45px; 
+	top: 425px; 
+	border: 1px #A6A6A6 solid;
+}
+
+.o {
+	width: 143px; 
+	left: 234px; 
+	top: 488px;
+	color: #0386D0; 
+	font-size: 13px; 
+	font-family: Abel; 
+	font-weight: 400; 
+}
+
+.p {
+	width: 108px; 
+	height: 25px; 
+	left: 81px; 
+	top: 488px; 
+	color: #6B5E5E; 
+	font-size: 13px; 
+	font-family: Abel; 
+	font-weight: 400; 
+}
+
+.q {
+	left: -30px; 
+	top: 0px; 
+}
+
+.r {
+	width: 414px; 
+	height: 895px; 
+	left: 537px; 
+	top: 1px; 
+	background: #8D4848;
+}
+
+.s {
+	width: 414px; 
+	height: 218.26px; 
+	left: 0px; 
+	top: 743.74px;  
+	box-shadow: 0px 4px 114px rgba(59, 89, 152, 0.27);
+}
+
+.t {
+	width: 261px; 
+	height: 176px; 
+	left: 80px; 
+	top: 677px; 
+}
+
+.u {
+	width: 14px; 
+	height: 19px; 
+	left: 49px; 
+	top: 317px; 
+}
+
+.v {
+	width: 8px;
+	height: 8px; 
+	left: 3px; 
+	top: 0px; 
+	border: 2px #A6A6A6 solid;
+}
+
+.w {
+	width: 14px; 
+	height: 8px; 
+	left: 0px; 
+	top: 11px; 
+	border: 2px #A6A6A6 solid;
+}
+
+.managerLogin {
+	position: absolute;
+    left: 50px;
+    top: 630px;
+    color: #6B5E5E;
+    font-size: 13px;
+    font-family: Abel;
+    font-weight: 400;
+}
+
+.managerCheck {
+	margin-right: 10px;
+}
+
+
+
+
+
+
+

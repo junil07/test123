@@ -7,7 +7,14 @@ public class BoardBean {
 	private String board_date;
 	private int board_count;
 	private String board_user_id;
+	private String user_name;
 	
+	public String getUser_name() {
+		return user_name;
+	}
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
 	public int getBoard_num() {
 		return board_num;
 	}
