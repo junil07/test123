@@ -165,4 +165,35 @@ public class ChoiceMgr {
 		}
 		return count;
 	}
+	
+	//모든 보기 출력
+	public Vector<ChoiceBean> allChoice(int question_number){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector<ChoiceBean> clist = new Vector<ChoiceBean>();
+		try {
+			con = pool.getConnection();
+			sql = "select * from choice where CHOICE_QUESTION_NUM = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, question_number);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ChoiceBean cbean = new ChoiceBean();
+				cbean.setChoice_num(rs.getInt("CHOICE_NUM"));
+				cbean.setChoice_question_num(rs.getInt("CHOICE_QUESTION_NUM"));
+				cbean.setChoice_number(rs.getInt("CHOICE_NUMBER"));
+				cbean.setCcontent(rs.getString("CHOICE_CONTENT"));
+				cbean.setChoice_file(rs.getString("CHOICE_FILE"));
+				cbean.setChoice_filesize(rs.getInt("CHOICE_FILESIZE"));
+				clist.addElement(cbean);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return clist;
+	}
 }

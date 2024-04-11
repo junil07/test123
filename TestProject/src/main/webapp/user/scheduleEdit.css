@@ -1,0 +1,68 @@
+button {
+	cursor: pointer;
+}
+
+button:hover {
+	background: #bebebe;
+}
+
+.titlename {
+	background-color: white;
+}
+
+.titlename:hover {
+	background: #bebebe;
+}
+
+.parantdiv {
+	width: 55%;
+    height: 1000px;
+    position: absolute;
+    left: 550px;
+    top: 150px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.scheduleeditdiv {
+	width: 100%; 
+	height: 500px;
+}
+
+.titlewrap {
+	width:100%;
+	margin-top: 40px;
+}
+
+.title {
+	width: 100%; 
+	height:50px;
+	border-radius: 20px;
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title_name {
+	margin: 34px;
+    color: #f9f9f9;
+    font-weight: 100;
+}
+
+.itemarea {
+	width: 100%;
+	height: 70px;
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    border-left: 1px solid #a9a9a9;
+	border-right: 1px solid #a9a9a9;
+	border-bottom: 1px solid #a9a9a9;
+}
+
+.itemarea > div {
+    display: flex;
+    justify-content: center;
+}

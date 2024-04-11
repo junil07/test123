@@ -13,7 +13,7 @@
 	String sess = (String) session.getAttribute("idKey");
 	String sessManager = (String) session.getAttribute("adminKey");
 	Vector<UserBean> vlist = userMgr.showUserInfo(sess);
-	Vector<ManagerBean> vlistManager = managerMgr.showManagerInfo(sessManager); 
+	Vector<ManagerBean> vlistManager = managerMgr.showManagerInfo(sessManager);
 	String infoId = "정보가 없습니다", infoPwd = "정보가 없습니다", infoName = "정보가 없습니다", infoPhone = "정보가 없습니다", infoEmail = "정보가 없습니다";
 	String infoGrade = "", infoPoint = "";
 	String imgsrc = "";

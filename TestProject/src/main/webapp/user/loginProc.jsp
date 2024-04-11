@@ -13,7 +13,7 @@
 	if ( result ) {									// 성공 시 세션에 저장
 		session.setAttribute("idKey", id);
 		msg = "로그인 성공하였습니다";	
-		url = "myInfo.jsp";
+		url = request.getParameter("url");
 	}
 %>
 <script>

@@ -83,20 +83,20 @@
 
 	// 대댓글 작성
     function cInsert_under(reply_pos, reply_ref, reply_depth) {
-        var inputTextId = "inputText_" + reply_pos + "_" + reply_ref + "_" + reply_depth;
-        var inputValue = document.getElementById(inputTextId).value;
+    	var inputTextId = "inputText_" + reply_pos + "_" + reply_ref + "_" + reply_depth;
+    	var inputValue = document.getElementById(inputTextId).value;
         if (inputValue.trim() == "") {
             alert("댓글을 입력하세요.");
             return;
         } else {
-            document.getElementById("under_comment").value = inputValue;
-            document.getElementById("Cpos").value = reply_pos;
-            document.getElementById("Cref").value = reply_ref;
-            document.getElementById("Cdepth").value = reply_depth;
-            document.getElementById("userId").value = userId; // JavaScript 변수를 사용하여 userId 값 전달
-            document.getElementById("num").value = num; // JavaScript 변수를 사용하여 userId 값 전달
-            // 폼 제출
-            document.getElementById("commentForm").submit();
+        	 document.getElementById("under_comment").value = inputValue;
+             document.getElementById("Cpos").value = reply_pos;
+             document.getElementById("Cref").value = reply_ref;
+             document.getElementById("Cdepth").value = reply_depth;
+             document.getElementById("userId").value = userId; // JavaScript 변수를 사용하여 userId 값 전달
+             document.getElementById("num").value = num; // JavaScript 변수를 사용하여 userId 값 전달
+             // 폼 제출
+             document.getElementById("commentForm").submit();
         }
     }
 
@@ -141,11 +141,11 @@
 			</div>
 			<div class="post_manage">
 				<div class="post_button">게시글 관리</div>
-				<a class="fa-solid fa-house">QnA</a><br> <a
-					class="fa-solid fa-house">FAQ</a><br> <a
-					class="fa-solid fa-house">자유게시판</a><br> <a
-					class="fa-solid fa-house">공지사항</a><br> <a
-					class="fa-solid fa-house">유로 게시글 검토 승인</a>
+				<a class="fa-solid fa-house">QnA</a><br> 
+				<a class="fa-solid fa-house">FAQ</a><br> 
+				<a class="fa-solid fa-house" href="admin_post_list.jsp">자유게시판</a><br> 
+				<a class="fa-solid fa-house" href="admin_paypost_list.jsp">유로글 게시판</a><br> 
+				<a class="fa-solid fa-house" href="paypost_agree_list.jsp">유로 게시글 검토 승인</a>
 			</div>
 		</main>
 	</section>
