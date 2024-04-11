@@ -3,6 +3,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <jsp:useBean id="userMgr" class="project.UserMgr"/>
 <%
+		
+
 	String id = request.getParameter("id");			// login.jsp에서 가져온 id
 	String pwd = request.getParameter("pwd");		// login.jsp에서 가져온 pwd
 	boolean result = userMgr.loginChk(id, pwd);		// 로그인 시도
@@ -16,7 +18,10 @@
 		url = request.getParameter("url");
 	}
 %>
-<script>
+<script type="text/javascript">
 	alert("<%=msg%>");
 	location.href = "<%=url%>";
+	
+	
 </script>
+

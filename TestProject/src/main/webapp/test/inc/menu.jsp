@@ -19,7 +19,6 @@
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="position:fixed; z-index:10;">
 
-
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon rotate-n-15">
@@ -44,7 +43,6 @@
 
     <!-- Heading -->
     <div class="sidebar-heading">
-
         Discover
     </div>
 
@@ -79,7 +77,6 @@
             <span>자유게시판</span>
         </a>
     </li>
-
 
     <!-- Divider -->
     <hr class="sidebar-divider">
