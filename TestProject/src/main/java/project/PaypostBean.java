@@ -2,7 +2,6 @@ package project;
 
 public class PaypostBean {
 	private int paypost_num;
-	private String paypost_test_num;
 	private String paypost_user_id;
 	private String paypost_title;
 	private String paypost_content;
@@ -18,12 +17,6 @@ public class PaypostBean {
 	}
 	public void setPaypost_num(int paypost_num) {
 		this.paypost_num = paypost_num;
-	}
-	public String getPaypost_test_num() {
-		return paypost_test_num;
-	}
-	public void setPaypost_test_num(String paypost_test_num) {
-		this.paypost_test_num = paypost_test_num;
 	}
 	public String getPaypost_user_id() {
 		return paypost_user_id;
