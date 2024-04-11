@@ -12,25 +12,21 @@ import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
 import project.DBConnectionMgr;
 
-public class CreateMgr {
+public class TableQueryMgr {
    private DBConnectionMgr pool;
    
-   public CreateMgr() {
+   public TableQueryMgr() {
       pool = DBConnectionMgr.getInstance();
    }
    
    //게시판 테이블 생성
-   public void createTable(String op[], String INSERTNAME) {
-      List<String> opList = new ArrayList<>();
-      if(op[0]!=null&&!op[0].equals("")) {
-         opList = Arrays.asList(op);
-      }
+   public void createTable(List<String> opList) {
       Connection con = null;
       PreparedStatement pstmt = null;
       String sql = null;
+      String INSERTNAME = opList.get(0);
       try {
          con = pool.getConnection();
-         
          //기본 테이블
          sql = "CREATE TABLE PROJECT." + INSERTNAME + "(\n"
                + INSERTNAME + "_NUM INT NOT NULL AUTO_INCREMENT,\n"
@@ -41,14 +37,13 @@ public class CreateMgr {
          
          //컬럼 추가
          //유저 아이디
-         if(opList.contains("col_user") || opList.contains("col_pay")) {
+         if(opList.contains("user_op") || opList.contains("pay_op")) {
             sql += ",\n"
                + INSERTNAME + "_USER_ID VARCHAR(20) NOT NULL";
             
             //유료글
-            if(opList.contains("col_pay")) {
+            if(opList.contains("pay_op")) {
                sql += ",\n"
-                  + INSERTNAME + "_TEST_NUM VARCHAR(20) NOT NULL,\n"
                   + INSERTNAME + "_PAY INT NOT NULL,\n"
                   + INSERTNAME + "_AGREE SMALLINT(2) NOT NULL DEFAULT 0,\n"
                   + INSERTNAME + "_REASON VARCHAR(100)";
@@ -56,7 +51,7 @@ public class CreateMgr {
          }
          
          //추천수
-         if(opList.contains("likey")) {
+         if(opList.contains("likey_op")) {
             sql += ",\n"
                   + INSERTNAME + "_GOOD INT(10) DEFAULT 0";
          }
@@ -67,15 +62,9 @@ public class CreateMgr {
          
          //FK 부분
          //유저 아이디
-         if(opList.contains("col_user") || opList.contains("col_pay")) {
+         if(opList.contains("user_op") || opList.contains("pay_op")) {
             sql += ",\n"
                + "FOREIGN KEY (" + INSERTNAME + "_USER_ID) REFERENCES USER (USER_ID)";
-            
-            //유료글
-            if(opList.contains("col_pay")) {
-               sql += ",\n"
-                  + "FOREIGN KEY (" + INSERTNAME + "_TEST_NUM) REFERENCES TEST (TEST_NUM)";
-            }
          }
          
          //마무리
@@ -87,7 +76,7 @@ public class CreateMgr {
          pstmt.close();
          
          //댓글 테이블 생성
-         if(opList.contains("comment")) {
+         if(opList.contains("comment_op")) {
             sql = "CREATE TABLE PROJECT." + INSERTNAME + "_COMMENT (\n"
                   + INSERTNAME + "_COMMENT_NUM INT NOT NULL AUTO_INCREMENT,\n"
                   + "COMMENT_" + INSERTNAME + "_NUM INT NOT NULL,\n"
@@ -108,7 +97,7 @@ public class CreateMgr {
          }
          
          //첨부파일 테이블 생성
-         if(opList.contains("fileupload")) {
+         if(opList.contains("fileupload_op")) {
             sql = "CREATE TABLE PROJECT." + INSERTNAME + "_FILEUPLOAD (\n"
                   + INSERTNAME + "_FILEUPLOAD_SERVER_NAME VARCHAR(100) NOT NULL,\n"
                   + "FILEUPLOAD_" + INSERTNAME + "_NUM INT NOT NULL,\n"
@@ -125,7 +114,7 @@ public class CreateMgr {
          }
          
          //추천 테이블 생성
-         if(opList.contains("likey")) {
+         if(opList.contains("likey_op")) {
             sql = "CREATE TABLE PROJECT." + INSERTNAME + "_LIKEY (\n"
                   + INSERTNAME + "_LIKEY_NUM INT NOT NULL AUTO_INCREMENT,\n"
                   + "LIKEY_" + INSERTNAME + "_NUM INT NOT NULL,\n"
@@ -246,8 +235,7 @@ public class CreateMgr {
             "ALTER TABLE " + updateTable + "_LIKEY CHANGE COLUMN " + oldTable+"_LIKEY_USER_ID " + updateTable+"_LIKEY_USER_ID VARCHAR(20);"
             };
       //유료글 컬럼 업데이트문
-      String[] payCol = {"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_TEST_NUM " + updateTable+"_TEST_NUM VARCHAR(20);",
-            "ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_PAY " + updateTable+"_PAY INT;",
+      String[] payCol = {"ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_PAY " + updateTable+"_PAY INT;",
             "ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_AGREE " + updateTable+"_AGREE SMALLINT(5);",
             "ALTER TABLE " + updateTable + " CHANGE COLUMN " + oldTable+"_REASON " + updateTable+"_REASON VARCHAR(100);",
             };
@@ -267,7 +255,7 @@ public class CreateMgr {
          
          //if 문을 통해서 각 상황에 맞는 업데이트문을 가변 리스트에 추가
          //게시판 이름이 수정되었을 경우
-         if(oldTable != updateTable) {
+         if(!oldTable.equals(updateTable)) {
             
             //댓글 테이블이 있을 경우 이름 수정
             if(tableExists(oldTable+"_COMMENT") == true) {
@@ -337,11 +325,7 @@ public class CreateMgr {
    
    
    //게시판 업데이트 - 옵션 변경
-   public void updateTableOp(String op[], String updateTable) {
-      List<String> opList = new ArrayList<>();
-      if(op[0]!=null&&!op[0].equals("")) {
-         opList = Arrays.asList(op);
-      }
+   public void updateTableOp(List<String> opList, String updateTable) {
       
       //업데이트문 저장 가변 리스트
       ArrayList<String> updateList = new ArrayList<>();
@@ -352,7 +336,7 @@ public class CreateMgr {
          con = pool.getConnection();
 
          //유료글 옵션이 있을 경우
-         if(opList.contains("col_pay")) {
+         if(opList.contains("pay_op")) {
             //유료글 컬럼이 없을 경우
             if(!colExists(updateTable, updateTable+"_PAY")) {
                //사용자 컬럼이 없을 경우
@@ -360,31 +344,27 @@ public class CreateMgr {
                   updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_USER_ID VARCHAR(20) NOT NULL;");
                      updateList.add("ALTER TABLE " + updateTable + " ADD FOREIGN KEY (" + updateTable+"_USER_ID) REFERENCES USER (USER_ID);");
                }      
-               updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_TEST_NUM VARCHAR(20) NOT NULL;");
                   updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_PAY INT NOT NULL;");
                   updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_AGREE INT NOT NULL;");
                   updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_REASON INT NOT NULL;");
-                  updateList.add("ALTER TABLE " + updateTable + " ADD FOREIGN KEY (" + updateTable+"_TEST_NUM) REFERENCES TEST (TEST_NUM);");
             }
          //유료글 옵션이 없을 경우
          }else {
             //유료글 컬럼이 있을 경우
             if(colExists(updateTable, updateTable+"_PAY")) {
-               updateList.add("ALTER TABLE " + updateTable + " DROP FOREIGN KEY " + updateTable + "_IBFK_2;");
-               updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_TEST_NUM;");
                    updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_PAY;");
                    updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_AGREE;");
                    updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_REASON;");
                    
                    //사용자 옵션이 없을 경우
-                   if(!opList.contains("col_user")) {
+                   if(!opList.contains("user_op")) {
                       updateList.add("ALTER TABLE " + updateTable + " DROP FOREIGN KEY " + updateTable + "_IBFK_1;");
                        updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_USER_ID;");
                    }
                //유료글 컬럼이 없는 경우
             }else {
                //사용자 옵션이 있을 경우
-               if(opList.contains("col_user")) {
+               if(opList.contains("user_op")) {
                   updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_USER_ID VARCHAR(20) NOT NULL;");
                      updateList.add("ALTER TABLE " + updateTable + " ADD FOREIGN KEY (" + updateTable+"_USER_ID) REFERENCES USER (USER_ID);");
                }else {
@@ -397,13 +377,13 @@ public class CreateMgr {
          //_GOOD 컬럼이 있을 경우
          if(colExists(updateTable, updateTable+"_GOOD")) {
             //추천 옵션이 없을 경우
-            if(!opList.contains("likey")) {
+            if(!opList.contains("likey_op")) {
                updateList.add("ALTER TABLE " + updateTable + " DROP " + updateTable + "_GOOD;");
             }
          //_GOOD 컬럼이 없을 경우
          }else {
             //추천 옵션이 있을 경우
-            if(opList.contains("likey")) {
+            if(opList.contains("likey_op")) {
                updateList.add("ALTER TABLE " + updateTable + " ADD " + updateTable + "_GOOD INT DEFAULT 0;");
             }
          }
@@ -411,7 +391,7 @@ public class CreateMgr {
          //댓글 테이블이 없을 경우
          if(!tableExists(updateTable+"_COMMENT")) {
             //댓글 옵션이 있을 경우
-            if(opList.contains("comment")) {
+            if(opList.contains("comment_op")) {
                updateList.add("CREATE TABLE PROJECT." + updateTable + "_COMMENT (\n"
                      + updateTable + "_COMMENT_NUM INT NOT NULL AUTO_INCREMENT,\n"
                      + "COMMENT_" + updateTable + "_NUM INT NOT NULL,\n"
@@ -429,7 +409,7 @@ public class CreateMgr {
          //댓글 테이블이 있을 경우
          }else {
             //댓글 옵션이 없을 경우
-            if(!opList.contains("comment")) {
+            if(!opList.contains("comment_op")) {
                updateList.add("DROP TABLE IF EXISTS PROJECT." + updateTable + "_COMMENT;");
             }
          }
@@ -437,7 +417,7 @@ public class CreateMgr {
          //첨부파일 테이블이 없을 경우
          if(!tableExists(updateTable+"_FILEUPLOAD")) {
             //첨부파일 옵션이 있을 경우
-            if(opList.contains("fileupload")) {
+            if(opList.contains("fileupload_op")) {
                updateList.add("CREATE TABLE PROJECT." + updateTable + "_FILEUPLOAD (\n"
                   + updateTable + "_FILEUPLOAD_SERVER_NAME VARCHAR(100) NOT NULL,\n"
                   + "FILEUPLOAD_" + updateTable + "_NUM INT NOT NULL,\n"
@@ -451,7 +431,7 @@ public class CreateMgr {
          //첨부파일 테이블이 있을 경우
          }else {
             //첨부파일 옵션이 없을 경우
-            if(!opList.contains("fileupload")) {
+            if(!opList.contains("fileupload_op")) {
                updateList.add("DROP TABLE IF EXISTS PROJECT." + updateTable + "_FILEUPLOAD;");
             }
          }
@@ -459,7 +439,7 @@ public class CreateMgr {
          //추천 테이블이 없을 경우
          if(!tableExists(updateTable+"_LIKEY")) {
             //추천 옵션이 있을 경우
-            if(opList.contains("likey")) {
+            if(opList.contains("likey_op")) {
                updateList.add("CREATE TABLE PROJECT." + updateTable + "_LIKEY (\n"
                      + updateTable + "_LIKEY_NUM INT NOT NULL AUTO_INCREMENT,\n"
                      + "LIKEY_" + updateTable + "_NUM INT NOT NULL,\n"
@@ -472,7 +452,7 @@ public class CreateMgr {
          //추천 테이블이 있을 경우
          }else {
             //추천 옵션이 없을 경우
-            if(!opList.contains("likey")) {
+            if(!opList.contains("likey_op")) {
                updateList.add("DROP TABLE IF EXISTS PROJECT." + updateTable + "_LIKEY;");
             }
             
@@ -480,7 +460,7 @@ public class CreateMgr {
          
          for(int i=0; i < updateList.size(); i++) {
             sql = updateList.get(i);
-            System.out.println(sql);
+            System.out.println(sql); 
             pstmt = con.prepareStatement(sql);
             pstmt.executeUpdate();
             pstmt.close();
@@ -517,11 +497,5 @@ public class CreateMgr {
          pool.freeConnection(con, pstmt);
       }
       return;
-   }
-   
-   
-   public static void main(String[] args) {
-      CreateMgr mgr = new CreateMgr();
-      System.out.println(mgr.colExists("bbb", "aaa_USER_ID"));
    }
 }

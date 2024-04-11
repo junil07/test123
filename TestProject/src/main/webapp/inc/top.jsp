@@ -6,11 +6,8 @@ if ( sess != null ) {
 	btn_log_id = "btn-logout";
 	btn_log_name = "로그아웃";
 }
-
 %>
-<form method="post" id="testDataFrm" >
-   			<input type="hidden" name="url" value="<%=url%>"> 
-</form>
+
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
    <!-- Sidebar Toggle (Topbar) -->
@@ -29,15 +26,11 @@ if ( sess != null ) {
 	$(document).ready(function() {
 		// 로그인 버튼 이벤트
 		$("#btn-login").on("click", function() {
-			//location.href = "../user/login.jsp?url=" + location.href;
-				$("#test_grading").attr("action", "login.jsp");
-				$("#test_grading").submit();
-			
+			location.href = "../user/login.jsp?url=" + location.href;
 		});
 		// 로그아웃 버튼 이벤트 
 		$("#btn-logout").on("click", function() {
-			$("#test_grading").attr("action", "../user/logout.jsp");
-			$("#test_grading").submit();
+			location.href = "../user/logout.jsp?url=" + location.href;
 		});
 	});
 </script>

@@ -9,6 +9,7 @@ public class PaypostCommentBean {
 	private int paypost_comment_reply_depth;
 	private String paypost_comment_user_id;
 	private String paypost_comment_date;
+	private String paypost_comment_manager_id;
 	
 	
 	public int getPaypost_comment_num() {
@@ -58,5 +59,11 @@ public class PaypostCommentBean {
 	}
 	public void setPaypost_comment_date(String paypost_comment_date) {
 		this.paypost_comment_date = paypost_comment_date;
+	}
+	public String getPaypost_comment_manager_id() {
+		return paypost_comment_manager_id;
+	}
+	public void setPaypost_comment_manager_id(String paypost_comment_manager_id) {
+		this.paypost_comment_manager_id = paypost_comment_manager_id;
 	}
 }
