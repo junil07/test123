@@ -30,23 +30,14 @@
 %>
 <html>
 	<head>
-	
-		<%@ include file="navi/head.jsp" %>
-	
 		<style>
-			
-			body{
-			
-				color: black;
-				
-			}
 			
 			.d1 {
 				width: 1200px;
 				height: 650px;
 				position: absolute;
-			    left: 450px;
-   				top: 180px;
+				left: 500px;
+				top: 150px;
 				display: flex;
 			}
 			
@@ -73,6 +64,20 @@
     			font-size: 20px;
 			}
 			
+			.mismatch, .space{
+				position: absolute;
+				left: 90px;
+				color: red;
+			}
+			
+			.space {
+				top: 343px;
+			}
+			
+			.mismatch {
+				top: 421px;
+			}
+			
 			.hide {
 				display: none;
 			}
@@ -84,8 +89,8 @@
 			
 			.duplicatechk {
 				position: absolute;
-				left: 670px;
-    			top: 130px;
+				left: 680px;
+				top: 145px;
 			}
 			
 			.registerbtn {
@@ -104,10 +109,6 @@
 				background: #9d9d9d;
 				left: 360px;
 				bottom: -70px;
-			}
-			
-			.test.d3 > * {
-			    margin-top: 20px;
 			}
 			
 			.registerbtn:hover {
@@ -136,57 +137,9 @@
 				justify-content: space-between;
 			}
 			
-			.validate, .mismatch, .space {
-				color: red;
-				position: absolute;
-				left: 90px;
-			}
-			
-			.validate {
-				bottom: 135px;
-			}
-			
-			.mismatch {
-				bottom: 215px;
-			}
-			
-			.space {
-				bottom: 295px;
-			}
-			
 		</style>
 	</head>
 	<body>
-		
-		<div id="grandpadiv" style="position:fixed; width: 100%;">
-		
-			<div id="wrapper">
-				
-				<%@ include file="navi/menu.jsp" %>
-					
-				<div id="content-wrapper" class="d-flex flex-column">
-		            <!-- Main Content -->
-		            <div id="content" class="bg-white">
-		                <!-- // 최상단 Top 영역 -->
-						<%@ include file="navi/top.jsp" %>
-						<!-- Begin Page Content -->
-		                <div class="container-fluid">
-		                	<!-- // 컨텐츠 입력 start  -->
-		                	
-		   	  			</div>
-		   	  
-		            </div>
-		            
-		        </div>
-				
-			</div>
-		
-		</div>
-		
-		<%@ include file="navi/footer.jsp" %>
-		
-		<h1 style="position:absolute; left: 250px; top:100px;">QnA 게시물 등록</h1>
-		
 		<div class="test d1">
 			<div class="test d2" align="center">
 				<h2>회원가입</h2>
@@ -199,7 +152,6 @@
 					<input type="password" class="registerinput regipwdretype" placeholder="비밀번호 확인" name="registerpwdretype" value="<%=pwdretype%>">
 					<div class="mismatch hide">비밀번호가 일치하지 않습니다.</div>
 					<input class="registerinput regiemail" placeholder="이메일" name="registeremail" value="<%=email%>">
-					<div class="validate hide">유효하지 않은 이메일 형식입니다.</div>
 					<input class="registerinput regiphone" placeholder="전화번호" name="registerphone" value="<%=phone%>">
 					<input class="duplicateResult" type="hidden" value="<%=idchkresult%>">
 					<input class="idreturn" type="hidden" value="<%=idreturn%>">

@@ -15,48 +15,11 @@
 
 <html>
 	<head>
-		
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" type="text/css">
-		<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-		
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 		<link href="css/testInfo.css" rel="stylesheet">
-		<link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
-		
-	  	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-		<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>-->
 		
 	</head>
 	<body>
-		
-		<div id="grandpadiv" style="position:fixed; width: 100%;">
-		
-			<div id="wrapper">
-				
-				<%@ include file="navi/menu.jsp" %>
-					
-				<div id="content-wrapper" class="d-flex flex-column">
-		            <!-- Main Content -->
-		            <div id="content" class="bg-white">
-		                <!-- // 최상단 Top 영역 -->
-						<%@ include file="navi/top.jsp" %>
-						<!-- Begin Page Content -->
-		                <div class="container-fluid">
-		                	<!-- // 컨텐츠 입력 start  -->
-		                	
-		   	  			</div>
-		   	  
-		            </div>
-		            
-		        </div>
-				
-			</div>
-		
-		</div>
-		
-		<%@ include file="navi/footer.jsp" %>
-		
-		<h1 style="position:absolute; left: 250px; top:100px;">시험 정보</h1>
 		
 		<div class="parentdiv">
 			<div class="buttondiv">
@@ -260,9 +223,6 @@
 				    </div>
 				  </div>
 				</div>
-				
-				<div style="width: 50px; height: 200px;"></div>
-				
 			</div>
 		
 		
@@ -271,8 +231,6 @@
 		<form name="frm1">
 		
 		</form>
-		
-		<div style="position: fixed; width: 1500px; height: 70px; background: white; left: 230px;"></div>
 		
 		<script>
 			var schedulebtn = document.querySelector('.schedulebtn');

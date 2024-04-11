@@ -8,7 +8,6 @@
 <jsp:useBean id="commentMgr" class="project.Qna_commentMgr"/>
 
 <%
-	String sessManager = (String) session.getAttribute("adminKey");
 	String sess = (String) session.getAttribute("idKey");
 	int totalRecord = 0;
 	int numPerPage = 10;
@@ -50,7 +49,6 @@
 
 	<head>
 	
-		<%@ include file="navi/head.jsp" %>
 		<title>QnA</title>
 		<link href="css/qna.css" rel="stylesheet">
 		
@@ -113,12 +111,6 @@
 			function upload() {
 				
 				<%
-					if ( sessManager != null ) {
-				%>
-					alert("관리자가 궁금한게 있으면 안되지;;");
-					return;
-				<%
-					}
 					if ( sess == null ) {
 				%>
 						alert("로그인이 필요합니다.");
@@ -138,36 +130,7 @@
 	</head>
 	
 	<body>
-		
-		<div id="grandpadiv" style="position:fixed; width: 100%;">
-		
-			<div id="wrapper">
-				
-				<%@ include file="navi/menu.jsp" %>
-					
-				<div id="content-wrapper" class="d-flex flex-column">
-		            <!-- Main Content -->
-		            <div id="content" class="bg-white">
-		                <!-- // 최상단 Top 영역 -->
-						<%@ include file="navi/top.jsp" %>
-						<!-- Begin Page Content -->
-		                <div class="container-fluid">
-		                	<!-- // 컨텐츠 입력 start  -->
-		   	  			</div>
-		   	  
-		            </div>
-		            
-		        </div>
-				
-			</div>
-		
-		</div>
-		
-		<%@ include file="navi/footer.jsp" %>
-		
-		<h1 style="position:absolute; left: 250px; top:100px;">QnA 게시판</h1>
-		
-		<!-- 시작 -->
+	
 		<div class="parantdiv">
 			
 			<table>
@@ -316,11 +279,7 @@
 				
 			</form>
 			
-			<div style="width: 100%; height: 100px;"></div>
-			
 		</div>
-		
-		
 		
 		<form name="readfrm">
 			
@@ -338,18 +297,6 @@
 			
 		</form>
 		
-		<div style="position: fixed; width: 1500px; height: 70px; background: white; left: 230px;"></div>
-		
-		<script>
-			
-			window.onscroll = function() {
-			    var navbar = document.getElementById("grandpadiv");
-			    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-			        navbar.style.top = "0";
-			    }
-			}
-			
-		</script>
 		
 	</body>
 	

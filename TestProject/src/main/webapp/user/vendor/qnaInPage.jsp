@@ -10,12 +10,11 @@
 
 <%
 	String sess = (String) session.getAttribute("idKey");
-	String sessManager = (String) session.getAttribute("adminKey");
 	int num = Integer.parseInt( request.getParameter("num") );
 	String title = "", user = "", content = "", date = "";
 	Vector<QnaBean> vlist = qnaMgr.getQnA(num);
 	
-	String comment_userid = "", comment_username = "", comment_content = "", comment_date = "", comment_manager_id = "";
+	String comment_userid = "", comment_username = "", comment_content = "", comment_date = "";
 	
 	for ( int i = 0; i < vlist.size(); i++ ) {
 		QnaBean bean = vlist.get(i);
@@ -28,23 +27,9 @@
 	String username = userMgr.getName(user);
 	int userGrade = userMgr.getGrade(user);
 	
-	String imgsrc = "";
-	
-	String imgsrc1 = "https://i.namu.wiki/i/3t4jrWPmNFqyrDs3xUJnCNE6-wbc069FEO33" +
-				 "_OFcenoatrkXStgCN0_fSwB1be_aWoaLe_QDQXn3vIx_OAbvhP_u6Jg" +
-				 "s01Rx0gd536bG7H8xeEJTbV1lNdtfZOpwYwimASvgbM17fyQSyztcfhwTBw.webp";
-		
-	String imgsrc2 = "https://i.namu.wiki/i/8nDVP1V6uDTtF_DSqd8k3VgdmmW3alDTj0i6jTQ" +
-				 "1iJXBoS3bfjR5ov63R-ch2vhAy1XRM21dWRIOUL1WwkNKOfNF3zNZq3h" +
-				 "VeVkD6WnlIJLPxSdbkVnl_SNnzk9Wkta0T0HXmTz2mrcXfZPxMxet3w.webp";
-		
-	String imgsrc3 = "https://i.namu.wiki/i/c49u7Vr0uQfxNPOS9YwS9u5u_yaz7QlBrbMqz6" +
-				 "Vv3sz6HyVNS5Af769-y_06L_rX8IN9vtKOI91_nu3GxI9a6VTOMoLnZ2A" +
-				 "oFJRnDRe53mUrtwfjjA4blJ9Bza3jhCAVPawUibCIA1sB9YT32dvkXA.webp";
-	
-	String imgsrc4 = "https://i.namu.wiki/i/JL4AMb2vGpikuwZHzUOm4I6Ad8nMnHVWfPlfoJr" +
-			 "BNPH0ak0l2ZbN_e_0hlkKusNXzTY0Z1oLxmE0UmJlQ6c11cNCGZJgd9" +
-			 "OUyyqEm_l2YAmKPXaXwufM1jy6nsHLxil7pta9gTTDLrFIElCdetBQhA.webp";
+	String imgsrc = "https://i.namu.wiki/i/4dyrzwxAnmVHd7JjndrohJlGESXVjYP-Ct8fXOG67" +
+			 "W_dM5dDC_YM_76o04rD2_VQOkMmrHNEp_obMY2j4DZG9ktPZmC-Cb5h" +
+			 "y1abdfHOP4qZwxc6iTJsZQXpPflg6Kf1FpJH0O-2SUVp4WDSNT0mLw.webp";
 	
 	int commentCount = commentMgr.getCount(num);
 	int count = commentMgr.getOriginCount(num); 
@@ -55,20 +40,7 @@
 	
 	<head>
 		
-		<%@ include file="navi/head.jsp" %>
 		<link href="css/qnaInPage.css" rel="stylesheet">
-		
-		<style>
-			
-			body {
-				color: black;
-			}
-			
-			img {
-				vertical-align: baseline;
-			}
-			
-		</style>
 		
 		<script>
 			
@@ -85,37 +57,6 @@
 	
 	<body>
 		
-		<div id="grandpadiv" style="position:fixed; width: 100%;">
-		
-			<div id="wrapper">
-				
-				<%@ include file="navi/menu.jsp" %>
-					
-				<div id="content-wrapper" class="d-flex flex-column">
-		            <!-- Main Content -->
-		            <div id="content" class="bg-white">
-		                <!-- // 최상단 Top 영역 -->
-						<%@ include file="navi/top.jsp" %>
-						<!-- Begin Page Content -->
-		                <div class="container-fluid">
-		                	<!-- // 컨텐츠 입력 start  -->
-		                	
-		   	  			</div>
-		   	  
-		            </div>
-		            
-		        </div>
-				
-			</div>
-		
-		</div>
-		
-		<%@ include file="navi/footer.jsp" %>
-		
-		<h1 style="position:absolute; left: 250px; top:100px;">QnA</h1>
-		
-		
-		
 		<div class="grandmadiv">
 		
 			<div class="parantdiv">
@@ -123,21 +64,13 @@
 				<div class="titlediv">
 					
 					<div class="titlechild">
-						<%
-							if ( userGrade == 1 ) {
-								imgsrc = imgsrc1;
-							} else if ( userGrade == 2 ) {
-								imgsrc = imgsrc2;
-							} else if ( userGrade == 3 ) {
-								imgsrc = imgsrc3;
-							}
-						%>
-						<h5 style="margin-top: 20px;">QnA</h5>
+					
+						<h5>QnA</h5>
 						<textarea class="titletext" spellcheck="false" readonly><%=title%></textarea>
-						<div class="userinfo" style="display: flex; align-items: center;">
+						<div class="userinfo">
 							
 							<img src="<%=imgsrc%>" class="iconimage">
-							<textarea class="userinfotext" spellcheck="false" style="margin-left: 10px;" readonly><%=username%>&#10;<%=date%></textarea>
+							<textarea class="userinfotext" spellcheck="false" readonly><%=username%>&#10;<%=date%></textarea>
 							
 						</div>
 						
@@ -150,10 +83,10 @@
 					<div class="contentchild">
 						
 						<textarea id="contexttext" class="contenttext" spellcheck="false" readonly><%=content%></textarea>
-						<div class="userinfo1" style="display: flex; align-items: center;">
+						<div class="userinfo1">
 							
 							<img src="<%=imgsrc%>" class="iconimage">
-							<textarea class="userinfotext" spellcheck="false" style="margin-left: 10px;" readonly><%=username%>&#10;등급: <%=userGrade%></textarea>
+							<textarea class="userinfotext" spellcheck="false" readonly><%=username%>&#10;등급: <%=userGrade%></textarea>
 							
 						</div>
 						
@@ -166,7 +99,7 @@
 					
 					<div class="commentchild">
 						
-						<h4 style="margin-top: 10px; margin-bottom: 30px;">댓글 <%=commentCount%></h4>
+						<h4>댓글 <%=commentCount%></h4>
 						
 						<div class="commentblock">
 							
@@ -181,12 +114,11 @@
 											comment_userid = bean.getQna_comment_user_id();
 											comment_content = bean.getQna_comment_content();
 											comment_date = bean.getQna_comment_date();
-											comment_manager_id = bean.getQna_comment_manager_id();
 											comment_username = userMgr.getName(comment_userid);
-											int commentUserGrade = userMgr.getGrade(comment_userid);
 											int pos = bean.getQna_comment_reply_pos();
 											int ref = bean.getQna_comment_reply_ref();
 											int depth = bean.getQna_comment_reply_depth();
+											System.out.println(depth);
 											String margin = "";
 											if ( j > 0 ) margin = "margin-left: 50px;";
 								%>
@@ -194,87 +126,29 @@
 										
 										<%
 											if ( depth == 1 ) {
-												if ( commentUserGrade == 1 ) {
-													imgsrc = imgsrc1;
-												} else if ( commentUserGrade == 2 ) {
-													imgsrc = imgsrc2;
-												} else if ( commentUserGrade == 3 ) {
-													imgsrc = imgsrc3;
-												}
 										%>
 										
-										<%
-											if ( comment_userid != null && comment_manager_id == null ) {
-										%>
 										<img src="<%=imgsrc%>" class="iconimage">
-										<%	
-											}
-										
-											if ( comment_userid == null && comment_manager_id != null ) {
-										%>
-										<img src="<%=imgsrc4%>" class="iconimage">
-										<%		
-											}
-										%>
-										
-										
 										<div class="commentlan">
-											
-											<%
-												if ( comment_userid != null && comment_manager_id == null ) {
-											%>
+										
 											<textarea class="userinfotext userinfotext1" spellcheck="false" readonly><%=comment_username%></textarea>
 											<textarea class="replytext" readonly><%=comment_content%></textarea>
 											<div class="replylan">
 											<%
-												}
-												if ( comment_userid == null && comment_manager_id != null ) {
-											%>
-											<textarea class="userinfotext userinfotext1" style="color: blue" spellcheck="false" readonly>관리자</textarea>
-											<textarea class="replytext" readonly><%=comment_content%></textarea>
-											<div class="replylan">
-											<%
-												}
-											%>
-											
-											
-											<%
-												if (sess == null && sessManager == null) { // 로그인이 안 되어있을 때
+												if (sess == null ) {
 													
-												} else if ( sess != null && sessManager == null ) { // 사용자 들왔을 때
-													
-													if ( !sess.equals(comment_userid) ) { 			// 세션 아이디와 댓글 작성자 같지 않을 때
+												} else if ( sess != null && !sess.equals(comment_userid) ) {
 											%>
 												<textarea class="replydate" spellcheck="false" readonly><%=comment_date%></textarea>
 												<button type="button" class="replybtn" onclick="addBox(<%=i%>,<%=j%>)">답글쓰기</button>
 											<%
-													} else if ( sess.equals(comment_userid) ) {		// 세션 아이디와 댓글 작성자 같을 때
-														
+												} else if ( sess.equals(comment_userid) ) {
 											%>
 												<textarea class="replydate" spellcheck="false" readonly><%=comment_date%></textarea>
 												<button type="button" class="replybtn" onclick="addBox(<%=i%>,<%=j%>)">답글쓰기</button>
 												<button type="button" class="replybtn" onclick="deletereply(<%=num%>, <%=i%>, <%=j%>)">삭제</button>
 											<%
-														
-													}
-													
-												} else if ( sess == null && sessManager != null ) { // 관리자 들왔을 때
-													
-													if ( !sessManager.equals(comment_manager_id) ) {	// 관리자 세션과 댓글 작성자 같지 않을 때
-											%>
-												<textarea class="replydate" spellcheck="false" readonly><%=comment_date%></textarea>
-												<button type="button" class="replybtn" onclick="addBox(<%=i%>,<%=j%>)">답글쓰기</button>
-											<%
-													} else if ( sessManager.equals(comment_manager_id) ) { // 관리자 세션과 댓글 작성자 같을 때
-											%>
-												<textarea class="replydate" spellcheck="false" readonly><%=comment_date%></textarea>
-												<button type="button" class="replybtn" onclick="addBox(<%=i%>,<%=j%>)">답글쓰기</button>
-												<button type="button" class="replybtn" onclick="deletereply(<%=num%>, <%=i%>, <%=j%>)">삭제</button>
-											<%		
-													}
-													
 												}
-												
 											%>
 												
 											</div>
@@ -300,21 +174,8 @@
 										<div><%=username1%></div>
 										<textarea id="textBox" class="commenttext textarea<%=i%><%=j%>" maxlength="255" placeholder="댓글을 남겨보세요." oninput="checkLimit()"></textarea>
 										<div class="yesnobtn" style="display: flex;">
-										
-											<%
-												if ( sess != null && sessManager == null ) {
-											%>
-											<button type="button" class="insertbtn" style="height: 25px;" onclick="commentAction(1, 1, '', '<%=sess%>', <%=i%>, <%=j%>)">등록</button>
+											<button type="button" class="insertbtn" style="height: 25px;" onclick="commentAction(1, '', '<%=sess%>', <%=i%>, <%=j%>)">등록</button>
 											<button type="button" class="insertbtn" style="height: 25px; margin-left: 1%;" onclick="removebox(<%=i%>,<%=j%>)">취소</button>
-											<%
-												} else if ( sess == null && sessManager != null ) {
-											%>
-											<button type="button" class="insertbtn" style="height: 25px;" onclick="commentAction(2, 1, '', '<%=sess%>', <%=i%>, <%=j%>)">등록</button>
-											<button type="button" class="insertbtn" style="height: 25px; margin-left: 1%;" onclick="removebox(<%=i%>,<%=j%>)">취소</button>
-											<%
-												}
-											%>
-											
 										</div>
 										
 									</div>
@@ -329,30 +190,24 @@
 						
 						<div class="commentinsertblock">
 							
-						<%
-								if ( sess != null && sessManager == null ) { 			// 사용자가 들왔을 때
-						%>
+							<%
+								if ( sess != null ) {
+									
+							%>
 							<div><%=username1%></div>
 							<textarea id="textBox" class="commenttext testarea" maxlength="255" placeholder="댓글을 남겨보세요." oninput="checkLimit()"></textarea>
-							<button type="button" class="insertbtn" onclick="commentAction(1, 0, '', '<%=sess%>', -1, -1)">등록</button>	
-						<%	
-								} else if ( sess == null && sessManager != null ) {		// 관리자가 들왔을 때
-						%>
-							<div><%=username1%></div>
-							<textarea id="textBox" class="commenttext testarea" maxlength="255" placeholder="댓글을 남겨보세요." oninput="checkLimit()"></textarea>
-							<button type="button" class="insertbtn" onclick="commentAction(2, 0, '', '<%=sess%>', -1, -1)">등록</button>	
-						<%	
-								} else {												// 로그인 안 되어있을 때
-						%>
-						
+							<button type="button" class="insertbtn" onclick="commentAction(0, '', '<%=sess%>', -1, -1)">등록</button>
+							
+							<%
+								} else {
+							%>
+							
 							<button type="button" class="logintry" onclick="tologin()">로그인 후 이용해주세요 &#62;</button>
-						
-						<%		
+							
+							<%
 								}
-								
-						%>
-						
-						
+							%>
+							
 						</div>
 						
 					</div>
@@ -377,10 +232,6 @@
 			
 		</div>
 		
-		<div style="position: fixed; width: 1500px; height: 70px; background: white; left: 230px;"></div>
-		
-		</div>
-		
 		<form name="comment">
 			
 			<input type="hidden" name="num" value="<%=num%>">
@@ -389,7 +240,6 @@
 			<input type="hidden" name="userid" value="">
 			<input type="hidden" name="pos" value="">
 			<input type="hidden" name="url" value="">
-			<input type="hidden" name="managerid" value="">
 			
 		</form>
 		
@@ -402,6 +252,8 @@
 		</form>
 		
 		<form name="urlfrm">
+			
+			
 			
 		</form>
 		
@@ -448,51 +300,33 @@
 				}
 			}
 			
-			function commentAction(userormanager, check, content, userid, pos, j) {
+			function commentAction(check, content, userid, pos, j) {
 				
+				var currentURL = location.href;
 				var sess = "<%=sess%>";
-				var sessManager = "<%=sessManager%>";
-				console.log(sess + " / " + sessManager);
-				console.log(userormanager + " / " + check + " / " + content + " / " + userid + " / " + pos + " / " + j);
+				console.log(sess);
 				
-				if ( sess === "null" && sessManager === "null" ) {
+				if ( sess === 'null' ) {
 					alert("로그인후 이용해주세요");
 					location.href = "login.jsp";
 					return;
 				}
 				
-				if ( userormanager == 1 ) {
-					
-					var test = '.textarea' + pos + j;
-					var wheretext = document.querySelector(test);
-					var wheretext1 = document.querySelector('.testarea');
-					
-					document.comment.check.value = check;
-					
-					if ( check === 0 ) document.comment.content.value = wheretext1.value;
-					else if ( check === 1 ) document.comment.content.value = wheretext.value;
-					document.comment.userid.value = userid;
-					document.comment.pos.value = pos;
-					document.comment.action = "proc/commentAction.jsp";
-					document.comment.submit();
-					
-				} else if ( userormanager == 2 ) {
-					
-					var test = '.textarea' + pos + j;
-					var wheretext = document.querySelector(test);
-					var wheretext1 = document.querySelector('.testarea');
-					
-					document.comment.check.value = check;
-					
-					if ( check === 0 ) document.comment.content.value = wheretext1.value;
-					else if ( check === 1 ) document.comment.content.value = wheretext.value;
-					document.comment.managerid.value = "<%=sessManager%>";
-					document.comment.pos.value = pos;
-					document.comment.action = "proc/commentAction_manager.jsp";
-					document.comment.submit();
-					
-				}
+				var test = '.textarea' + pos + j;
+				var wheretext = document.querySelector(test);
+				var wheretext1 = document.querySelector('.testarea');
 				
+				document.comment.check.value = check;
+				
+				if ( check === 0 )
+					document.comment.content.value = wheretext1.value;
+				else if ( check === 1 ) 
+					document.comment.content.value = wheretext.value;
+				document.comment.userid.value = userid;
+				document.comment.pos.value = pos;
+				document.comment.url.value = currentURL;
+				document.comment.action = "proc/commentAction.jsp";
+				document.comment.submit();
 				
 			}
 			

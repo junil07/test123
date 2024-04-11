@@ -93,9 +93,6 @@
 	System.out.println("\n -- totalPage -- \n" + totalPage + "\n -- totalPage -- \n");
 	
 	int lastblock = totalPage % 10;
-	if ( lastblock == 0 ) {
-		lastblock = 10;
-	}
 	System.out.println("\n -- lastblock -- \n" + lastblock + "\n -- lastblock -- \n");
 	
 	totalBlock = (int)Math.ceil((double)totalPage / numPerPage);  // 전체 블럭 갯수
@@ -104,8 +101,6 @@
 %>
 <html>
 	<head>
-	
-		<%@ include file="navi/head.jsp" %>
 		<script>
 		
 			history.scrollRestoration = "auto";
@@ -169,36 +164,13 @@
 		<title> 포인트 히스토리 </title>
 	</head>
 	<body>
-		
-		
-		<div id="grandpadiv" style="position:fixed; width: 100%;">
-		
-			<div id="wrapper">
-				
-				<%@ include file="navi/menu.jsp" %>
-					
-				<div id="content-wrapper" class="d-flex flex-column">
-		            <!-- Main Content -->
-		            <div id="content" class="bg-white">
-		                <!-- // 최상단 Top 영역 -->
-						<%@ include file="navi/top.jsp" %>
-						<!-- Begin Page Content -->
-		                <div class="container-fluid">
-		                	<!-- // 컨텐츠 입력 start  -->
-		                	
-		   	  			</div>
-		   	  
-		            </div>
-		            
-		        </div>
-				
+	
+		<div id="test" class="topbar">
+			<input class="topbartext" type="text" value="포인트" disabled/>
+			<div class="topbarbutton">
+				<button class="logout">로그아웃</button>
 			</div>
-		
 		</div>
-		
-		<%@ include file="navi/footer.jsp" %>
-		
-		<h1 style="position:absolute; left: 250px; top:100px;">포인트 히스토리</h1>
 		
 		<div class="pointbutton">
 			<div class="point">
@@ -216,7 +188,6 @@
 				<button class="exchangebtn" data-bs-toggle="modal" data-bs-target="#pointrefund">환불하기</button>
 			</div>
 		</div>
-		
 		<div class="usagehistory" align="center">
 			<table>
 				<tr style="height: 50px;">
@@ -291,18 +262,14 @@
 								<td colspan="5" style="height: 70px;">
 									<%
 									
-									System.out.println("\n nowBlock \n" + nowBlock + "\n nowBlock \n");
-									System.out.println("\n pagePerBlock \n" + pagePerBlock + "\n pagePerBlock \n");
-									System.out.println("\n blockPage \n" + blockPage + "\n blockPage \n");
-									System.out.println("\n blockPage1 \n" + blockPage1 + "\n blockPage1 \n");
+									System.out.println("\n 확인용1 \n" + nowBlock + "\n 확인용1 \n");
+									System.out.println("\n 확인용1 \n" + pagePerBlock + "\n 확인용1 \n");
 									blockPage = ( nowBlock - 1 ) * pagePerBlock + 1;
 									firstgguck = blockPage;
 									blockPage1 = blockPage + 10;
 									if ( nowBlock == totalBlock ) blockPage1 = blockPage + lastblock;
-									System.out.println("\n nowBlock \n" + nowBlock + "\n nowBlock \n");
-									System.out.println("\n pagePerBlock \n" + pagePerBlock + "\n pagePerBlock \n");
-									System.out.println("\n blockPage \n" + blockPage + "\n blockPage \n");
-									System.out.println("\n blockPage1 \n" + blockPage1 + "\n blockPage1 \n");
+									System.out.println("\n 확인용2 \n" + nowBlock + "\n 확인용2 \n");
+									System.out.println("\n 확인용2 \n" + pagePerBlock + "\n 확인용2 \n");
 									for ( int i = blockPage; i < blockPage1; i++) {
 										if ( i == firstgguck ) {
 									%>
@@ -443,7 +410,6 @@
 			</div>
 		</form>
 		
-		<div style="position: fixed; width: 1500px; height: 70px; background: white; left: 230px;"></div>
 		
 		<script>
 			

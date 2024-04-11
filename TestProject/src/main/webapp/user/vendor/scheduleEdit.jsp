@@ -22,7 +22,6 @@
 <html>
 	<head>
 	
-		<%@ include file="navi/head.jsp" %>
 		<link href="css/scheduleEdit.css" rel="stylesheet">
 		
 		<script>
@@ -40,33 +39,6 @@
 		
 	</head>
 	<body>
-		
-		<div id="grandpadiv" style="position:fixed; width: 100%;">
-		
-			<div id="wrapper">
-				
-				<%@ include file="navi/menu.jsp" %>
-					
-				<div id="content-wrapper" class="d-flex flex-column">
-		            <!-- Main Content -->
-		            <div id="content" class="bg-white">
-		                <!-- // 최상단 Top 영역 -->
-						<%@ include file="navi/top.jsp" %>
-						<!-- Begin Page Content -->
-		                <div class="container-fluid">
-		                	<!-- // 컨텐츠 입력 start  -->
-		                	
-		   	  			</div>
-		   	  
-		            </div>
-		            
-		        </div>
-				
-			</div>
-		
-		</div>
-		
-		<%@ include file="navi/footer.jsp" %>
 		
 		<div class="parantdiv">
 				
@@ -151,9 +123,6 @@
 			</form>
 			
 		</div>
-		
-		<div style="position: fixed; width: 1500px; height: 70px; background: white; left: 230px;"></div>
-		
 		<script src="js/scheduleEdit.js"></script>
 	</body>
 </html>
