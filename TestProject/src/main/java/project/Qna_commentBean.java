@@ -9,14 +9,7 @@ public class Qna_commentBean {
 	private int qna_comment_reply_depth;
 	private String  qna_comment_user_id;
 	private String qna_comment_date;
-	private String qna_comment_manager_id;
 	
-	public String getQna_comment_manager_id() {
-		return qna_comment_manager_id;
-	}
-	public void setQna_comment_manager_id(String qna_comment_manager_id) {
-		this.qna_comment_manager_id = qna_comment_manager_id;
-	}
 	public int getQna_comment_num() {
 		return qna_comment_num;
 	}

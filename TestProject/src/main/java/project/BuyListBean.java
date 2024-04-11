@@ -3,21 +3,9 @@ package project;
 public class BuyListBean {
 	
 	private int buylist_num, buylist_pay, buylist_paypost_num;
-	private String buylist_date, buylist_buyer, buylist_seller, user_name, paypost_title;
+	private String buylist_date, buylist_buyer, buylist_seller;
 	public int getBuylist_num() {
 		return buylist_num;
-	}
-	public String getUser_name() {
-		return user_name;
-	}
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
-	}
-	public String getPaypost_title() {
-		return paypost_title;
-	}
-	public void setPaypost_title(String paypost_title) {
-		this.paypost_title = paypost_title;
 	}
 	public void setBuylist_num(int buylist_num) {
 		this.buylist_num = buylist_num;
